@@ -11,36 +11,55 @@
 */
 
 /* ── LIGHT ─────────────────────────────────────────────────────────────── */
+/*
+  Rebuilt. The first pass was a flat cold #EDF0F5 with 11%-black borders, which
+  read as unfinished rather than light — grey slabs on grey, every edge the same
+  weight, nothing receding.
+
+  Three changes do the work:
+    · the ground carries a faint warm cast and a soft vertical gradient, so the
+      page has a light source instead of being uniformly flat;
+    · panels are pure white and lift off it with layered, longer shadows rather
+      than being outlined — borders drop to ~7% and stop competing;
+    · text and the red both warm slightly. #C81E1E on cold grey was harsh; the
+      warmer ground gives it somewhere to sit.
+*/
 :root {
-  --c-bg: #edf0f5;
-  --c-bg-2: #e4e9f0;
-  --c-panel: rgb(255 255 255 / 0.82);
+  --c-bg: #f2f3f7;
+  --c-bg-2: #eaecf2;
+  --c-panel: rgb(255 255 255 / 0.86);
   --c-panel-solid: #ffffff;
-  --c-sunk: rgb(14 20 32 / 0.04);
-  --c-border: rgb(14 20 32 / 0.11);
-  --c-border-hi: rgb(14 20 32 / 0.2);
-  --c-text: #0e1420;
-  --c-muted: #4b5568;
-  --c-dim: #78849a;
-  --c-blue: #1e63d6;
-  --c-blue-soft: rgb(30 99 214 / 0.12);
-  --c-red: #c81e1e;
-  --c-red-hover: #a81818;
-  --c-red-soft: rgb(200 30 30 / 0.1);
+  --c-sunk: rgb(17 24 39 / 0.035);
+  --c-border: rgb(17 24 39 / 0.07);
+  --c-border-hi: rgb(17 24 39 / 0.14);
+  --c-text: #111827;
+  --c-muted: #4b5563;
+  --c-dim: #8a94a6;
+  --c-blue: #2563eb;
+  --c-blue-soft: rgb(37 99 235 / 0.10);
+  --c-red: #cf2020;
+  --c-red-hover: #b01a1a;
+  --c-red-soft: rgb(207 32 32 / 0.075);
   --c-good: #0f9d58;
   --c-warn: #b26b00;
-  --c-shadow: 0 1px 2px rgb(14 20 32 / 0.06), 0 14px 40px -16px rgb(14 20 32 / 0.3);
-  /* Agent colours are darkened in light theme — the dark-theme neons are
-     unreadable on white and would fail contrast as chip labels. */
-  --c-aria: #0891b2;
-  --c-juno: #16a34a;
-  --c-nova: #7c3aed;
-  --c-kai: #0284c7;
-  --c-zara: #db2777;
-  --c-luna: #b45309;
-  --c-atlas: #e11d48;
+  /* Layered and long: one tight contact shadow, one wide ambient one. A single
+     hard shadow is what makes light UI look cheap. */
+  --c-shadow:
+    0 1px 1px rgb(17 24 39 / 0.04),
+    0 4px 10px -3px rgb(17 24 39 / 0.06),
+    0 22px 44px -22px rgb(17 24 39 / 0.22);
+  /* Agent colours darkened for contrast on white — the dark-theme neons are
+     unreadable here and would fail as chip labels. */
+  --c-aria: #0e7490;
+  --c-juno: #15803d;
+  --c-nova: #6d28d9;
+  --c-kai: #0369a1;
+  --c-zara: #be185d;
+  --c-luna: #a16207;
+  --c-atlas: #be123c;
 
-  --glass: blur(20px) saturate(1.3);
+  --body-glow: radial-gradient(120% 70% at 50% -10%, rgb(255 255 255 / 0.9), transparent 60%);
+  --glass: blur(20px) saturate(1.25);
   --dur: 200ms;
   --dur-slow: 600ms;
 
@@ -50,6 +69,8 @@
 /* ── DARK ──────────────────────────────────────────────────────────────── */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
+    /* Dark needs no page glow — the world behind the glass is the light source. */
+    --body-glow: none;
     --c-bg: #0b0d12;
     --c-bg-2: #080a0e;
     --c-panel: rgb(22 26 36 / 0.76);
@@ -80,6 +101,7 @@
 }
 
 :root[data-theme="dark"] {
+  --body-glow: none;
   --c-bg: #0b0d12;
   --c-bg-2: #080a0e;
   --c-panel: rgb(22 26 36 / 0.76);
@@ -116,6 +138,10 @@
 
   body {
     background-color: var(--color-canvas);
+    /* A light page needs somewhere for the light to come from. Barely visible,
+       but it is the difference between "paper" and "grey fill". */
+    background-image: var(--body-glow);
+    background-attachment: fixed;
     color: var(--color-fg);
     font-family: var(--font-sans);
     min-height: 100svh;

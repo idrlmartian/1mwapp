@@ -124,13 +124,28 @@
   .deck-grid > .deck-rail { grid-column: 1; grid-row: 2; }
 }
 
+/*
+  LIGHT: sticky, one viewport tall. Two bugs die here.
+
+  It used to be a fixed 620px block in a grid cell as tall as the rail (~1100px),
+  which left a dead grey gap underneath. And because `cover` had to fill whatever
+  box it was given, a 1.78:1 capture in a 1.3:1 box got cropped and over-zoomed.
+  Pinning it to viewport height fixes the framing AND removes the gap, because
+  the world now travels with the scroll instead of ending early.
+*/
 .world {
-  position: relative;
+  position: sticky;
+  top: 70px;
+  height: calc(100svh - 84px);
+  max-height: 760px;
   background: #0b0d12;
   border: 1px solid var(--color-line);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-deck);
-  min-height: min(74svh, 620px);
+  overflow: hidden;
+}
+@media (max-width: 1000px) {
+  .world { position: relative; top: 0; height: min(56svh, 420px); }
 }
 
 .world::after {
@@ -146,13 +161,16 @@
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) .world {
-    position: absolute;
-    inset: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100svh;
     z-index: -1;
     border: 0;
     border-radius: 0;
     box-shadow: none;
-    min-height: 0;
+    max-height: none;
   }
   /* Legibility scrim, dark only — in light there is nothing to read through. */
   :root:not([data-theme="light"]) .world::after {
@@ -160,13 +178,16 @@
   }
 }
 :root[data-theme="dark"] .world {
-  position: absolute;
-  inset: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100svh;
   z-index: -1;
   border: 0;
   border-radius: 0;
   box-shadow: none;
-  min-height: 0;
+  max-height: none;
 }
 :root[data-theme="dark"] .world::after {
   background: linear-gradient(90deg, rgb(11 13 18 / 0.10), rgb(11 13 18 / 0.52) 60%, rgb(11 13 18 / 0.80));
