@@ -59,27 +59,49 @@ export function validateEmail(raw: unknown): Validation {
 /**
  * MX lookup with a TTL cache.
  *
- * Returns null on failure rather than false, and callers must NOT hard-reject on
- * it: transient DNS trouble would otherwise silently drop real signups during
- * exactly the traffic spike we built this for. We record the result and move on.
+ * Three-valued on purpose, and the distinction is load-bearing:
+ *
+ *   true  — the domain has at least one MX record.
+ *   false — the domain DEFINITIVELY has no mail exchanger (NXDOMAIN / no data).
+ *   null  — the lookup itself failed: timeout, SERVFAIL, resolver unreachable.
+ *
+ * Callers must NOT hard-reject on any of these; transient DNS trouble would
+ * otherwise silently drop real signups during exactly the traffic spike we
+ * built this for. But `false` is safe to treat as a suspicion signal and
+ * `null` is not, so they cannot be collapsed.
+ *
+ * The subtlety that makes this necessary: Node's resolveMx THROWS ENOTFOUND
+ * or ENODATA for a domain with no mail exchanger — it does not return an
+ * empty array. Catching every error as null therefore made `false` unreachable
+ * in practice and recorded a bogus domain identically to a DNS blip.
  */
 const mxCache = new Map<string, { ok: boolean; at: number }>();
 const MX_TTL = 6 * 60 * 60 * 1000;
 
+// Definitive answers from the resolver: the name resolves, there is just no
+// mail exchanger behind it. Anything else is treated as transient.
+const MX_ABSENT_CODES = new Set(["ENOTFOUND", "ENODATA", "NOTFOUND"]);
+
 export async function checkMx(domain: string): Promise<boolean | null> {
     const hit = mxCache.get(domain);
     if (hit && Date.now() - hit.at < MX_TTL) return hit.ok;
+
+    const remember = (ok: boolean) => {
+        if (mxCache.size > 5000) mxCache.clear();
+        mxCache.set(domain, { ok, at: Date.now() });
+        return ok;
+    };
+
     try {
         const records = await Promise.race([
             dns.resolveMx(domain),
             new Promise<never>((_, rej) => setTimeout(() => rej(new Error("timeout")), 2500)),
         ]);
-        const ok = Array.isArray(records) && records.length > 0;
-        if (mxCache.size > 5000) mxCache.clear();
-        mxCache.set(domain, { ok, at: Date.now() });
-        return ok;
-    } catch {
-        return null;
+        return remember(Array.isArray(records) && records.length > 0);
+    } catch (err) {
+        const code = (err as NodeJS.ErrnoException)?.code;
+        if (code && MX_ABSENT_CODES.has(code)) return remember(false);
+        return null; // transient — do not cache, do not treat as suspicious
     }
 }
 
