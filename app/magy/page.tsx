@@ -4,7 +4,7 @@ import WaitlistForm from "@/app/components/WaitlistForm";
 import StructuredData from "@/app/components/StructuredData";
 import VideoBackdrop from "@/app/components/ui/VideoBackdrop";
 import { Metrics, Panel, Quote } from "@/app/components/ui/Panel";
-import { AGENTS, MAGY_YOUTUBE_ID, METRICS, STATUS } from "@/app/lib/constants";
+import { ACTIVITY, AGENTS, MAGY_YOUTUBE_ID, METRICS, STATUS } from "@/app/lib/constants";
 
 export const metadata: Metadata = {
     title: "Magy — the 3D embodied multi-agent platform",
@@ -88,6 +88,55 @@ export default function MagyPage() {
                                 The world&apos;s first 3D embodied multi-agent platform. Build the
                                 world, hire the team, watch the work happen.
                             </p>
+
+                            <ul className="mt-3.5 flex flex-wrap gap-1.5">
+                                {AGENTS.map((a) => (
+                                    <li
+                                        key={a.id}
+                                        className="border-line bg-sunk text-fg-muted inline-flex items-center gap-1.5 rounded-[var(--radius-capsule)] border py-1 pl-2 pr-2.5 text-[11.5px]"
+                                    >
+                                        <i
+                                            className="size-1.5 rounded-full bg-[var(--dot)] shadow-[0_0_6px_var(--dot)]"
+                                            style={{ ["--dot" as string]: `var(--color-${a.token})` }}
+                                        />
+                                        <b className="text-fg font-semibold">{a.name}</b> {a.role}
+                                    </li>
+                                ))}
+                                <li className="border-line text-fg-dim inline-flex items-center rounded-[var(--radius-capsule)] border border-dashed px-2.5 py-1 text-[11.5px]">
+                                    +∞
+                                </li>
+                            </ul>
+                        </section>
+
+                        <section className="deck-card overflow-hidden">
+                            <p className="deck-label border-line border-b px-3.5 py-2.5">Live activity</p>
+                            <ul className="py-1.5">
+                                {ACTIVITY.map((e) => (
+                                    <li
+                                        key={e.time}
+                                        className="grid grid-cols-[9px_42px_1fr] items-baseline gap-2.5 px-3.5 py-1 text-[11.5px]"
+                                    >
+                                        <i
+                                            className="size-1.5 translate-y-[3px] rounded-full bg-[var(--dot)]"
+                                            style={{ ["--dot" as string]: `var(--color-${e.token})` }}
+                                        />
+                                        <time className="text-fg-dim tabnum font-mono">{e.time}</time>
+                                        <span className="text-fg-muted">
+                                            {e.agent && <b className="text-fg font-semibold">{e.agent} </b>}
+                                            {e.text}
+                                        </span>
+                                    </li>
+                                ))}
+                            </ul>
+                            <pre className="border-line bg-sunk text-fg-muted mx-3.5 mb-3 overflow-x-auto rounded-[var(--radius-md)] border p-2.5 font-mono text-[10.5px] leading-relaxed">
+                                <code>
+                                    {`$ magy delegate --to zara "extract the parser"\n`}
+                                    <span className="text-blue">zara</span> worktree{" "}
+                                    <span className="text-good">acquired</span> · feat/parser-extract{"\n"}
+                                    <span className="text-blue">luna</span> review{" "}
+                                    <span className="text-good">approved</span> → PR #482 opened
+                                </code>
+                            </pre>
                         </section>
 
                         <section

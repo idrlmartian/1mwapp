@@ -161,11 +161,8 @@
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) .world {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 100svh;
+    position: absolute;
+    inset: 0;
     z-index: -1;
     border: 0;
     border-radius: 0;
@@ -178,11 +175,8 @@
   }
 }
 :root[data-theme="dark"] .world {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 100svh;
+  position: absolute;
+  inset: 0;
   z-index: -1;
   border: 0;
   border-radius: 0;
