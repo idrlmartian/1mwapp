@@ -97,7 +97,7 @@ export default function MagyPage() {
                                     >
                                         <i
                                             className="size-1.5 rounded-full bg-[var(--dot)] shadow-[0_0_6px_var(--dot)]"
-                                            style={{ ["--dot" as string]: `var(--color-${a.token})` }}
+                                            style={{ ["--dot" as string]: `var(--c-${a.token})` }}
                                         />
                                         <b className="text-fg font-semibold">{a.name}</b> {a.role}
                                     </li>
@@ -118,7 +118,7 @@ export default function MagyPage() {
                                     >
                                         <i
                                             className="size-1.5 translate-y-[3px] rounded-full bg-[var(--dot)] shadow-[0_0_7px_var(--dot)]"
-                                            style={{ ["--dot" as string]: `var(--color-${e.token})` }}
+                                            style={{ ["--dot" as string]: `var(--c-${e.token})` }}
                                         />
                                         <time className="text-fg-dim tabnum font-mono">{e.time}</time>
                                         <span className="text-fg-muted">
@@ -363,7 +363,7 @@ export default function MagyPage() {
                                 <span className="flex items-center gap-2">
                                     <i
                                         className="size-2 rounded-full bg-[var(--dot)] shadow-[0_0_7px_var(--dot)]"
-                                        style={{ ["--dot" as string]: `var(--color-${a.token})` }}
+                                        style={{ ["--dot" as string]: `var(--c-${a.token})` }}
                                     />
                                     <b className="text-[13.5px] font-bold">{a.name}</b>
                                     <span className="text-fg-dim text-[12px]">{a.role}</span>
