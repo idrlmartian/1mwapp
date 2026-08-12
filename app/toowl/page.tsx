@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import WaitlistForm from "@/app/components/WaitlistForm";
 import { ComingSoon, Metrics, Panel } from "@/app/components/ui/Panel";
+import { Bullets, Eyebrow, Receipts, Showcase, Visual } from "@/app/components/ui/Showcase";
+import ToowlPerch from "@/app/components/ui/ToowlPerch";
 
 /*
   Content mirrored from the live site at toowl.karmasteels.com so the two pages
@@ -180,22 +182,40 @@ export default function ToowlPage() {
                 <Metrics items={STATS} />
             </Panel>
 
+            {/*
+                Was three flat cards under a paragraph — the weakest section on
+                the page, and the one toowl's own site does best. Same content in
+                the Showcase pattern, with the Perch drawn beside it.
+            */}
             <Panel label="First feather on the Perch">
-                <h2 className="text-h2 mb-2">Claude on the Perch.</h2>
-                <p className="text-fg-muted mb-4 max-w-[70ch] text-[13.5px]">
-                    Open the Perch (⌘B). The Claude Feather is already there — your Claude Code
-                    sessions, resumable, crash-recoverable, palette-integrated. No setup, no detour
-                    through a browser. Bring your own <code className="font-mono text-[12.5px]">claude</code>{" "}
-                    binary; the Feather handles the rest.
-                </p>
-                <div className="grid gap-3 sm:grid-cols-3">
-                    {FEATHER.map(([t, b]) => (
-                        <div key={t} className="border-line bg-sunk rounded-[var(--radius-md)] border p-4">
-                            <h3 className="text-h3 font-bold">{t}</h3>
-                            <p className="text-fg-muted mt-1.5 text-[13px]">{b}</p>
-                        </div>
-                    ))}
-                </div>
+                <Showcase
+                    visual={
+                        <Visual caption="Real UI — the Perch, the session list, the crash banner, palette integration. All in v1.0." state="drawn">
+                            <ToowlPerch />
+                        </Visual>
+                    }
+                >
+                    <Eyebrow
+                        icon={
+                            <svg viewBox="0 0 24 24" className="size-[13px] shrink-0" fill="currentColor" aria-hidden>
+                                <path d="M12 2 2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                            </svg>
+                        }
+                    >
+                        First feather on the Perch
+                    </Eyebrow>
+                    <h2 className="text-h2">Claude on the Perch.</h2>
+                    <p className="text-fg-muted mt-2.5 max-w-[47ch] text-[14px]">
+                        Open the Perch (<kbd className="border-line bg-sunk text-fg rounded-[4px] border px-1.5 py-0.5 font-mono text-[11px]">⌘B</kbd>).
+                        The Claude Feather is already there — no setup, no detour through a browser.
+                    </p>
+                    <Bullets items={FEATHER.map(([title, body]) => ({ title, body }))} />
+                    <Receipts>
+                        Built on toowl&apos;s first-party <code className="font-mono text-[12px]">toowl-plugin-claude</code>.
+                        Shipped, tested, in this binary — bring your own{" "}
+                        <code className="font-mono text-[12px]">claude</code> binary and the Feather handles the rest.
+                    </Receipts>
+                </Showcase>
             </Panel>
 
             <Panel label="Breakthroughs, not bullet points">

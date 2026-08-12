@@ -94,16 +94,37 @@ export default function MagyPage() {
                     <WorldCanvas />
                     <div className="deck-rail flex flex-col gap-3">
                         <section className="deck-card p-4">
-                            <p className="deck-label mb-3 flex items-center gap-2">
-                                <i className="bg-red size-1.5 rounded-full" />
-                                Magy · early access
-                            </p>
-                            <h1 className="text-hero">
-                                Infinite agents.
-                                <br />
-                                Infinite worlds.
-                                <br />
-                                <em className="text-blue not-italic">Any work.</em>
+                            {/*
+                                The product name was a 10px mono eyebrow, so the
+                                loudest thing on the page was a tagline that
+                                never says what it is selling — and the <h1> did
+                                not contain the word "Magy" at all, which is also
+                                what a search engine and a screen reader read
+                                first.
+
+                                Both fixed by putting the wordmark INSIDE the h1
+                                above the tagline. One heading, reading "Magy —
+                                Infinite agents. Infinite worlds. Any work.", with
+                                the name set larger than the tagline so it wins
+                                the glance.
+                            */}
+                            <h1 className="mb-1">
+                                <span className="flex flex-wrap items-center gap-2.5">
+                                    <span className="block text-[clamp(2.1rem,4.4vw,2.9rem)] font-extrabold leading-none tracking-[-0.05em]">
+                                        Magy
+                                    </span>
+                                    <span className="border-red text-red bg-red-soft inline-flex items-center gap-1.5 rounded-[var(--radius-capsule)] border px-2.5 py-1 font-mono text-[9.5px] font-bold uppercase tracking-[0.14em]">
+                                        <i className="bg-red size-1.5 rounded-full" />
+                                        Early access
+                                    </span>
+                                </span>
+                                <span className="text-hero mt-3 block">
+                                    Infinite agents.
+                                    <br />
+                                    Infinite worlds.
+                                    <br />
+                                    <em className="text-blue not-italic">Any work.</em>
+                                </span>
                             </h1>
                             <p className="text-fg-muted mt-3 text-[13.5px]">
                                 The world&apos;s first 3D embodied multi-agent platform. Build the

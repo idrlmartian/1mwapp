@@ -173,7 +173,7 @@
   inset: 0;
   z-index: 0;
 }
-.world,
+.world { position: relative; }
 .world > canvas {
   display: block;
   width: 100%;

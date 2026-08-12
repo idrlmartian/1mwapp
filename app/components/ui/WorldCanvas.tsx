@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { AGENTS } from "@/app/lib/constants";
+import { AGENTS, WORLD } from "@/app/lib/constants";
 
 /*
   The world pane — an ambient view of MagyVerse, drawn.
@@ -154,6 +154,25 @@ export default function WorldCanvas({ className = "" }: { className?: string }) 
     return (
         <div className={`world ${className}`}>
             <canvas ref={cv} className="block size-full" aria-hidden />
+
+            {/*
+                Overlay in DOM rather than painted into the canvas, so it stays
+                selectable text and scales with the user's font size. Carries the
+                world's name and its real dimensions — the same content the old
+                poster backdrop had, which would otherwise have been lost in the
+                switch. WORLD is verified against worlds/magy/scene.json.
+            */}
+            {/* Right-aligned, both of them: the rail floats over the LEFT of the
+                stage, so anything at left-4 would sit underneath it. */}
+            <span className="border-line-hi text-fg bg-canvas/55 absolute right-4 top-4 z-2 inline-flex items-center gap-2 rounded-[var(--radius-capsule)] border px-3 py-1.5 font-mono text-[10.5px] font-semibold uppercase tracking-[0.12em] backdrop-blur-md">
+                <i className="bg-blue size-1.5 rounded-full" />
+                MagyVerse
+            </span>
+
+            <p className="text-fg-dim absolute bottom-4 right-4 z-2 hidden gap-4 font-mono text-[10px] font-semibold uppercase tracking-[0.15em] sm:flex">
+                <span>{WORLD.dims}</span>
+                <span>{WORLD.zones}</span>
+            </p>
         </div>
     );
 }
