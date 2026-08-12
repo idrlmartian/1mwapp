@@ -1,48 +1,103 @@
 import path from "node:path";
-import nodemailer from "nodemailer";
+import { SESv2Client, SendEmailCommand } from "@aws-sdk/client-sesv2";
+import MailComposer from "nodemailer/lib/mail-composer";
 
 /*
-  Transport: nodemailer over Google Workspace.
+  Transport: Amazon SES v2, ap-south-1 (same region as the box).
 
-  We deliberately did NOT add Resend/SendGrid/Postmark. SPF for 1martianway.com
-  is `v=spf1 include:_spf.google.com ~all` and DKIM (google._domainkey) is
-  already valid — so Google is the ONLY authorised sender. Adding a provider
-  means SPF+DKIM DNS changes on the domain carrying the founder's live business
-  email, during launch week, for zero deliverability gain.
+  Why this and not Google Workspace SMTP, which the plan originally chose: that
+  route needed an App Password on sales@ (a founder-blocking, 2FA-gated manual
+  step, capped at 500/day) or an IP-allowlisted relay approval. SES needs
+  neither — the EC2 instance role can already call ses:SendEmail, so there are
+  NO credentials to provision, rotate or leak. The account has production
+  access (50,000/day, 14/sec) and BOUNCE+COMPLAINT suppression enabled.
 
-  Note the box has a STATIC egress IP (13.205.218.213), which unlocks Google
-  Workspace SMTP relay (smtp-relay.gmail.com:587, IP-allowlisted) at 10,000/day
-  instead of smtp.gmail.com + App Password at 500/day. 500/day is a real ceiling
-  for a Product Hunt spike — set the relay up before launch.
+  The DNS cost was three Easy DKIM CNAMEs plus adding `include:amazonses.com`
+  to the ONE existing SPF record. MX was not touched, so the founder's Google
+  Workspace mail is unaffected, and google._domainkey still signs it.
 
-  Sending from the EC2 box's own MTA would FAIL SPF. With `~all` (softfail) that
-  lands in spam rather than bouncing, which is the worst outcome because it looks
-  like it worked.
+  nodemailer is still a dependency but is no longer a transport — it is only
+  MailComposer, building the MIME blob. That is required, not stylistic:
+  SESv2's `Content.Simple` has no attachment field, so the CID-embedded logo
+  can only ship via `Content.Raw`.
 */
 
 export const SALES_EMAIL = "sales@1martianway.com";
 
-let transporter: nodemailer.Transporter | null | undefined;
+const SES_REGION = process.env.SES_REGION ?? process.env.AWS_REGION ?? "ap-south-1";
 
-function getTransport() {
-    if (transporter !== undefined) return transporter;
-    const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASSWORD } = process.env;
-    if (!SMTP_HOST || !SMTP_PORT || !SMTP_USER || !SMTP_PASSWORD) {
-        transporter = null; // fail closed, loudly, at first use
-        console.error("[email] SMTP env incomplete — transactional mail disabled");
-        return transporter;
-    }
-    const port = Number(SMTP_PORT);
-    transporter = nodemailer.createTransport({
-        host: SMTP_HOST,
-        port,
-        secure: port === 465, // 587 uses STARTTLS, not implicit TLS
-        auth: { user: SMTP_USER, pass: SMTP_PASSWORD },
-    });
-    return transporter;
+/** Envelope sender. SES verifies the whole domain, so any @1martianway.com works. */
+const FROM_EMAIL =
+    process.env.MAIL_FROM_EMAIL ?? process.env.SMTP_FROM_EMAIL ?? SALES_EMAIL;
+
+/*
+  Local dev must not be able to mail real signups. Credentials now come from the
+  ambient AWS chain rather than explicit SMTP_* env, so the old "no env, no
+  send" safety disappeared — an `aws sso login` session on a laptop would
+  otherwise send for real. Staging and prod both run NODE_ENV=production, so
+  they still send; set MAIL_ALLOW_DEV_SEND=1 to send from a dev server.
+*/
+const CAN_SEND =
+    process.env.NODE_ENV === "production" || process.env.MAIL_ALLOW_DEV_SEND === "1";
+
+let client: SESv2Client | undefined;
+function getClient() {
+    client ??= new SESv2Client({ region: SES_REGION });
+    return client;
 }
 
-export const emailEnabled = () => getTransport() !== null;
+export const emailEnabled = () => CAN_SEND;
+
+type Attachment = { filename: string; path: string; cid: string };
+
+/**
+ * Compose a MIME message and hand it to SES as a raw blob.
+ *
+ * Resolves without sending outside production unless MAIL_ALLOW_DEV_SEND=1.
+ * Throws on a genuine send failure so callers can record it — every caller
+ * fires this AFTER responding to the user, so a throw never costs a signup.
+ */
+export async function sendMail(msg: {
+    to: string;
+    subject: string;
+    text: string;
+    html?: string;
+    from?: string;
+    replyTo?: string;
+    headers?: Record<string, string>;
+    attachments?: Attachment[];
+}) {
+    const raw = await new MailComposer({
+        from: msg.from ?? FROM_EMAIL,
+        to: msg.to,
+        subject: msg.subject,
+        text: msg.text,
+        html: msg.html,
+        replyTo: msg.replyTo,
+        headers: msg.headers,
+        attachments: msg.attachments?.map((a) => ({ ...a, contentDisposition: "inline" as const })),
+    })
+        .compile()
+        .build();
+
+    if (!CAN_SEND) {
+        console.warn(
+            `[email] not production — skipping send of "${msg.subject}" to ${msg.to}. ` +
+                "Set MAIL_ALLOW_DEV_SEND=1 to send for real."
+        );
+        return;
+    }
+
+    // Destination is passed explicitly rather than left to SES's header
+    // parsing. FromEmailAddress deliberately is NOT — supplying it overrides
+    // the MIME From and would drop the "1 Martian Way" display name.
+    await getClient().send(
+        new SendEmailCommand({
+            Destination: { ToAddresses: [msg.to] },
+            Content: { Raw: { Data: new Uint8Array(raw) } },
+        })
+    );
+}
 
 /** Strip CR/LF so nothing reaching a header can inject one. */
 export const headerSafe = (s: string) => s.replace(/[\r\n]+/g, " ").trim().slice(0, 200);
@@ -145,18 +200,14 @@ Unsubscribe: ${opts.unsubscribeUrl}
 }
 
 export async function sendConfirmation(to: string, verifyUrl: string, unsubscribeUrl: string) {
-    const t = getTransport();
-    if (!t) throw new Error("smtp_unconfigured");
     const { subject, html, text } = confirmationEmail({ verifyUrl, unsubscribeUrl });
-    await t.sendMail({
-        from: `1 Martian Way <${process.env.SMTP_FROM_EMAIL ?? SALES_EMAIL}>`,
+    await sendMail({
+        from: `1 Martian Way <${FROM_EMAIL}>`,
         to,
         subject,
         html,
         text,
-        attachments: [
-            { filename: "1mw-mark.png", path: MARK_PNG, cid: CID, contentDisposition: "inline" },
-        ],
+        attachments: [{ filename: "1mw-mark.png", path: MARK_PNG, cid: CID }],
         headers: {
             // Required by Gmail/Yahoo bulk-sender rules, and a direct
             // spam-complaint reducer.
@@ -168,10 +219,8 @@ export async function sendConfirmation(to: string, verifyUrl: string, unsubscrib
 
 /** Last-resort capture: if both Postgres and the disk fail, mail it to sales@. */
 export async function sendSignupFallback(payload: Record<string, unknown>) {
-    const t = getTransport();
-    if (!t) throw new Error("smtp_unconfigured");
-    await t.sendMail({
-        from: `1MW Waitlist <${process.env.SMTP_FROM_EMAIL ?? SALES_EMAIL}>`,
+    await sendMail({
+        from: `1MW Waitlist <${FROM_EMAIL}>`,
         to: process.env.NOTIFY_EMAIL ?? SALES_EMAIL,
         subject: headerSafe(`[ACTION] Waitlist signup could not be stored: ${payload.email}`),
         text:

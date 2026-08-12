@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
-import nodemailer from "nodemailer";
 import { sql } from "@/app/lib/db";
-import { escapeHtml, headerSafe, SALES_EMAIL } from "@/app/lib/email";
+import { emailEnabled, escapeHtml, headerSafe, SALES_EMAIL, sendMail } from "@/app/lib/email";
 import { clientIp, rateLimit } from "@/app/lib/rate-limit";
 import { hashIp, originAllowed, validateEmail, verifyFormToken } from "@/app/lib/waitlist";
 
@@ -39,9 +38,8 @@ export async function POST(req: Request) {
         return NextResponse.json({ error: "Too large" }, { status: 413 });
     }
 
-    const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASSWORD } = process.env;
-    if (!SMTP_HOST || !SMTP_PORT || !SMTP_USER || !SMTP_PASSWORD) {
-        console.error("[contact] SMTP env incomplete");
+    if (!emailEnabled()) {
+        console.error("[contact] mail sending disabled — refusing to accept a message we'd drop");
         return NextResponse.json({ error: "Contact is temporarily unavailable" }, { status: 503 });
     }
 
@@ -81,19 +79,11 @@ export async function POST(req: Request) {
     }
     const email = emailCheck.email;
 
-    const transporter = nodemailer.createTransport({
-        host: SMTP_HOST,
-        port: Number(SMTP_PORT),
-        secure: Number(SMTP_PORT) === 465,
-        auth: { user: SMTP_USER, pass: SMTP_PASSWORD },
-    });
-
     // headerSafe() strips CR/LF from everything reaching a header.
     const subject = headerSafe(`[${topic}] Contact from ${name}`);
 
     try {
-        await transporter.sendMail({
-            from: process.env.SMTP_FROM_EMAIL ?? SALES_EMAIL,
+        await sendMail({
             to: process.env.CONTACT_TO_EMAIL ?? SALES_EMAIL,
             replyTo: `${headerSafe(name)} <${headerSafe(email)}>`,
             subject,
