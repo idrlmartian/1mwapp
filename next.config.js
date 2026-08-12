@@ -14,8 +14,16 @@ const nextConfig = {
       them. Without this, self-hosted analytics typically reports about half of
       real traffic.
 
-      UMAMI_HOST is set at deploy time; when it is unset these rewrites are
-      simply not emitted, so a missing analytics host cannot break the build.
+      UMAMI_HOST must be present at BUILD time, not just run time. This
+      function is evaluated by `next build` and frozen into
+      .next/routes-manifest.json; `next start` reads that manifest and never
+      calls rewrites() again. Supplying the host only through the runtime
+      --env-file produces an empty rewrite table and a 404 on /js/mw.js while
+      every environment variable still reads as correctly set — so
+      scripts/deploy.sh passes it as a --build-arg as well.
+
+      When it is genuinely unset these rewrites are simply not emitted, so a
+      missing analytics host cannot break the build.
     */
     /*
       Next prerenders these pages and ships them with s-maxage=31536000 — a

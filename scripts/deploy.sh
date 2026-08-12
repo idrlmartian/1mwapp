@@ -97,13 +97,37 @@ if [ ! -f "$ENV_FILE" ]; then
   exit 1
 fi
 
+# Refuse to deploy without the secrets that have committed dev fallbacks.
+#
+# IP_HASH_PEPPER and FORM_HMAC_SECRET both fall back to constants that are IN
+# THE REPO. Unset, they don't break anything visibly — they just quietly make
+# the controls fake: a public pepper makes sha256(ip) reversible by rainbow
+# table (the IPv4 space is 4 billion hashes), and a public form secret lets
+# anyone mint valid anti-bot tokens. That is a failure you cannot see by
+# looking at the site, so it gets caught here instead.
+#
+# Checked before the old container is stopped, so a miss is a refused deploy
+# rather than an outage.
+for required in IP_HASH_PEPPER FORM_HMAC_SECRET; do
+  if ! grep -qE "^${required}=.+" "$ENV_FILE"; then
+    echo "!! $required missing from $ENV_FILE — refusing to deploy." >&2
+    echo "   Generate one with: openssl rand -hex 32" >&2
+    exit 1
+  fi
+done
+
 # The Umami site id is a BUILD input, unlike every other value in the env file.
 # NEXT_PUBLIC_* is inlined into the client bundle by `next build`, so passing it
 # only via --env-file would leave the tracker permanently unrendered — which is
 # exactly the shape of bug where analytics silently reports nothing.
+# UMAMI_HOST is a build input too, for a different reason: rewrites() runs
+# during `next build` and is frozen into .next/routes-manifest.json, which
+# `next start` only reads. Passing it at run time alone yields an empty rewrite
+# table and a 404 on /js/mw.js while the env looks perfectly correct.
 UMAMI_ID=$(sed -n 's/^NEXT_PUBLIC_UMAMI_ID=//p' "$ENV_FILE" | tail -1)
-if [ -z "$UMAMI_ID" ]; then
-  echo "note: NEXT_PUBLIC_UMAMI_ID unset in $ENV_FILE — building without analytics."
+UMAMI_HOST=$(sed -n 's/^UMAMI_HOST=//p' "$ENV_FILE" | tail -1)
+if [ -z "$UMAMI_ID" ] || [ -z "$UMAMI_HOST" ]; then
+  echo "note: UMAMI_HOST/NEXT_PUBLIC_UMAMI_ID unset in $ENV_FILE — building without analytics."
 fi
 
 sudo docker build \
@@ -112,6 +136,7 @@ sudo docker build \
   --build-arg NEXT_PUBLIC_BUILD_DATE="$BUILD_DATE" \
   --build-arg NEXT_PUBLIC_BUILD_SHA="$BUILD_SHA" \
   --build-arg NEXT_PUBLIC_UMAMI_ID="$UMAMI_ID" \
+  --build-arg UMAMI_HOST="$UMAMI_HOST" \
   -t "${NAME}:latest" .
 
 sudo docker stop "$NAME" 2>/dev/null || true

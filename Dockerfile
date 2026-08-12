@@ -30,10 +30,17 @@ ARG NEXT_PUBLIC_BUILD_SHA=dev
 # Empty default = no tracker, which is the correct behaviour for any build
 # that has not been given an id.
 ARG NEXT_PUBLIC_UMAMI_ID=
+# UMAMI_HOST is needed at BUILD time even though it is not a NEXT_PUBLIC_ var:
+# next.config.js's rewrites() is evaluated by `next build` and frozen into
+# .next/routes-manifest.json. `next start` reads that manifest and never calls
+# rewrites() again, so supplying this only at run time produces an empty
+# rewrite table and /js/mw.js 404s while every env var looks correctly set.
+ARG UMAMI_HOST=
 ENV NEXT_PUBLIC_APP_VERSION=$NEXT_PUBLIC_APP_VERSION \
     NEXT_PUBLIC_BUILD_DATE=$NEXT_PUBLIC_BUILD_DATE \
     NEXT_PUBLIC_BUILD_SHA=$NEXT_PUBLIC_BUILD_SHA \
     NEXT_PUBLIC_UMAMI_ID=$NEXT_PUBLIC_UMAMI_ID \
+    UMAMI_HOST=$UMAMI_HOST \
     NEXT_TELEMETRY_DISABLED=1
 RUN yarn build
 

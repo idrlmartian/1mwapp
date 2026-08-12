@@ -83,9 +83,34 @@ export async function checkMx(domain: string): Promise<boolean | null> {
     }
 }
 
+/*
+  Dev fallbacks for the two secrets below are constants IN THIS REPO, which
+  means that unset in production they don't fail — they quietly make the
+  control fake. A public pepper makes sha256(ip) reversible by rainbow table;
+  a public form secret lets anyone mint valid anti-bot tokens.
+
+  scripts/deploy.sh refuses to deploy without both, which is the real
+  enforcement. This is the second layer, for anything that reaches production
+  by another route. It warns once per process rather than throwing: a missing
+  pepper is a privacy regression, not a reason to drop a signup on the floor.
+*/
+const warned = new Set<string>();
+function devFallback(name: string, fallback: string): string {
+    const v = process.env[name];
+    if (v) return v;
+    if (process.env.NODE_ENV === "production" && !warned.has(name)) {
+        warned.add(name);
+        console.error(
+            `[security] ${name} is unset in production — falling back to the ` +
+                "public value committed in the repo. This control is currently ineffective."
+        );
+    }
+    return fallback;
+}
+
 /** sha256(ip || pepper). We never store a raw visitor IP. */
 export function hashIp(ip: string): string {
-    const pepper = process.env.IP_HASH_PEPPER ?? "1mw-dev-pepper";
+    const pepper = devFallback("IP_HASH_PEPPER", "1mw-dev-pepper");
     return createHash("sha256").update(`${ip}${pepper}`).digest("hex").slice(0, 32);
 }
 
@@ -101,7 +126,7 @@ const MIN_FILL_MS = 2000;
 const MAX_FILL_MS = 24 * 60 * 60 * 1000;
 
 function formSecret() {
-    return process.env.FORM_HMAC_SECRET ?? "1mw-dev-form-secret";
+    return devFallback("FORM_HMAC_SECRET", "1mw-dev-form-secret");
 }
 
 export function issueFormToken(now = Date.now()): string {
