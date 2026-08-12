@@ -10,8 +10,8 @@ import { COMPANY } from "@/app/lib/constants";
   three href="#" socials. Invented metrics sitting next to the measured Magy
   numbers devalue the measured ones, so they are gone.
 
-  TODO before launch: real social URLs (these are placeholders), and the CIN,
-  which an Indian Pvt Ltd site should carry.
+  Social URLs are real (wired in f847613) and the CIN is now carried in the
+  legal line, per Companies Act 2013 s.12(3)(c).
 */
 
 const PRODUCTS = [
@@ -143,6 +143,7 @@ export default function Footer() {
                 <div className="border-line text-fg-dim mt-8 flex flex-wrap items-center justify-between gap-3.5 border-t pt-5 text-[12.5px]">
                     <span>
                         © {new Date().getFullYear()} {COMPANY.legal} All rights reserved.
+                        <span className="ml-2">CIN: {COMPANY.cin}</span>
                         {/* Visible build stamp. Baked in at docker build time, so it
                             identifies the exact commit a visitor is looking at — the
                             fastest way to tell a stale page from a current one. */}

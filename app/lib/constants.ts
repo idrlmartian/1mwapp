@@ -87,6 +87,14 @@ export const COMPANY = {
     legal: "1 Martian Way Industries Pvt. Ltd.",
     email: "sales@1martianway.com",
     /*
+      Companies Act 2013 s.12(3)(c) requires the CIN on a company's official
+      publications, which a public website is generally read to include.
+      Decodes as: U (unlisted) · 72900 (IT services) · MH · 2020 · PTC
+      (private limited) — the embedded year independently corroborates
+      foundingDate "2020" in StructuredData.tsx, so keep the two in step.
+    */
+    cin: "U72900MH2020PTC343654",
+    /*
       DPDP Act 2023 requires a Data Fiduciary to publish the contact details of
       a named person who can answer questions about how personal data is
       processed. The waitlist makes us one the moment it collects an address,
