@@ -24,7 +24,14 @@ export const WORLD = {
     zones: "office · outdoors · library",
 } as const;
 
-export type Agent = { id: string; name: string; role: string; token: string };
+export type Agent = {
+    id: string;
+    name: string;
+    role: string;
+    token: string;
+    /** Designed and named, but NOT seeded in the runtime yet. See ARGUS below. */
+    pending?: boolean;
+};
 
 /** The starting cast. `token` maps to a --color-* in theme.css.
  *  Colours here are DATA — chips and dots only, never chrome. */
@@ -36,7 +43,27 @@ export const AGENTS: Agent[] = [
     { id: "zara", name: "Zara", role: "Dev", token: "zara" },
     { id: "luna", name: "Luna", role: "QA", token: "luna" },
     { id: "atlas", name: "Atlas", role: "Ops", token: "atlas" },
+    /*
+      ARGUS — the eighth agent. The hundred-eyed watchman who never had every
+      eye closed. Sits between Luna and Atlas: she checks that it works, he
+      checks that it is safe, then it ships.
+
+      `pending` is NOT cosmetic and must not be removed for tidiness. The magy
+      repo's 038_seed_default_agents.sql seeds SEVEN. Until a seed migration
+      exists with a real system prompt and tool allowlist, a page that presents
+      Argus as shipping is a claim about software that does not exist — the
+      exact defect that got /martianos, /artificialintelligence, /brands and
+      /products redirected away, on the page those redirects were protecting.
+
+      While pending: rendered with a "soon" marker, counted out of the cast
+      headline, and listed under "Building" in STATUS.
+      To land it: seed the agent, then delete this one flag. Nothing else.
+    */
+    { id: "argus", name: "Argus", role: "Security", token: "argus", pending: true },
 ];
+
+/** Agents actually in the runtime today — what the cast headline may count. */
+export const SHIPPING_AGENTS = AGENTS.filter((a) => !a.pending);
 
 /** Every number here is measured and published in the magy repo. Do not round,
  *  do not embellish — the whole page's credibility rests on these being exact. */
@@ -72,7 +99,7 @@ export const STATUS = [
     {
         state: "building" as const,
         label: "Building",
-        text: "Marathon mode's worker loop is a skeleton — it logs progress but doesn't yet dispatch real work.",
+        text: "Argus, the security agent, is specced and named but not yet seeded — the runtime ships seven. Marathon mode's worker loop is a skeleton: it logs progress but doesn't yet dispatch real work.",
     },
     {
         state: "planned" as const,

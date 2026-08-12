@@ -42,6 +42,20 @@
   --c-red-soft: rgb(207 32 32 / 0.075);
   --c-good: #0f9d58;
   --c-warn: #b26b00;
+  /*
+    The affirmation accent, and it has ONE job: things that are already true.
+    Check badges, section eyebrows, "Shipping" states.
+
+    It may never be a call to action. Red is the click, and a second warm
+    accent competing for that role would blunt the only button that matters.
+    Same discipline theme.css already puts on the agent colours.
+
+    Light is #b8541c rather than the dark #fab387 for the same reason the agent
+    colours darken here: the peach fails contrast on white and would read as a
+    stain rather than a mark.
+  */
+  --c-warm: #b8541c;
+  --c-warm-soft: rgb(184 84 28 / 0.10);
   /* Layered and long: one tight contact shadow, one wide ambient one. A single
      hard shadow is what makes light UI look cheap. */
   --c-shadow:
@@ -57,8 +71,52 @@
   --c-zara: #be185d;
   --c-luna: #a16207;
   --c-atlas: #be123c;
+  /*
+    Argus, Security — the eighth agent.
 
-  --body-glow: radial-gradient(120% 70% at 50% -10%, rgb(255 255 255 / 0.9), transparent 60%);
+    Chartreuse because it is the only free slot left on the wheel: Luna sits at
+    38° and Juno at 145°, with nothing between them, so this cannot be mistaken
+    for either. Steel was the obvious semantic pick for a watchman and was
+    rejected — a grey dot in a row of seven saturated ones reads as disabled.
+  */
+  --c-argus: #4d7c0f;
+
+  /*
+    A ground that ranges in hue instead of sitting flat.
+
+    Three fixed washes, so the colour under the page shifts as content scrolls
+    over them rather than travelling with it — that movement is the effect.
+    Only two hues: the blue product accent and the warm affirmation accent.
+
+    Red is deliberately absent. It is the action colour, and a page-wide red
+    wash would leave a permanent low-grade version of the CTA behind everything.
+
+    Light keeps its white lift on top, which is what stops the tints reading as
+    grime on a near-white ground.
+  */
+  --body-glow:
+    radial-gradient(120% 70% at 50% -10%, rgb(255 255 255 / 0.9), transparent 60%),
+    radial-gradient(1100px 600px at 50% -6%, rgb(37 99 235 / 0.05), transparent 62%),
+    radial-gradient(820px 520px at 92% 28%, rgb(184 84 28 / 0.04), transparent 62%),
+    radial-gradient(900px 600px at 6% 84%, rgb(37 99 235 / 0.03), transparent 62%);
+
+  /*
+    Check badge, light: soft tint. A filled warm chip on a near-white ground is
+    a hard stamp next to 13.5px text. The dark palette overrides to solid —
+    see the note there.
+
+    24px against the 24-unit viewBox is load-bearing: 1 user unit per CSS pixel
+    means no resample, which is what stops a dark tick on a light chip
+    rendering as partial coverage and reading grey.
+  */
+  --chk-size: 24px;
+  --chk-scale: 1;
+  --chk-stroke: 2.6;
+  --chk-radius: 50%;
+  --chk-bg: color-mix(in srgb, var(--c-warm) 15%, transparent);
+  --chk-fg: var(--c-warm);
+  --chk-ring: inset 0 0 0 1px color-mix(in srgb, var(--c-warm) 34%, transparent);
+  --chk-glow: none;
   /*
     The page gutter, and it has to scale.
 
@@ -67,16 +125,20 @@
     thing holding content off the glass is this padding. At the flat 14px it
     used to be, the site ran edge to edge from ~900px up and read as unfinished.
 
-      390px  → 18px      1280px → 44px
-      768px  → 26px      1512px → 51px
-      988px  → 34px      1650px+ → 56px (capped; the container takes over)
+      390px  → 20px      1280px → 59px
+      768px  → 35px      1512px → 70px
+      990px  → 46px      1650px+ → 76px (capped; the container takes over)
+
+    The coefficient was 3.4vw first, which gave 34px around 1000px wide. Against
+    cards this large that still read as mean — panels nearly touching the glass.
+    4.6vw is the version that looks deliberate at the widths people actually use.
 
     Deliberately NOT in @theme: values referenced through var() at runtime get
     tree-shaken there when no utility claims them — the same failure that took
     out the agent dot colours. Non-colour runtime tokens live here, beside
     --glass and --dur.
   */
-  --container-pad: clamp(18px, 3.4vw, 56px);
+  --container-pad: clamp(20px, 4.6vw, 76px);
   --glass: blur(20px) saturate(1.25);
   --dur: 200ms;
   --dur-slow: 600ms;
@@ -87,8 +149,13 @@
 /* ── DARK ──────────────────────────────────────────────────────────────── */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    /* Dark needs no page glow — the world behind the glass is the light source. */
-    --body-glow: none;
+    /* No white lift on dark — here the washes ARE the light source. They also
+       carry roughly twice the opacity of light, because a tint has far less to
+       fight on near-black, and flat #0b0d12 is what made this feel inert. */
+    --body-glow:
+      radial-gradient(1200px 620px at 50% -8%, rgb(110 168 255 / 0.10), transparent 62%),
+      radial-gradient(880px 560px at 92% 26%, rgb(250 179 135 / 0.06), transparent 62%),
+      radial-gradient(960px 640px at 6% 82%, rgb(110 168 255 / 0.05), transparent 62%);
     --c-bg: #0b0d12;
     --c-bg-2: #080a0e;
     --c-panel: rgb(22 26 36 / 0.76);
@@ -106,6 +173,8 @@
     --c-red-soft: rgb(210 34 34 / 0.18);
     --c-good: #3dd68c;
     --c-warn: #f5a524;
+    --c-warm: #fab387;
+    --c-warm-soft: rgb(250 179 135 / 0.16);
     --c-shadow: 0 1px 2px rgb(0 0 0 / 0.5), 0 20px 50px -20px rgb(0 0 0 / 0.85);
     --c-aria: #00f0ff;
     --c-juno: #4ade80;
@@ -114,12 +183,24 @@
     --c-zara: #f472b6;
     --c-luna: #f59e0b;
     --c-atlas: #fb7185;
+    --c-argus: #a3e635;
+    /* Dark takes the SOLID badge: a 15% tint of peach over #141822 barely
+       separates from the card, so the badge reads as a smudge. Light keeps
+       the tint — see base.css :root. */
+    --chk-bg: var(--c-warm);
+    --chk-fg: var(--c-panel-solid);
+    --chk-ring: none;
+    --chk-stroke: 3;
+    --chk-glow: 0 1px 5px -1px color-mix(in srgb, var(--c-warm) 55%, transparent);
     color-scheme: dark;
   }
 }
 
 :root[data-theme="dark"] {
-  --body-glow: none;
+  --body-glow:
+    radial-gradient(1200px 620px at 50% -8%, rgb(110 168 255 / 0.10), transparent 62%),
+    radial-gradient(880px 560px at 92% 26%, rgb(250 179 135 / 0.06), transparent 62%),
+    radial-gradient(960px 640px at 6% 82%, rgb(110 168 255 / 0.05), transparent 62%);
   --c-bg: #0b0d12;
   --c-bg-2: #080a0e;
   --c-panel: rgb(22 26 36 / 0.76);
@@ -137,6 +218,8 @@
   --c-red-soft: rgb(210 34 34 / 0.18);
   --c-good: #3dd68c;
   --c-warn: #f5a524;
+  --c-warm: #fab387;
+  --c-warm-soft: rgb(250 179 135 / 0.16);
   --c-shadow: 0 1px 2px rgb(0 0 0 / 0.5), 0 20px 50px -20px rgb(0 0 0 / 0.85);
   --c-aria: #00f0ff;
   --c-juno: #4ade80;
@@ -145,6 +228,15 @@
   --c-zara: #f472b6;
   --c-luna: #f59e0b;
   --c-atlas: #fb7185;
+  --c-argus: #a3e635;
+  /* Dark takes the SOLID badge: a 15% tint of peach over #141822 barely
+     separates from the card, so the badge reads as a smudge. Light keeps
+     the tint — see base.css :root. */
+  --chk-bg: var(--c-warm);
+  --chk-fg: var(--c-panel-solid);
+  --chk-ring: none;
+  --chk-stroke: 3;
+  --chk-glow: 0 1px 5px -1px color-mix(in srgb, var(--c-warm) 55%, transparent);
   color-scheme: dark;
 }
 

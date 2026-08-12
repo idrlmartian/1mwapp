@@ -66,6 +66,10 @@
   --color-red-soft: var(--c-red-soft);
   --color-good: var(--c-good);
   --color-warn: var(--c-warn);
+  /* Affirmation only — check badges, eyebrows, "Shipping". Never a button,
+     never a link: red is the click and this must not compete for it. */
+  --color-warm: var(--c-warm);
+  --color-warm-soft: var(--c-warm-soft);
 
   /* ── AGENT DATA ACCENTS — dots and chips only ──────────────────────────── */
   --color-aria: var(--c-aria);
@@ -75,6 +79,7 @@
   --color-zara: var(--c-zara);
   --color-luna: var(--c-luna);
   --color-atlas: var(--c-atlas);
+  --color-argus: var(--c-argus);
 
   /* ── GEOMETRY — the deck's own 14px radius ─────────────────────────────── */
   --radius-sm: 6px;

@@ -4,7 +4,10 @@ import WaitlistForm from "@/app/components/WaitlistForm";
 import StructuredData from "@/app/components/StructuredData";
 import VideoBackdrop from "@/app/components/ui/VideoBackdrop";
 import { Metrics, Panel, Quote } from "@/app/components/ui/Panel";
-import { ACTIVITY, AGENTS, MAGY_YOUTUBE_ID, METRICS, STATUS, WORLD } from "@/app/lib/constants";
+import { Bullets, CaptureSlot, Eyebrow, Receipts, Showcase, Visual } from "@/app/components/ui/Showcase";
+import MagyWorkspace from "@/app/components/ui/MagyWorkspace";
+import CortexGraph from "@/app/components/ui/CortexGraph";
+import { ACTIVITY, AGENTS, MAGY_YOUTUBE_ID, METRICS, SHIPPING_AGENTS, STATUS, WORLD } from "@/app/lib/constants";
 
 export const metadata: Metadata = {
     title: "Magy — the 3D embodied multi-agent platform",
@@ -23,6 +26,7 @@ const SECTIONS = [
     ["demo", "Demo"],
     ["how", "How it works"],
     ["world", "The world"],
+    ["cortex", "Cortex"],
     ["learning", "Learning"],
     ["cast", "Cast"],
     ["scale", "Scale"],
@@ -104,6 +108,7 @@ export default function MagyPage() {
                                             style={{ ["--dot" as string]: `var(--c-${a.token})` }}
                                         />
                                         <b className="text-fg font-semibold">{a.name}</b> {a.role}
+                                        {a.pending && <span className="text-warm font-mono text-[8.5px] font-bold uppercase tracking-[0.1em]">soon</span>}
                                     </li>
                                 ))}
                                 <li className="border-line text-fg-dim inline-flex items-center rounded-[var(--radius-capsule)] border border-dashed px-2.5 py-1 text-[11.5px]">
@@ -267,22 +272,55 @@ export default function MagyPage() {
                 </Panel>
 
                 {/* ── how it works ─────────────────────────────────────── */}
+                {/*
+                    Was four numbered tiles of prose with no visual. The numbering
+                    was doing real work — it IS a sequence — so the order survives
+                    in the drawn trace beside it, where it reads faster than four
+                    boxes did.
+                */}
                 <Panel id="how" label="How it works">
-                    <h2 className="text-h2 mb-4">You describe the work. They do it.</h2>
-                    <ol className="grid gap-3.5 sm:grid-cols-2 lg:grid-cols-4">
-                        {[
-                            ["01", "You describe the work", "In plain language, in the composer or from Telegram."],
-                            ["02", "The team plans and delegates", "Juno writes the spec, Aria assigns it. Delegation happens face to face in the world."],
-                            ["03", "Each agent works isolated", "One git worktree per task, with file leases so two agents can never write the same path."],
-                            ["04", "Pull requests come back", "Luna reviews before merge. Atlas ships. Nothing lands unreviewed."],
-                        ].map(([n, title, body]) => (
-                            <li key={n} className="border-line bg-sunk rounded-[var(--radius-md)] border p-4">
-                                <span className="text-blue font-mono text-[11px] font-bold tracking-[0.14em]">{n}</span>
-                                <h3 className="text-h3 mt-2 font-bold">{title}</h3>
-                                <p className="text-fg-muted mt-1.5 text-[13px]">{body}</p>
-                            </li>
-                        ))}
-                    </ol>
+                    <Showcase
+                        visual={
+                            <Visual caption="Real surfaces — composer, roster, trace, auto-PR. Drawn, not photographed." state="drawn">
+                                <MagyWorkspace />
+                            </Visual>
+                        }
+                    >
+                        <Eyebrow
+                            icon={
+                                <svg viewBox="0 0 24 24" className="size-[13px] shrink-0" fill="currentColor" aria-hidden>
+                                    <path d="M12 2 2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                                </svg>
+                            }
+                        >
+                            Delegation, drawn
+                        </Eyebrow>
+                        <h2 className="text-h2">You describe the work. They do it.</h2>
+                        <p className="text-fg-muted mt-2.5 max-w-[47ch] text-[14px]">
+                            One request becomes a spec, an assignment, an isolated worktree and a
+                            reviewed pull request — without you touching any step between.
+                        </p>
+                        <Bullets
+                            items={[
+                                {
+                                    title: "Specced before it's started",
+                                    body: "Juno writes it up, Aria assigns it. Delegation happens face to face in the world.",
+                                },
+                                {
+                                    title: "Isolated while it runs",
+                                    body: "One git worktree per task, with file leases, so two agents can never write the same path.",
+                                },
+                                {
+                                    title: "Reviewed before it lands",
+                                    body: "Luna reviews, Atlas ships. Nothing merges unread.",
+                                },
+                            ]}
+                        />
+                        <Receipts>
+                            Every step is a real command — <code className="font-mono text-[12px]">magy delegate</code>,
+                            one worktree per task, auto-PR on completion.
+                        </Receipts>
+                    </Showcase>
                 </Panel>
 
                 {/* ── the world ────────────────────────────────────────── */}
@@ -325,6 +363,22 @@ export default function MagyPage() {
                                 You can also walk around it yourself, right-click any agent for a
                                 quick action, or type a task straight into its head.
                             </p>
+
+                            {/*
+                                A capture slot, left visibly empty on purpose.
+
+                                Every other visual on this page is drawn SVG, which is honest for
+                                UI chrome — a composer and a roster are rectangles and text. The
+                                world is not drawable: a stylised 3D office would be the first
+                                untrue thing on a page whose demo section promises "a real
+                                capture, driven live — no mockups". An empty slot costs less than
+                                a fake one. Swap in the still when it is shot.
+                            */}
+                            <div className="mt-5">
+                                <Visual caption="Awaiting a real capture — nothing drawn stands in for the world" state="pending">
+                                    <CaptureSlot ratio="16/7">Capture slot — office interior, wide</CaptureSlot>
+                                </Visual>
+                            </div>
                         </div>
                         <ul className="border-line grid gap-px self-start overflow-hidden rounded-[var(--radius-md)] border bg-[var(--color-line)] sm:grid-cols-3">
                             {[
@@ -370,9 +424,67 @@ export default function MagyPage() {
                     </div>
                 </Panel>
 
+                {/* ── cortex ───────────────────────────────────────────── */}
+                {/*
+                    NOTE ON THE COPY: the graph is seeded and synthetic — see the
+                    header of ui/CortexGraph.tsx. The MECHANISM described here is
+                    real and lives in the magy repo (cortex_episode, cortex_entity,
+                    cortex_hyperedge, cortex_agent_lens). The SHAPE on screen is
+                    not anyone's data, and this section must not say it is until
+                    a demo-workspace export feeds it.
+                */}
+                <Panel id="cortex" label="Cortex">
+                    <Showcase visual={<CortexGraph />}>
+                        <Eyebrow
+                            icon={
+                                <svg viewBox="0 0 24 24" className="size-[13px] shrink-0" fill="none" stroke="currentColor" strokeWidth={2.2} aria-hidden>
+                                    <circle cx="12" cy="12" r="3" />
+                                    <circle cx="5" cy="6" r="2" />
+                                    <circle cx="19" cy="6" r="2" />
+                                    <circle cx="19" cy="18" r="2" />
+                                    <path d="M7 7l3 3M17 7l-3 3M17 17l-3-3" />
+                                </svg>
+                            }
+                        >
+                            One graph, every view
+                        </Eyebrow>
+                        <h2 className="text-h2">Every agent sees a different shape of the same memory.</h2>
+                        <p className="text-fg-muted mt-2.5 max-w-[47ch] text-[14px]">
+                            Cortex is one bitemporal knowledge graph. What changes per agent is the
+                            lens — a preference vector that re-runs PageRank from where that agent
+                            actually looks.
+                        </p>
+                        <Bullets
+                            items={[
+                                {
+                                    title: "Facts carry two clocks",
+                                    body: "When it happened, and when Cortex learned it — so you can ask what an agent knew last Tuesday.",
+                                },
+                                {
+                                    title: "A meeting is one edge, not a mesh",
+                                    body: "Threads and meetings are hyperedges over everyone in them, rather than every pair wired together.",
+                                },
+                                {
+                                    title: "The lens moves the centre",
+                                    body: "Switch agents on the graph. Same nodes, re-weighted by whose memory you are standing in.",
+                                },
+                            ]}
+                        />
+                        <Receipts>
+                            The mechanism is shipping — episodes, entities, hyperedges and nightly
+                            PageRank. The graph shown is illustrative, not an export of real data.
+                        </Receipts>
+                    </Showcase>
+                </Panel>
+
                 {/* ── cast ─────────────────────────────────────────────── */}
+                {/*
+                    "Seven to start" counts SHIPPING_AGENTS, not AGENTS. Argus is
+                    in the roster with a "soon" marker but does not move this
+                    number until it is seeded — see the note in lib/constants.ts.
+                */}
                 <Panel id="cast" label="The cast">
-                    <h2 className="text-h2 mb-1">Seven to start. Then whoever you need.</h2>
+                    <h2 className="text-h2 mb-1">{SHIPPING_AGENTS.length === 7 ? "Seven" : SHIPPING_AGENTS.length} to start. Then whoever you need.</h2>
                     <p className="text-fg-muted mb-4 max-w-[66ch] text-[13.5px]">
                         The live fleet already runs a CFO, an investor-relations agent and a
                         fundraising agent alongside the engineers. You define the rest.
@@ -387,6 +499,11 @@ export default function MagyPage() {
                                     />
                                     <b className="text-[13.5px] font-bold">{a.name}</b>
                                     <span className="text-fg-dim text-[12px]">{a.role}</span>
+                                    {a.pending && (
+                                        <span className="bg-warm-soft text-warm ml-auto rounded-[var(--radius-capsule)] px-2 py-0.5 font-mono text-[8.5px] font-bold uppercase tracking-[0.1em]">
+                                            Soon
+                                        </span>
+                                    )}
                                 </span>
                             </li>
                         ))}

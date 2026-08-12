@@ -44,6 +44,46 @@
   font-variant-numeric: tabular-nums;
 }
 
+/*
+  The affirmation check badge, used by <Bullets> in ui/Showcase.tsx.
+
+  Everything is driven by --chk-* in base.css, which the dark palette overrides
+  from soft-tint to solid — the two themes genuinely want different treatments
+  and neither works on the other's ground.
+
+  Two things are load-bearing and easy to undo by accident:
+
+    · the SVG FILLS the badge (100%/100%) rather than being a smaller centred
+      child. The mark is then concentric with the circle by construction, not by
+      whatever grid centring, line-height and stroke overflow happen to agree on.
+    · --chk-size is 24px against a 24-unit viewBox, so one user unit is one CSS
+      pixel. At 22px everything scaled by 0.917, nothing landed on a pixel
+      boundary, and a near-black tick on peach rendered as partial coverage —
+      which read as washed-out grey despite enormous contrast.
+
+  The tick path itself lives in the component: M7 12 · 10.5 15.5 · 17 8.5.
+*/
+@utility check-badge {
+  flex: none;
+  width: var(--chk-size);
+  height: var(--chk-size);
+  border-radius: var(--chk-radius);
+  background: var(--chk-bg);
+  color: var(--chk-fg);
+  box-shadow: var(--chk-ring), var(--chk-glow);
+  /* Aligns to the title's cap-height rather than its line box, which sits low. */
+  margin-top: -0.5px;
+}
+.check-badge svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  stroke-width: var(--chk-stroke);
+  transform: scale(var(--chk-scale));
+  transform-origin: center;
+  overflow: visible;
+}
+
 /* ── 2. deprecated shims ──────────────────────────────────────────────────── */
 
 /* @deprecated — use deck-card */
