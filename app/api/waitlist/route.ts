@@ -62,6 +62,62 @@ function breakerOpen() {
     return confirmWindow.count > CONFIRM_BREAKER_PER_MIN;
 }
 
+/*
+  A daily ceiling as well as the per-minute breaker.
+
+  300/min alone is not a bound worth having: sustained, it authorises 18,000
+  confirmation emails an hour to addresses an attacker chose. Every one that
+  bounces is scored against the AWS ACCOUNT, which also carries
+  droneracingindia.com's live transactional mail — so the realistic damage
+  from waitlist bots is not junk rows, it is pausing IDRL's email.
+
+  A bot pacing itself just under the per-minute limit is the case the burst
+  breaker cannot see, which is exactly why this one is counted in the database
+  rather than in memory: it survives a container restart, so restarting the
+  app cannot be used to reset the budget. waitlist_events already carries a
+  (kind, created_at DESC) index, so this is an index-only range count.
+*/
+const CONFIRM_CAP_PER_DAY = 2000;
+
+async function dailyCapReached(): Promise<boolean> {
+    if (!sql) return false;
+    try {
+        const [r] = await sql`SELECT count(*)::int AS n FROM waitlist_events
+                              WHERE kind = 'email_sent'
+                                AND created_at > now() - interval '24 hours'`;
+        return (r?.n ?? 0) >= CONFIRM_CAP_PER_DAY;
+    } catch {
+        // Fail open. If counting is broken we would rather send than silently
+        // withhold a real person's confirmation; the burst breaker still caps
+        // the rate, and a database this broken would not have produced a
+        // verify token to send in the first place.
+        return false;
+    }
+}
+
+/*
+  Whether to WITHHOLD the confirmation email. The signup row is always kept —
+  this decides sending only, never acceptance. That split is the point: it
+  severs bot -> bounce -> account reputation without ever rejecting a human,
+  and it mirrors how IDRL treats a low reCAPTCHA score (flag, don't block).
+
+  mxOk is `boolean | null` and the difference matters. `false` means the domain
+  definitively has no MX. `null` means the LOOKUP failed — a 2.5s timeout or
+  transient DNS — so treating it as suspicious would withhold confirmations
+  from real signups during exactly the spike this was built for. Only an
+  explicit false suppresses.
+*/
+async function suppressReason(sig: {
+    mxOk: boolean | null;
+    disposable: boolean;
+}): Promise<string | null> {
+    if (sig.mxOk === false) return "mx_missing";
+    if (sig.disposable) return "disposable_domain";
+    if (breakerOpen()) return "burst_breaker";
+    if (await dailyCapReached()) return "daily_cap";
+    return null;
+}
+
 const ok = (body: Record<string, unknown>) => NextResponse.json({ ok: true, ...body });
 
 type JsonDetail = Record<string, string | number | boolean | null>;
@@ -224,27 +280,40 @@ export async function POST(req: Request) {
     // ── respond NOW; mail afterwards, failure-tolerant ──────────────────────
     // Fire-and-forget is safe here in a way it never was on serverless: this is
     // a long-lived Node process, so the promise actually runs to completion.
-    if (verifyToken && unsubToken && !breakerOpen()) {
+    if (verifyToken && unsubToken) {
         const base = process.env.SITE_URL ?? "https://www.1martianway.com";
         const verifyUrl = `${base}/api/waitlist/verify?t=${verifyToken}`;
         const unsubUrl = `${base}/api/waitlist/unsubscribe?t=${unsubToken}`;
-        void sendConfirmation(v.email, verifyUrl, unsubUrl)
-            .then(async () => {
+        // The gate runs inside the fire-and-forget path, after the response has
+        // gone out, so the daily-cap query costs the visitor nothing.
+        void (async () => {
+            const withheld = await suppressReason({ mxOk, disposable: v.disposable });
+            if (withheld) {
+                // Logged rather than silent: a suppressed confirmation is
+                // indistinguishable from a delivery failure by looking at the
+                // signup row, and the previous breaker dropped mail with no
+                // record at all.
+                console.warn(`[waitlist] confirmation withheld (${withheld})`);
+                await logEvent("email_suppressed", v.norm, { reason: withheld });
+                return;
+            }
+            try {
+                await sendConfirmation(v.email, verifyUrl, unsubUrl);
                 if (sql) {
                     await sql`UPDATE waitlist_signups SET confirmation_sent_at = now(),
                               confirmation_error = NULL WHERE email_norm = ${v.norm}`;
                 }
                 await logEvent("email_sent", v.norm, {});
-            })
-            .catch(async (err) => {
-                const msg = String(err?.message ?? err).slice(0, 300);
+            } catch (err) {
+                const msg = String((err as Error)?.message ?? err).slice(0, 300);
                 console.error("[waitlist] confirmation send failed", msg);
                 if (sql) {
                     await sql`UPDATE waitlist_signups SET confirmation_error = ${msg}
                               WHERE email_norm = ${v.norm}`.catch(() => {});
                 }
                 await logEvent("email_failed", v.norm, { error: msg });
-            });
+            }
+        })();
     }
 
     return ok({ status: inserted ? "subscribed" : "already_subscribed" });
