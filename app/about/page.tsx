@@ -26,7 +26,7 @@ const BUILDING = [
     {
         name: "Magy",
         href: "/magy",
-        line: "A 3D world where AI agents do engineering work you can watch. Measured at 100,000 agents at 60 fps.",
+        line: "A 3D world where AI agents do engineering work you can watch. Measured at 100,000 agents rendered at 60 fps.",
         state: "Early access",
     },
     {
@@ -41,17 +41,18 @@ const BUILDING = [
         line: "A GPU-fast terminal and a tmux-style remote client in one binary, with Claude on the Perch.",
         state: "v1.0",
     },
-    {
-        name: "Martian OS",
-        href: "/martianos",
-        line: "The real-time operating system layer for the machines themselves. In development.",
-        state: "In development",
-    },
+    /*
+      Martian OS is deliberately absent. Its page states <1μs latency, 1000Hz
+      sustained, 100% memory safety and zero overhead as ACHIEVED specs, while
+      mos-hal / mos-rtos / mos-kernel are stubs and no physical hardware has
+      run it. Unverified claims beside Magy's measured numbers devalue the
+      measured ones. Restore this entry when the claims are true.
+    */
 ];
 
 const ERAS = [
     ["Chess robots", "Robot arms that play a physical board. The first thing we shipped."],
-    ["Drones & geospatial", "Autonomous racing, fleet software, and aerial survey work."],
+    ["Drones", "Autonomous racing, fleet software, and aerial survey work."],
     ["Humanoid robotics", "Prototype platforms, and the operating system to run them."],
     ["Agent software", "Magy, MOS and Toowl — where nearly all the work goes today."],
 ];

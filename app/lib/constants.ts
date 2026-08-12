@@ -41,7 +41,12 @@ export const AGENTS: Agent[] = [
 /** Every number here is measured and published in the magy repo. Do not round,
  *  do not embellish — the whole page's credibility rests on these being exact. */
 export const METRICS = [
-    { value: "100,000", label: "agents @ 60.0 fps" },
+    // "on screen" is load-bearing, not filler. This is a RENDERING measurement
+    // — ambient crowd avatars drawn client-side. It is not 100,000 LLM-backed
+    // agents doing work; the working fleet is ~10, each max_concurrent_tasks:1.
+    // Beside copy about engineers shipping pull requests, the bare number reads
+    // as 100,000 workers, and a reader who checks stops trusting the other five.
+    { value: "100,000", label: "agents on screen @ 60.0 fps" },
     { value: "1", label: "draw call" },
     { value: "25 B", label: "per agent" },
     { value: "56.2", label: "fps on a phone" },

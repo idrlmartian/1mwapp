@@ -143,8 +143,8 @@ export default function MosPage() {
                 </div>
                 <p className="text-fg-dim mt-6 text-[12.5px]">
                     Built by 1 Martian Way, alongside{" "}
-                    <Link href="/magy" className="text-blue hover:underline">Magy</Link> and{" "}
-                    <Link href="/martianos" className="text-blue hover:underline">Martian OS</Link>.
+                    <Link href="/magy" className="text-blue hover:underline">Magy</Link>.
+                    {/* Martian OS unlinked: its stated specs are unverified. */}
                 </p>
             </section>
         </ComingSoon>

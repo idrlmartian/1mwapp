@@ -18,10 +18,17 @@ const PRODUCTS = [
     { href: "/magy", label: "Magy" },
     { href: "/mos", label: "MOS — robotics simulation" },
     { href: "/toowl", label: "Toowl — terminal" },
-    { href: "/martianos", label: "Martian OS" },
-    // "Humanoid robots" (/products) is deliberately unlisted — the product
-    // isn't ready to be shown. The page still exists but is unlinked and
-    // noindex'd; restore this entry when it is.
+    /*
+      Two entries are deliberately unlisted, both unlinked sitewide and
+      noindex'd, both restorable by putting the line back:
+
+        /martianos — states <1μs latency, 1000Hz sustained, 100% memory safety
+          and zero overhead as ACHIEVED specifications, while the mos-hal,
+          mos-rtos and mos-kernel crates are stubs and no physical hardware has
+          ever run it. Unverifiable claims sitting next to Magy's measured
+          numbers devalue the measured ones, which are the numbers that matter.
+        /products — the humanoid line isn't ready to be shown.
+    */
 ];
 
 const COMPANY_LINKS: { href: string; label: string; external?: boolean }[] = [

@@ -17,7 +17,9 @@ export const ROUTES: Route[] = [
     { path: "/magy", changeFrequency: "daily" },
     { path: "/mos", changeFrequency: "weekly" },
     { path: "/toowl", changeFrequency: "weekly" },
-    { path: "/martianos", changeFrequency: "monthly" },
+    // "/martianos" is absent: it now 307s away (see next.config.js) because its
+    // stated specs are unverified, and a sitemap entry for a redirecting URL is
+    // a Search Console warning. Restore alongside the redirect removal.
     // "/products" (Humanoid robots) is deliberately absent: the product isn't
     // ready to be shown, so it is unlinked sitewide and noindex'd. A sitemap
     // entry would defeat that by inviting Google to crawl and rank it anyway.

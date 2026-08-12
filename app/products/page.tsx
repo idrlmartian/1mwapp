@@ -57,7 +57,7 @@ const humanoidModels = [
         description:
  "Ruggedized humanoid robot for extreme environments and research applications with enhanced sensors and autonomous decision-making.",
         category: "Research",
-        href: "/martianos",
+        href: "/contact",
         image: "/assets/img/humanoids/martian-explorer-research.jpg",
         specs: ["Height: 5'10\" (178cm)", "Weight: 200 lbs", "Range: 50 miles", "Temp: -40°C to 80°C"],
         capabilities: ["Environmental Mapping", "Sample Collection", "Data Transmission", "Autonomous Navigation"]
@@ -84,7 +84,7 @@ export default function Products() {
                     </p>
                     <div className="glass rounded-2xl p-4 max-w-2xl mx-auto">
                         <p className="text-sm text-white/80 text-center">
-                            All robots powered by <Link href="/martianos" className="gradient-text-primary font-semibold hover:text-blue transition-colors">Martian OS</Link> - 
+                            All robots powered by <span className="gradient-text-primary font-semibold">Martian OS</span> - 
                             Ultra-low latency real-time operating system written in Rust
                         </p>
                     </div>

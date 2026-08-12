@@ -9,12 +9,12 @@ import { ACTIVITY, AGENTS, MAGY_YOUTUBE_ID, METRICS, STATUS } from "@/app/lib/co
 export const metadata: Metadata = {
     title: "Magy — the 3D embodied multi-agent platform",
     description:
-        "AI engineers embodied in a world you build. They delegate face to face, walk to the library to learn what they don't know, and ship a pull request while you watch. Measured at 100,000 agents at 60 fps.",
+        "AI engineers embodied in a world you build. They delegate face to face, walk to the library to learn what they don't know, and ship a pull request while you watch. Measured at 100,000 agents rendered at 60 fps.",
     alternates: { canonical: "https://www.1martianway.com/magy" },
     openGraph: {
         title: "Magy — the 3D embodied multi-agent platform",
         description:
-            "Infinite agents. Infinite worlds. Any work. Measured at 100,000 agents at 60 fps.",
+            "Infinite agents. Infinite worlds. Any work. Measured at 100,000 agents rendered at 60 fps.",
         url: "https://www.1martianway.com/magy",
     },
 };
@@ -468,8 +468,7 @@ export default function MagyPage() {
                         <Link href="/mos" className="text-blue hover:underline">MOS</Link>
                         {" · "}
                         <Link href="/toowl" className="text-blue hover:underline">Toowl</Link>
-                        {" · "}
-                        <Link href="/martianos" className="text-blue hover:underline">Martian OS</Link>
+                        {/* Martian OS unlinked: its stated specs are unverified. */}
                     </p>
                 </section>
             </div>

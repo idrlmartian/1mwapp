@@ -82,14 +82,7 @@ export default function ArtificialIntelligence() {
                                 <span>🧠 <strong>Consciousness-First</strong> design</span>
                                 <span>🔒 <strong>Memory-Safe</strong> by default</span>
                             </div>
-                            <div className="text-center mt-4">
-                                <Link 
-                                    href="/martianos" 
-                                    className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue to-blue rounded-lg border border-line-hi text-blue hover:from-blue hover:to-blue transition-all-smooth text-sm"
-                                >
-                                    Explore Martian OS →
-                                </Link>
-                            </div>
+                            {/* "Explore Martian OS" CTA removed: its stated specs are unverified. */}
                         </div>
                         
                         {/* Core Stats */}

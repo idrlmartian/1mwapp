@@ -94,6 +94,26 @@ const nextConfig = {
             // credibility off-domain. Keeping it temporary leaves that open.
             { source: "/idrl", destination: "https://droneracingindia.com", permanent: false },
             { source: "/idrl/:path*", destination: "https://droneracingindia.com", permanent: false },
+            /*
+              /martianos -> /magy, TEMPORARY.
+
+              The page states <1μs latency, 1000Hz sustained, 100% memory safety
+              and zero overhead as ACHIEVED specifications, while mos-hal,
+              mos-rtos and mos-kernel are stubs and no physical hardware has ever
+              run it. Every link to it was removed sitewide; this makes the URL
+              itself unreachable so the claims cannot be served to anyone who
+              has the address.
+
+              Unlike /products — unlinked but merely noindex'd, because "not
+              ready to show" is different from "says things that aren't true" —
+              this one should not render at all.
+
+              307, and the page file is untouched, so restoring it is deleting
+              these two rules once the claims are either true or reframed as
+              design targets.
+            */
+            { source: "/martianos", destination: "/magy", permanent: false },
+            { source: "/martianos/:path*", destination: "/magy", permanent: false },
             // Apex -> www.
             //
             // This redirect USED to be a Vercel dashboard setting, which means it
@@ -112,10 +132,14 @@ const nextConfig = {
             },
             // The www (and any other host) case of the "/" -> "/magy" rule above.
             { source: "/", destination: "/magy", permanent: false },
-            // /geospatial was deleted in 31f48af but four links kept pointing at
-            // it. Those are fixed now; this catches external inbound links.
-            { source: "/geospatial", destination: "/martianos", permanent: true },
-            { source: "/geospatial/:path*", destination: "/martianos", permanent: true },
+            /*
+              /geospatial has no rule and should not get one. It used to
+              redirect to /martianos, which now redirects itself, and pointing
+              it at /magy instead would send someone looking for aerial survey
+              work to an AI agent platform — an irrelevant redirect that Google
+              treats as a soft 404 anyway. A deleted page returning 404 is the
+              honest answer.
+            */
         ];
     },
 };

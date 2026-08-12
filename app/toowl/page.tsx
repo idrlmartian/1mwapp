@@ -75,19 +75,46 @@ const GLOSSARY = [
     ["Hoot", "banner-style notifications from feathers — planned"],
 ] as const;
 
+/*
+  The real Toowl mark, taken verbatim from the geometry the live site serves at
+  toowl.karmasteels.com/favicon.svg. The previous version was a hand-drawn
+  stand-in in this site's blue/red palette, which is why it did not look like
+  Toowl.
+
+  Its own Catppuccin colours are kept deliberately rather than remapped onto our
+  tokens: this is another product's identity, and a mark recoloured to match its
+  host stops being that product's mark. Hard-coded hexes are correct here for
+  the same reason the agent colours are data — brand identity, not chrome.
+
+  Inline rather than an <img>: it costs no request, scales to any `size`, and
+  matches how the page already used the stand-in.
+*/
 function Owl({ size = 84 }: { size?: number }) {
-    // A stand-in mark. The real animated mascot lives in the toowl repo
-    // (website/src/components/Owl.astro) and should be ported when that site
-    // and this one converge.
+    const id = "toowl-owl-fill";
     return (
-        <svg viewBox="0 0 100 100" width={size} height={size} aria-hidden className="shrink-0">
-            <circle cx="50" cy="54" r="34" className="fill-blue-soft" />
-            <path d="M22 30 L30 12 L42 26 Z M78 30 L70 12 L58 26 Z" className="fill-blue" opacity=".55" />
-            <circle cx="38" cy="48" r="13" className="fill-solid" />
-            <circle cx="62" cy="48" r="13" className="fill-solid" />
-            <circle cx="38" cy="48" r="6" className="fill-fg" />
-            <circle cx="62" cy="48" r="6" className="fill-fg" />
-            <path d="M50 58 L45 65 L55 65 Z" className="fill-red" />
+        <svg viewBox="0 0 32 32" width={size} height={size} aria-hidden className="shrink-0">
+            <defs>
+                <linearGradient id={id} x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#fab387" />
+                    <stop offset="50%" stopColor="#f9e2af" />
+                    <stop offset="100%" stopColor="#fab387" />
+                </linearGradient>
+            </defs>
+            <rect width="32" height="32" rx="7" fill="#1e1e2e" />
+            {/* ear tufts */}
+            <path d="M8 9 L10 5 L12 9 Z" fill={`url(#${id})`} stroke="#f5c2e7" strokeWidth="0.7" strokeLinejoin="round" />
+            <path d="M20 9 L22 5 L24 9 Z" fill={`url(#${id})`} stroke="#f5c2e7" strokeWidth="0.7" strokeLinejoin="round" />
+            {/* head / body */}
+            <ellipse cx="16" cy="18" rx="11" ry="11" fill={`url(#${id})`} stroke="#f5c2e7" strokeWidth="0.8" />
+            {/* eyes */}
+            <circle cx="11.5" cy="15.5" r="3.6" fill="#fff" />
+            <circle cx="20.5" cy="15.5" r="3.6" fill="#fff" />
+            <circle cx="11.8" cy="15.8" r="1.9" fill="#b4befe" />
+            <circle cx="20.2" cy="15.8" r="1.9" fill="#b4befe" />
+            <circle cx="12" cy="16" r="1.1" fill="#1e1e2e" />
+            <circle cx="20" cy="16" r="1.1" fill="#1e1e2e" />
+            {/* beak */}
+            <path d="M16 19 L14.5 21 L16 22.5 L17.5 21 Z" fill="#f9e2af" stroke="#f5c2e7" strokeWidth="0.5" strokeLinejoin="round" />
         </svg>
     );
 }
