@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import WaitlistForm from "@/app/components/WaitlistForm";
 import StructuredData from "@/app/components/StructuredData";
-import VideoBackdrop from "@/app/components/ui/VideoBackdrop";
+import WorldCanvas from "@/app/components/ui/WorldCanvas";
 import { Metrics, Panel, Quote } from "@/app/components/ui/Panel";
 import { Bullets, CaptureSlot, Eyebrow, Receipts, Showcase, Visual } from "@/app/components/ui/Showcase";
 import MagyWorkspace from "@/app/components/ui/MagyWorkspace";
@@ -91,7 +91,7 @@ export default function MagyPage() {
             */}
             <main className="relative isolate overflow-hidden px-[var(--container-pad)] py-3.5">
                 <div className="deck-grid mx-auto max-w-[var(--container-page)]">
-                    <VideoBackdrop />
+                    <WorldCanvas />
                     <div className="deck-rail flex flex-col gap-3">
                         <section className="deck-card p-4">
                             <p className="deck-label mb-3 flex items-center gap-2">
@@ -169,9 +169,12 @@ export default function MagyPage() {
                 It also reads better here: the feed and the command that produced
                 it, side by side, instead of crammed into a 404px column.
             */}
-            <div className="mx-auto grid max-w-[var(--container-page)] px-[var(--container-pad)] pt-3.5">
+            {/* pb-7, not pb-0: the sticky section nav follows immediately, and
+                without a bottom gap the panel sits flush against it. Matches the
+                prototype's 28px before the nav. */}
+            <div className="mx-auto grid max-w-[var(--container-page)] px-[var(--container-pad)] pb-7 pt-3.5">
                 <Panel label="Live activity">
-                    <div className="grid gap-6 lg:grid-cols-2">
+                    <div className="grid gap-7 lg:grid-cols-2">
                         <ul>
                             {ACTIVITY.map((e) => (
                                 <li

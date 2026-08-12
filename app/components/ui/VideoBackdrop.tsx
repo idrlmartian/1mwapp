@@ -4,6 +4,12 @@ import { useEffect, useRef, useState } from "react";
 import { HERO, WORLD } from "@/app/lib/constants";
 
 /*
+  UNREFERENCED as of the WorldCanvas switch — /magy now paints the world with
+  ui/WorldCanvas.tsx instead of this poster+video backdrop. Kept, not deleted:
+  the graded poster set is still in /media, HERO still points at it, and
+  restoring it is swapping the component back in magy/page.tsx.
+*/
+/*
   The world pane.
 
   Load order is the whole point, and it is deliberately conservative:

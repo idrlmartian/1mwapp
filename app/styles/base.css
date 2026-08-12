@@ -80,6 +80,11 @@
     rejected — a grey dot in a row of seven saturated ones reads as disabled.
   */
   --c-argus: #4d7c0f;
+  /* Ground for the animated world pane (ui/WorldCanvas.tsx). Light is a cool
+     daylit haze; dark is the deep blue the capture was graded toward. */
+  --c-world-1: #dbe4f0;
+  --c-world-2: #c3d2e6;
+  --c-world-3: #eef2f8;
 
   /*
     A ground that ranges in hue instead of sitting flat.
@@ -184,6 +189,9 @@
     --c-luna: #f59e0b;
     --c-atlas: #fb7185;
     --c-argus: #a3e635;
+    --c-world-1: #16203a;
+    --c-world-2: #0d1526;
+    --c-world-3: #1e2b4d;
     /* Dark takes the SOLID badge: a 15% tint of peach over #141822 barely
        separates from the card, so the badge reads as a smudge. Light keeps
        the tint — see base.css :root. */
@@ -229,6 +237,9 @@
   --c-luna: #f59e0b;
   --c-atlas: #fb7185;
   --c-argus: #a3e635;
+  --c-world-1: #16203a;
+  --c-world-2: #0d1526;
+  --c-world-3: #1e2b4d;
   /* Dark takes the SOLID badge: a 15% tint of peach over #141822 barely
      separates from the card, so the badge reads as a smudge. Light keeps
      the tint — see base.css :root. */

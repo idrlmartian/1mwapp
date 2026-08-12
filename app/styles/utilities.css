@@ -132,139 +132,79 @@
 .gpu-accelerated { transform: translateZ(0); }
 .focus-glow:focus { outline: none; box-shadow: 0 0 0 3px var(--color-red-soft); }
 
-/* ── 3. the world pane: two compositions ──────────────────────────────────── */
+/* ── 3. the world pane ────────────────────────────────────────────────────── */
 /*
-  LIGHT — the world is a CONTAINED SCREEN sitting in the grid, the way a product
-  screenshot sits on a marketing page. Solid cards beside it.
+  ONE composition, both themes: a bordered 16:9 stage with the world filling it
+  and the rail floating over the left of it.
 
-  DARK — the world escapes the grid and becomes the full-bleed backdrop, with
-  glass floating over it.
+  This replaces a two-composition design (contained screen in light, full-bleed
+  backdrop in dark) that existed because the pane held a near-black VIDEO — and
+  near-white panels at 80% over near-black footage go muddy and stop reading as
+  glass. The pane is now a CANVAS that paints from the theme's own tokens
+  (--c-world-*), so it is light in light and dark in dark. The reason for two
+  compositions went away with the footage.
 
-  This is not a preference. Near-white panels at 80% opacity over near-black
-  footage go muddy grey and stop reading as glass, and the footage cannot invert
-  the way a colour token can. So the composition changes instead.
-
-  NOTE the explicit grid placement below. When .world goes position:absolute it
-  leaves the grid flow, and without pinned columns the rail collapses into the
-  1fr track and stretches full width.
-*/
-/*
-  Rail LEFT, world right. The reading order is the reason: the headline and the
-  ask are the two things a visitor must not miss, and on a left-to-right page
-  they should not be the second thing the eye lands on.
-
-  Flipping the columns means flipping the dark scrim with them — see the
-  gradient below. It is a one-sided ramp that has to darken UNDER the rail, and
-  a rail that moves without it sits on the brightest part of the capture.
+  The 16:9 is declared, not inherited. Height used to come from the viewport and
+  width from the grid, so the ratio was whatever those two produced — about
+  1.26:1 on a laptop, which cropped 29% off a 16:9 source. Nothing is being
+  cropped now (the canvas draws to fit), but the ratio still matters: it is the
+  box a real capture will be composed against when one is shot, and it keeps the
+  stage from growing as tall as the rail's content.
 */
 .deck-grid {
+  position: relative;
   display: grid;
   grid-template-columns: 404px 1fr;
   gap: 14px;
   align-items: start;
-  min-height: calc(100svh - 84px);
-}
-.deck-grid > .deck-rail { grid-column: 1; grid-row: 1; }
-.deck-grid > .world { grid-column: 2; grid-row: 1; }
-
-@media (max-width: 1000px) {
-  /* Stacked, world first: on a phone the capture is the hook and the rail is
-     what you scroll to, which is the opposite of the desktop priority. */
-  .deck-grid { grid-template-columns: 1fr; min-height: 0; }
-  .deck-grid > .world { grid-column: 1; grid-row: 1; }
-  .deck-grid > .deck-rail { grid-column: 1; grid-row: 2; }
-}
-
-/*
-  LIGHT: sticky, and pinned to the SOURCE's aspect ratio.
-
-  History, because this box has been wrong twice in different directions.
-
-  First it was a fixed 620px block in a grid cell as tall as the rail (~1100px),
-  which left a dead grey gap underneath. That was fixed by giving it viewport
-  height — which removed the gap, because sticky makes it travel with the scroll
-  instead of ending early, but did NOT fix the framing. It only changed which
-  wrong box the capture was being poured into.
-
-  The framing was still wrong because the height came from the VIEWPORT and the
-  width from the grid, so the ratio was whatever those two happened to produce.
-  At 1512 the world lands ~955 x 760, which is 1.26:1. `cover` fitting a 1.78:1
-  capture into that has to throw away 29% of the frame, off the sides — and the
-  sides are where a room reads as a room.
-
-  So the ratio is now declared rather than inherited. The capture fills it with
-  nothing cropped, and the shot can be composed against a box that is known.
-
-  height:auto is load-bearing — without it the old height wins and aspect-ratio
-  is ignored. max-height stays as a floor-guard for very short windows; it only
-  binds past ~1540px of world width, which the 1560px container cannot produce.
-
-  Sticky still does the gap work: the card is shorter than the rail now, but it
-  pins while the rail scrolls past, and the column beneath it is the page's own
-  ranged ground rather than the dead grey it used to be.
-
-  DARK is unaffected. There the world is position:absolute + inset:0 as a
-  full-bleed backdrop, which fully constrains the box, so aspect-ratio does not
-  apply — and a backdrop is one of the few places cropping is the correct answer.
-*/
-.world {
-  position: sticky;
-  top: 70px;
   aspect-ratio: 16 / 9;
-  height: auto;
-  max-height: calc(100svh - 84px);
-  background: #0b0d12;
+  min-height: 520px;
+  max-height: 780px;
   border: 1px solid var(--color-line);
   border-radius: var(--radius-lg);
+  background: var(--color-canvas-2);
   box-shadow: var(--shadow-deck);
   overflow: hidden;
 }
-@media (max-width: 1000px) {
-  /* Stacked above the rail with the full column to itself, so it can simply be
-     the ratio of the source — no viewport arithmetic involved. */
-  .world { position: relative; top: 0; height: auto; max-height: none; }
-}
 
-.world::after {
-  content: "";
+/* Behind everything, filling the stage. */
+.deck-grid > .world {
   position: absolute;
   inset: 0;
-  pointer-events: none;
-  background: none;
+  z-index: 0;
+}
+.world,
+.world > canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
-.world[data-state="playing"] .world-video { opacity: 1; }
-.world[data-state="playing"] .world-poster { opacity: 0; }
+/* Over it. The rail scrolls rather than stretching the stage back off-ratio if
+   its content ever outgrows the box. */
+.deck-grid > .deck-rail {
+  position: relative;
+  z-index: 1;
+  grid-column: 1;
+  padding: 14px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .world {
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    border: 0;
-    border-radius: 0;
-    box-shadow: none;
+@media (max-width: 1000px) {
+  /* Stacked: the world gets its own 16:9 band above the rail, so the phone case
+     is a clean fit rather than a crop, and the rail is simply content below it. */
+  .deck-grid {
+    grid-template-columns: 1fr;
+    aspect-ratio: auto;
+    min-height: 0;
     max-height: none;
   }
-  /* Legibility scrim, dark only — in light there is nothing to read through. */
-  :root:not([data-theme="light"]) .world::after {
-    background: linear-gradient(270deg, rgb(11 13 18 / 0.10), rgb(11 13 18 / 0.52) 60%, rgb(11 13 18 / 0.80));
+  .deck-grid > .world {
+    position: relative;
+    inset: auto;
+    aspect-ratio: 16 / 9;
+    grid-row: 1;
   }
-}
-:root[data-theme="dark"] .world {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  border: 0;
-  border-radius: 0;
-  box-shadow: none;
-  max-height: none;
-}
-:root[data-theme="dark"] .world::after {
-  background: linear-gradient(270deg, rgb(11 13 18 / 0.10), rgb(11 13 18 / 0.52) 60%, rgb(11 13 18 / 0.80));
-}
-@media (max-width: 1000px) {
-  :root[data-theme="dark"] .world::after {
-    background: linear-gradient(180deg, rgb(11 13 18 / 0.15), rgb(11 13 18 / 0.82));
-  }
+  .deck-grid > .deck-rail { grid-column: 1; grid-row: 2; }
 }
