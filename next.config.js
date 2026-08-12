@@ -114,6 +114,65 @@ const nextConfig = {
             */
             { source: "/martianos", destination: "/magy", permanent: false },
             { source: "/martianos/:path*", destination: "/magy", permanent: false },
+            /*
+              /artificialintelligence -> /magy, TEMPORARY.
+
+              Same defect as /martianos, and literally the same number: the page
+              states "<1μs latency for critical consciousness loops" alongside
+              100 TOPS neural processing, quantum error correction, infinite
+              memory capacity, 99.9% consciousness uptime and Level 4 full
+              sentience — all as SHIPPED capability, all built on the Martian OS
+              claims already redirected away above.
+
+              Whoever removed the "Explore Martian OS" CTA from this page
+              because those specs are unverified left the same specs on the page
+              itself. robots.ts explicitly invites GPTBot, ClaudeBot and
+              PerplexityBot, so every day this renders it is being copied into
+              model training and answer engines, where a redirect cannot reach it.
+
+              /magy is the destination because it is the honest version of the
+              same subject — AI agents, with the numbers measured.
+            */
+            { source: "/artificialintelligence", destination: "/magy", permanent: false },
+            { source: "/artificialintelligence/:path*", destination: "/magy", permanent: false },
+            /*
+              /brands -> /about, TEMPORARY.
+
+              Not a claims problem so much as a contradiction: app/about/page.tsx
+              was written to REPLACE this page ("presented IDRL alongside two
+              'divisions' that read as padding around one real thing"), and both
+              were live in the sitemap at once, describing the same company
+              differently. It also carries four unsourced IDRL figures — 300+
+              events, 50ms AI response, 200+ km/h, 15+ teams.
+
+              /about is a genuinely equivalent destination rather than a
+              convenient one, which is why this redirect is correct where
+              /geospatial's would not have been: it is the page that took over
+              this one's job, and it still covers IDRL.
+            */
+            { source: "/brands", destination: "/about", permanent: false },
+            { source: "/brands/:path*", destination: "/about", permanent: false },
+            /*
+              /products -> /about, TEMPORARY.
+
+              This page was previously handled one notch more gently than
+              /martianos — unlinked and noindex'd, but still served — on the
+              reasoning that "not ready to show" differs from "says things that
+              aren't true". Reading it, it is the second category: four humanoid
+              models with heights, weights, payloads, battery life, ±0.1mm
+              precision, "Medical Certified" and "AI Level: Consciousness", for
+              a line with no shipped hardware.
+
+              noindex was never the right tool for that anyway. It asks a
+              crawler not to list the page; it does nothing about anyone who has
+              the URL, and nothing about the AI crawlers robots.ts invites.
+
+              The noindex block in the page's own metadata is deliberately left
+              in place: if this redirect is ever removed, that is the weaker
+              protection to fall back to, not nothing.
+            */
+            { source: "/products", destination: "/about", permanent: false },
+            { source: "/products/:path*", destination: "/about", permanent: false },
             // Apex -> www.
             //
             // This redirect USED to be a Vercel dashboard setting, which means it

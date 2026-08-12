@@ -4,14 +4,24 @@ import Image from "next/image";
 import Link from "next/link";
 
 /*
-  Unlinked and de-indexed on purpose: the humanoid line isn't ready to be
-  shown, so every link to it was removed sitewide and it is out of the sitemap.
-  noindex is what makes that stick — removing links and the sitemap entry does
-  NOT deindex a page that search engines already know about, and this page
-  describes four products with capability claims nobody has verified.
+  Unreachable on purpose, three ways over: unlinked sitewide, out of the sitemap
+  registry, noindex'd here, and 307'd to /about in next.config.js.
 
-  Delete the robots block and restore the link in site/Footer.tsx + the
-  sitemap registry when the line is ready.
+  It started at noindex alone, on the reasoning that "not ready to be shown" is
+  a lesser sin than "says things that aren't true". That was too generous to it.
+  The four model cards below state heights, weights, payloads, 12-16 hour
+  battery life, ±0.1mm precision, "Medical Certified" and "AI Level:
+  Consciousness" as specifications of shipping products, for a line with no
+  hardware behind it — the same category as /martianos, and it should not
+  render either.
+
+  noindex is kept anyway rather than replaced: it asks crawlers not to list the
+  page, the redirect stops everyone who has the URL, and if the redirect is ever
+  dropped the weaker guard should still be standing.
+
+  To restore when the line is real: delete the /products rules in
+  next.config.js, delete the robots block below, put the entry back in
+  app/lib/routes.ts and the link back in site/Footer.tsx.
 */
 export const metadata: Metadata = {
     robots: { index: false, follow: false },
