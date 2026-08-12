@@ -208,8 +208,8 @@ export default function Home() {
                         <h2 className="text-h2 mb-2">Rust, all the way down.</h2>
                         <p className="text-fg-muted font-mono text-[12px] leading-[1.95]">
                             tokio · NATS JetStream · Postgres 16 + pgvector · four-tier memory ·
-                            knowledge graph with confidence decay · cost-aware routing across 7
-                            providers · worktree isolation → auto-PR · 48 tools · WASM-sandboxed
+                            knowledge graph with confidence decay · your keys and your models, chosen per
+                            agent across 7 providers · worktree isolation → auto-PR · 48 tools · WASM-sandboxed
                             skills · Telegram · cron
                         </p>
                     </section>
