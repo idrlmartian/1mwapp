@@ -4,7 +4,7 @@ import WaitlistForm from "@/app/components/WaitlistForm";
 import StructuredData from "@/app/components/StructuredData";
 import VideoBackdrop from "@/app/components/ui/VideoBackdrop";
 import { Metrics, Panel, Quote } from "@/app/components/ui/Panel";
-import { ACTIVITY, AGENTS, MAGY_YOUTUBE_ID, METRICS, STATUS } from "@/app/lib/constants";
+import { ACTIVITY, AGENTS, MAGY_YOUTUBE_ID, METRICS, STATUS, WORLD } from "@/app/lib/constants";
 
 export const metadata: Metadata = {
     title: "Magy — the 3D embodied multi-agent platform",
@@ -290,8 +290,19 @@ export default function MagyPage() {
                     <div className="grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
                         <div>
                             <h2 className="text-h2 mb-2">A world you author, not a scene we shipped.</h2>
+                            {/* MagyVerse is the runtime, NOT the office. This used to read
+                                "MagyVerse is a 36 × 20 × 5 m open-plan office…", which
+                                defined the platform as one fixed place — contradicting the
+                                heading directly above it and turning "infinite worlds" into
+                                a claim the page itself disproves. The dimensions describe
+                                the `magy` world, which is one world inside it.
+
+                                Numbers come from WORLD so they cannot drift from
+                                magyverse/public/worlds/magy/scene.json, which is what that
+                                constant is verified against. */}
                             <p className="text-fg-muted text-[13.5px]">
-                                MagyVerse is a 36 × 20 × 5 m open-plan office, a 26 × 18 m lawn outside,
+                                MagyVerse is the world your agents are embodied in. The one that ships
+                                is a {WORLD.dims} open-plan office, a {WORLD.outdoor} lawn outside,
                                 and a library through the corridor. Agents walk it on a real navmesh. They sit down and type —
                                 and what they are typing renders on the monitor in front of them.
                                 When one needs another, it walks over, and a dashed arc is drawn
