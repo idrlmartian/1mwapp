@@ -47,19 +47,42 @@ export function rateLimit(
 /**
  * Client IP behind kamal-proxy, and behind Cloudflare once it is in front.
  *
- * kamal-proxy APPENDS the real peer to X-Forwarded-For, so the LEFTMOST entry is
- * attacker-controlled and the RIGHTMOST is the one to trust. IDRL shipped this
- * backwards and ended up blocking 127.0.0.1 in production
- * (idrl/docs/security/HARDENING_2026-05-31.md, finding F1).
+ * EVERY header here is attacker-supplied unless a trusted proxy actually put it
+ * there, so each one is gated on that proxy being confirmed in front.
+ *
+ *  · CF-Connecting-IP is only meaningful once Cloudflare proxies this site.
+ *    Cloudflare is NOT in front today, so trusting it unconditionally let anyone
+ *    send `CF-Connecting-IP: <random>` and get a fresh rate-limit bucket on
+ *    every request — which defeats the limit on both /api/waitlist and
+ *    /api/contact and would let a single client flood the list or burn the
+ *    daily SMTP quota. It stays off until TRUST_CF_HEADERS=1 is set, which
+ *    should happen in the same change that turns the orange cloud on.
+ *
+ *  · X-Forwarded-For is trusted because kamal-proxy is confirmed in front in
+ *    production and APPENDS the real peer — so the RIGHTMOST entry is the one
+ *    it added and the leftmost is whatever the client claimed. IDRL shipped
+ *    this backwards and ended up blocking 127.0.0.1 in production
+ *    (idrl/docs/security/HARDENING_2026-05-31.md, finding F1).
+ *
+ * Falling back to a single "unknown" bucket is deliberate: it fails CLOSED, so
+ * a misconfiguration throttles traffic rather than silently disabling the limit.
  */
 export function clientIp(headers: Headers): string {
-    const cf = headers.get("cf-connecting-ip");
-    if (cf) return cf.trim();
-
-    const xff = headers.get("x-forwarded-for");
-    if (xff) {
-        const parts = xff.split(",").map((s) => s.trim()).filter(Boolean);
-        if (parts.length) return parts[parts.length - 1];
+    if (process.env.TRUST_CF_HEADERS === "1") {
+        const cf = headers.get("cf-connecting-ip")?.trim();
+        if (cf) return cf;
     }
-    return headers.get("x-real-ip")?.trim() || "unknown";
+
+    if (process.env.TRUST_PROXY_HEADERS !== "0") {
+        const xff = headers.get("x-forwarded-for");
+        if (xff) {
+            const parts = xff.split(",").map((s) => s.trim()).filter(Boolean);
+            // Rightmost = appended by kamal-proxy. Never the leftmost.
+            if (parts.length) return parts[parts.length - 1];
+        }
+        const real = headers.get("x-real-ip")?.trim();
+        if (real) return real;
+    }
+
+    return "unknown";
 }

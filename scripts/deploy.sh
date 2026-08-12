@@ -115,6 +115,7 @@ sudo docker run -d --name "$NAME" --network host --restart always --init \
   -e NODE_ENV=production -e PORT=$PORT -e HOSTNAME=0.0.0.0 -e TZ=Asia/Kolkata \
   -e SITE_URL=https://www.1martianway.com \
   -e WAITLIST_FALLBACK_DIR=/data \
+  -e TRUST_PROXY_HEADERS=1 \
   -e NEXT_PUBLIC_APP_VERSION="$NEW_VERSION" \
   -e NEXT_PUBLIC_BUILD_SHA="$BUILD_SHA" \
   -v /home/ubuntu/data/1mwapp:/data \
