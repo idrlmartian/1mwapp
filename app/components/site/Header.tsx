@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { LogoGlyph } from "@/app/components/brand/Logo";
 import ThemeSwitch from "@/app/components/ui/ThemeSwitch";
+import { navCtaClick } from "@/app/lib/analytics";
 import { NAV } from "@/app/lib/constants";
 
 /*
@@ -54,6 +55,7 @@ export default function Header() {
                 </div>
                 <Link
                     href="/#early-access"
+                    onClick={() => navCtaClick(pathname)}
                     className="bg-red hover:bg-red-hover shadow-[var(--shadow-cta)] inline-flex items-center rounded-[9px] px-3.5 py-2.5 text-[12.5px] font-bold text-white transition-colors"
                 >
                     Get Early Access

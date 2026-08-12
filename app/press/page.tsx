@@ -4,7 +4,7 @@ export const metadata: Metadata = {
     alternates: { canonical: "https://www.1martianway.com/press" },
     title: "Press | 1 Martian Way",
     description:
-        "1 Martian Way has been featured in numerous local and international media.",
+ "1 Martian Way has been featured in numerous local and international media.",
 };
 
 const pressVideos = [
@@ -69,7 +69,7 @@ export default function Press() {
                     {pressVideos.map((video, index) => (
                         <div
                             key={video.videoId}
-                            className="flex flex-col overflow-hidden rounded-2xl bg-slate-900 shadow-xs ring-1 ring-gray-900/5"
+                            className="flex flex-col overflow-hidden rounded-2xl bg-panel shadow-xs ring-1 ring-gray-900/5"
                         >
                             <div className="aspect-video">
                                 <iframe

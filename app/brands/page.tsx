@@ -6,7 +6,7 @@ export const metadata: Metadata = {
     alternates: { canonical: "https://www.1martianway.com/brands" },
     title: "Our Brands & Divisions | 1 Martian Way",
     description:
-        "Discover 1 Martian Way's innovative brands including IDRL Drone Racing India, Consciousness Labs, and Integration Studios - pioneering the future of AI and robotics.",
+ "Discover 1 Martian Way's innovative brands including IDRL Drone Racing India, Consciousness Labs, and Integration Studios - pioneering the future of AI and robotics.",
 };
 
 export default function Brands() {
@@ -24,15 +24,15 @@ export default function Brands() {
                     </p>
                     <div className="flex items-center justify-center gap-4 text-sm text-white/60">
                         <span className="flex items-center gap-2">
-                            <span className="w-2 h-2 bg-orange-400 rounded-full"></span>
+                            <span className="w-2 h-2 bg-sunk rounded-full"></span>
                             Racing Technology
                         </span>
                         <span className="flex items-center gap-2">
-                            <span className="w-2 h-2 bg-purple-400 rounded-full"></span>
+                            <span className="w-2 h-2 bg-blue-soft rounded-full"></span>
                             AI Research
                         </span>
                         <span className="flex items-center gap-2">
-                            <span className="w-2 h-2 bg-cyan-400 rounded-full"></span>
+                            <span className="w-2 h-2 bg-blue-soft rounded-full"></span>
                             Human-Robot Integration
                         </span>
                     </div>
@@ -41,7 +41,7 @@ export default function Brands() {
                 {/* Featured Brand - IDRL */}
                 <div className="mb-16">
                     <div className="glass-card rounded-3xl overflow-hidden">
-                        <div className="bg-gradient-to-br from-orange-900/40 via-red-900/30 to-slate-900/40 p-12">
+                        <div className="bg-gradient-to-br from-blue via-blue to-canvas/40 p-12">
                             <div className="flex flex-col lg:flex-row items-center gap-12">
                                 <div className="flex-1 text-center lg:text-left">
                                     <div className="flex items-center justify-center lg:justify-start gap-4 mb-6">
@@ -50,8 +50,8 @@ export default function Brands() {
                                             <h2 className="font-display text-3xl font-bold text-white sm:text-4xl mb-2">
                                                 <span className="gradient-text-orange">IDRL</span>
                                             </h2>
-                                            <p className="text-xl text-orange-300 font-semibold">Indian Drone Racing League</p>
-                                            <p className="text-orange-200/80 text-sm">Featured Brand</p>
+                                            <p className="text-xl text-fg-muted font-semibold">Indian Drone Racing League</p>
+                                            <p className="text-fg-muted/80 text-sm">Featured Brand</p>
                                         </div>
                                     </div>
                                     <p className="text-lg text-white/90 mb-6 leading-relaxed">
@@ -84,7 +84,7 @@ export default function Brands() {
                                             href="https://droneracingindia.com"
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="group relative px-8 py-4 text-lg font-semibold text-white rounded-2xl bg-gradient-to-r from-orange-600 via-red-600 to-orange-600 hover:from-orange-500 hover:via-red-500 hover:to-orange-500 transition-all-smooth hover:scale-105 shadow-xl"
+                                            className="group relative px-8 py-4 text-lg font-semibold text-white rounded-2xl bg-gradient-to-r from-blue via-blue to-blue hover:from-blue hover:via-blue hover:to-blue transition-all-smooth hover:scale-105 shadow-xl"
                                         >
                                             <span className="flex items-center gap-2">
                                                 🌐 Visit IDRL Website
@@ -105,7 +105,7 @@ export default function Brands() {
                                 <div className="flex-shrink-0">
                                     <div className="glass rounded-3xl p-8 text-center max-w-sm">
                                         <div className="mb-8 flex justify-center">
-                                            <svg width="100" height="100" viewBox="0 0 100 100" className="text-orange-400">
+                                            <svg width="100" height="100" viewBox="0 0 100 100" className="text-fg-muted">
                                                 {/* Racing drone body */}
                                                 <rect x="35" y="40" width="30" height="20" rx="4" fill="currentColor" />
                                                 
@@ -134,10 +134,10 @@ export default function Brands() {
                                         </p>
                                         <div className="grid grid-cols-1 gap-3">
                                             {[
-                                                "Neural Flight Control",
-                                                "Real-time Path Planning",
-                                                "Competitive AI Strategy",
-                                                "Safety-First Protocols"
+ "Neural Flight Control",
+ "Real-time Path Planning",
+ "Competitive AI Strategy",
+ "Safety-First Protocols"
                                             ].map((feature, i) => (
                                                 <div key={i} className="glass rounded-lg p-3 text-xs text-white/80">
                                                     {feature}
@@ -165,7 +165,7 @@ export default function Brands() {
                     <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
                         {/* Martian Consciousness Labs */}
                         <div className="glass-card rounded-3xl overflow-hidden hover:scale-105 transition-all-smooth group">
-                            <div className="aspect-video bg-gradient-to-br from-blue-900 via-purple-900 to-slate-900 relative overflow-hidden">
+                            <div className="aspect-video bg-gradient-to-br from-blue via-blue to-canvas relative overflow-hidden">
                                 <div className="absolute inset-0 flex items-center justify-center">
                                     <div className="text-center">
                                         <div className="text-6xl mb-4">🧠</div>
@@ -190,13 +190,13 @@ export default function Brands() {
                                     {/* Key Achievements */}
                                     <div className="grid grid-cols-2 gap-3 mb-6">
                                         {[
-                                            "Neural Consciousness Engine",
-                                            "Emotional AI Processing",
-                                            "Autonomous Learning Systems",
-                                            "Ethical AI Framework"
+ "Neural Consciousness Engine",
+ "Emotional AI Processing",
+ "Autonomous Learning Systems",
+ "Ethical AI Framework"
                                         ].map((achievement, i) => (
                                             <div key={i} className="flex items-center gap-2 text-sm text-white/70">
-                                                <span className="w-1.5 h-1.5 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full"></span>
+                                                <span className="w-1.5 h-1.5 bg-gradient-to-r from-blue to-blue rounded-full"></span>
                                                 {achievement}
                                             </div>
                                         ))}
@@ -205,7 +205,7 @@ export default function Brands() {
                                 <div>
                                     <Link
                                         href="/artificialintelligence"
-                                        className="inline-flex items-center px-6 py-3 text-sm font-semibold text-white rounded-2xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 transition-all-smooth hover:scale-105 shadow-lg"
+                                        className="inline-flex items-center px-6 py-3 text-sm font-semibold text-white rounded-2xl bg-gradient-to-r from-blue to-blue hover:from-blue hover:to-blue transition-all-smooth hover:scale-105 shadow-lg"
                                     >
                                         Explore AI Research
                                         <ArrowTopRightIcon className="ml-2 h-4 w-4" />
@@ -216,7 +216,7 @@ export default function Brands() {
 
                         {/* Humanoid Integration Studios */}
                         <div className="glass-card rounded-3xl overflow-hidden hover:scale-105 transition-all-smooth group">
-                            <div className="aspect-video bg-gradient-to-br from-purple-900 via-cyan-900 to-slate-900 relative overflow-hidden">
+                            <div className="aspect-video bg-gradient-to-br from-blue via-blue to-canvas relative overflow-hidden">
                                 <div className="absolute inset-0 flex items-center justify-center">
                                     <div className="text-center">
                                         <div className="text-6xl mb-4">🤖</div>
@@ -241,13 +241,13 @@ export default function Brands() {
                                     {/* Key Services */}
                                     <div className="grid grid-cols-2 gap-3 mb-6">
                                         {[
-                                            "Collaboration Protocols",
-                                            "Social Behavior Design",
-                                            "Integration Training",
-                                            "Custom Robot Solutions"
+ "Collaboration Protocols",
+ "Social Behavior Design",
+ "Integration Training",
+ "Custom Robot Solutions"
                                         ].map((service, i) => (
                                             <div key={i} className="flex items-center gap-2 text-sm text-white/70">
-                                                <span className="w-1.5 h-1.5 bg-gradient-to-r from-cyan-400 to-blue-400 rounded-full"></span>
+                                                <span className="w-1.5 h-1.5 bg-gradient-to-r from-blue to-blue rounded-full"></span>
                                                 {service}
                                             </div>
                                         ))}
@@ -256,7 +256,7 @@ export default function Brands() {
                                 <div>
                                     <Link
                                         href="/contact"
-                                        className="inline-flex items-center px-6 py-3 text-sm font-semibold text-white rounded-2xl bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 transition-all-smooth hover:scale-105 shadow-lg"
+                                        className="inline-flex items-center px-6 py-3 text-sm font-semibold text-white rounded-2xl bg-gradient-to-r from-blue to-blue hover:from-blue hover:to-blue transition-all-smooth hover:scale-105 shadow-lg"
                                     >
                                         Schedule Integration
                                         <ArrowTopRightIcon className="ml-2 h-4 w-4" />
@@ -309,12 +309,12 @@ export default function Brands() {
                                     <p className="text-sm text-white/80 mb-4">{innovation.description}</p>
                                     <div className="flex flex-wrap gap-2 justify-center mb-4">
                                         {innovation.brands.map((brand, i) => (
-                                            <span key={i} className="glass rounded-full px-3 py-1 text-xs text-cyan-300 font-medium">
+                                            <span key={i} className="glass rounded-full px-3 py-1 text-xs text-blue font-medium">
                                                 {brand}
                                             </span>
                                         ))}
                                     </div>
-                                    <div className="text-xs text-purple-400 font-medium">{innovation.status}</div>
+                                    <div className="text-xs text-blue font-medium">{innovation.status}</div>
                                 </div>
                             ))}
                         </div>
@@ -333,9 +333,9 @@ export default function Brands() {
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                         <Link
                             href="/contact"
-                            className="group relative px-8 py-4 text-lg font-semibold text-white rounded-2xl bg-gradient-to-r from-blue-600 via-purple-600 to-cyan-600 hover:from-blue-500 hover:via-purple-500 hover:to-cyan-500 transition-all-smooth hover:scale-105 shadow-2xl overflow-hidden"
+                            className="group relative px-8 py-4 text-lg font-semibold text-white rounded-2xl bg-gradient-to-r from-blue via-blue to-blue hover:from-blue hover:via-blue hover:to-blue transition-all-smooth hover:scale-105 shadow-2xl overflow-hidden"
                         >
-                            <div className="absolute inset-0 bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 opacity-0 group-hover:opacity-100 transition-all-smooth blur-xl"></div>
+                            <div className="absolute inset-0 bg-gradient-to-r from-blue via-blue to-blue opacity-0 group-hover:opacity-100 transition-all-smooth blur-xl"></div>
                             <span className="relative z-10">Partner With Our Brands</span>
                         </Link>
                         <Link

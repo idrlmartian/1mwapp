@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     alternates: { canonical: "https://www.1martianway.com/martianos" },
     title: "Martian OS | Advanced Robot Operating System | 1 Martian Way",
     description:
-        "Martian OS - A high-performance, real-time robot operating system written in Rust, designed specifically for conscious humanoid robots.",
+ "Martian OS - A high-performance, real-time robot operating system written in Rust, designed specifically for conscious humanoid robots.",
 };
 
 export default function MartianOS() {
@@ -29,7 +29,7 @@ export default function MartianOS() {
                 }}
             />
             {/* Background */}
-            <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900"></div>
+            <div className="absolute inset-0 bg-gradient-to-br from-canvas via-blue to-canvas"></div>
             {/* <div className="absolute inset-0 grid-bg opacity-20"></div> */}
             
             <div className="relative mx-auto max-w-7xl px-6 py-6 sm:py-8 lg:px-8">
@@ -128,7 +128,7 @@ export default function MartianOS() {
                             }
                         ].map((feature) => (
                             <div key={feature.name} className="glass-card rounded-3xl p-6 hover:scale-105 transition-all-smooth">
-                                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 mb-4">
+                                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-blue to-blue mb-4">
                                     <feature.icon className="h-6 w-6 text-white" />
                                 </div>
                                 <h3 className="text-lg font-semibold text-white mb-3 gradient-text-primary">
@@ -140,7 +140,7 @@ export default function MartianOS() {
                                 <ul className="space-y-1">
                                     {feature.details.map((detail, i) => (
                                         <li key={i} className="flex items-center gap-2 text-xs text-white/70">
-                                            <span className="w-1 h-1 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full"></span>
+                                            <span className="w-1 h-1 bg-gradient-to-r from-blue to-blue rounded-full"></span>
                                             {detail}
                                         </li>
                                     ))}
@@ -166,11 +166,11 @@ export default function MartianOS() {
                         <div className="space-y-4">
                             <h3 className="text-xl font-semibold text-white mb-6">Kernel Architecture</h3>
                             {[
-                                { layer: "Application Layer", desc: "User applications, AI consciousness modules", color: "from-purple-500 to-pink-500" },
-                                { layer: "System Services", desc: "Device drivers, file systems, networking", color: "from-blue-500 to-purple-500" },
-                                { layer: "Real-Time Kernel", desc: "Scheduler, IPC, memory management", color: "from-cyan-500 to-blue-500" },
-                                { layer: "Hardware Abstraction", desc: "Platform-specific drivers and interfaces", color: "from-green-500 to-cyan-500" },
-                                { layer: "Hardware", desc: "ARM/RISC-V processors, sensors, actuators", color: "from-orange-500 to-red-500" }
+                                { layer: "Application Layer", desc: "User applications, AI consciousness modules", color: "from-blue to-blue" },
+                                { layer: "System Services", desc: "Device drivers, file systems, networking", color: "from-blue to-blue" },
+                                { layer: "Real-Time Kernel", desc: "Scheduler, IPC, memory management", color: "from-blue to-blue" },
+                                { layer: "Hardware Abstraction", desc: "Platform-specific drivers and interfaces", color: "from-blue to-blue" },
+                                { layer: "Hardware", desc: "ARM/RISC-V processors, sensors, actuators", color: "from-blue to-blue" }
                             ].map((layer, index) => (
                                 <div key={index} className="relative">
                                     <div className={`bg-gradient-to-r ${layer.color} rounded-xl p-4 mb-2`}>
@@ -188,37 +188,37 @@ export default function MartianOS() {
                                 {
                                     category: "Performance",
                                     specs: [
-                                        "Interrupt latency: <1μs",
-                                        "Context switch: <500ns",
-                                        "Memory bandwidth: 100GB/s",
-                                        "Control loop: 1000Hz sustained"
+ "Interrupt latency: <1μs",
+ "Context switch: <500ns",
+ "Memory bandwidth: 100GB/s",
+ "Control loop: 1000Hz sustained"
                                     ]
                                 },
                                 {
                                     category: "Memory Management",
                                     specs: [
-                                        "Zero-copy message passing",
-                                        "Lock-free data structures",
-                                        "Deterministic allocation",
-                                        "Memory protection domains"
+ "Zero-copy message passing",
+ "Lock-free data structures",
+ "Deterministic allocation",
+ "Memory protection domains"
                                     ]
                                 },
                                 {
                                     category: "Safety & Security",
                                     specs: [
-                                        "Formal verification support",
-                                        "Capability-based security",
-                                        "Hardware memory protection",
-                                        "Real-time intrusion detection"
+ "Formal verification support",
+ "Capability-based security",
+ "Hardware memory protection",
+ "Real-time intrusion detection"
                                     ]
                                 },
                                 {
                                     category: "Platforms Supported",
                                     specs: [
-                                        "ARM Cortex-A78 clusters",
-                                        "RISC-V RV64GC cores",
-                                        "NVIDIA Jetson AGX",
-                                        "Custom neural processors"
+ "ARM Cortex-A78 clusters",
+ "RISC-V RV64GC cores",
+ "NVIDIA Jetson AGX",
+ "Custom neural processors"
                                     ]
                                 }
                             ].map((section, index) => (
@@ -227,7 +227,7 @@ export default function MartianOS() {
                                     <ul className="space-y-1">
                                         {section.specs.map((spec, i) => (
                                             <li key={i} className="flex items-center gap-2 text-xs text-white/80">
-                                                <span className="w-1 h-1 bg-cyan-400 rounded-full"></span>
+                                                <span className="w-1 h-1 bg-blue-soft rounded-full"></span>
                                                 {spec}
                                             </li>
                                         ))}
@@ -255,12 +255,12 @@ export default function MartianOS() {
                                 title: "Motor Control Subsystem",
                                 description: "High-frequency motor control with sub-millisecond precision for smooth humanoid movement.",
                                 features: [
-                                    "1000Hz control loops",
-                                    "Field-oriented control (FOC)",
-                                    "Predictive torque control",
-                                    "Force/impedance control",
-                                    "Safety torque limiting",
-                                    "Real-time trajectory planning"
+ "1000Hz control loops",
+ "Field-oriented control (FOC)",
+ "Predictive torque control",
+ "Force/impedance control",
+ "Safety torque limiting",
+ "Real-time trajectory planning"
                                 ],
                                 codeExample: `// Real-time motor control in Rust
 struct MotorController {
@@ -283,12 +283,12 @@ impl MotorController {
                                 title: "Sensor Fusion Framework",
                                 description: "Real-time sensor data processing with Kalman filtering and advanced fusion algorithms.",
                                 features: [
-                                    "IMU data fusion",
-                                    "Vision processing pipeline",
-                                    "Lidar point cloud processing", 
-                                    "Force/torque sensing",
-                                    "Predictive state estimation",
-                                    "Outlier detection & correction"
+ "IMU data fusion",
+ "Vision processing pipeline",
+ "Lidar point cloud processing", 
+ "Force/torque sensing",
+ "Predictive state estimation",
+ "Outlier detection & correction"
                                 ],
                                 codeExample: `// Sensor fusion with zero-copy processing
 struct SensorFusion {
@@ -312,12 +312,12 @@ impl SensorFusion {
                                 title: "Neural Processing Unit",
                                 description: "Dedicated subsystem for AI consciousness and neural network inference with hardware acceleration.",
                                 features: [
-                                    "Tensor processing acceleration",
-                                    "Neural network inference",
-                                    "Consciousness state management",
-                                    "Memory isolation for AI",
-                                    "Distributed inference",
-                                    "Model hot-swapping"
+ "Tensor processing acceleration",
+ "Neural network inference",
+ "Consciousness state management",
+ "Memory isolation for AI",
+ "Distributed inference",
+ "Model hot-swapping"
                                 ],
                                 codeExample: `// Neural processing with hardware acceleration
 struct NeuralProcessor {
@@ -340,12 +340,12 @@ impl NeuralProcessor {
                                 title: "Safety Monitor",
                                 description: "Continuous safety monitoring with formal verification and emergency response capabilities.",
                                 features: [
-                                    "Real-time safety verification",
-                                    "Emergency stop protocols",
-                                    "Constraint violation detection",
-                                    "Redundant system monitoring",
-                                    "Formal property checking",
-                                    "Graceful degradation"
+ "Real-time safety verification",
+ "Emergency stop protocols",
+ "Constraint violation detection",
+ "Redundant system monitoring",
+ "Formal property checking",
+ "Graceful degradation"
                                 ],
                                 codeExample: `// Safety monitoring with formal verification
 struct SafetyMonitor {
@@ -380,7 +380,7 @@ impl SafetyMonitor {
                                     <div className="grid grid-cols-2 gap-2">
                                         {subsystem.features.map((feature, i) => (
                                             <div key={i} className="flex items-center gap-2 text-xs text-white/70">
-                                                <span className="w-1 h-1 bg-gradient-to-r from-cyan-400 to-blue-400 rounded-full"></span>
+                                                <span className="w-1 h-1 bg-gradient-to-r from-blue to-blue rounded-full"></span>
                                                 {feature}
                                             </div>
                                         ))}
@@ -388,7 +388,7 @@ impl SafetyMonitor {
                                 </div>
                                 
                                 <div className="bg-black/30 rounded-xl p-4 overflow-x-auto">
-                                    <pre className="text-xs text-green-400 font-mono">
+                                    <pre className="text-xs text-fg-muted font-mono">
                                         {subsystem.codeExample}
                                     </pre>
                                 </div>
@@ -451,7 +451,7 @@ impl SafetyMonitor {
                                 <ul className="space-y-1">
                                     {tool.features.map((feature, i) => (
                                         <li key={i} className="flex items-center gap-2 text-xs text-white/70">
-                                            <span className="w-1 h-1 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full"></span>
+                                            <span className="w-1 h-1 bg-gradient-to-r from-blue to-blue rounded-full"></span>
                                             {feature}
                                         </li>
                                     ))}
@@ -483,7 +483,7 @@ impl SafetyMonitor {
                                 <div>
                                     <h4 className="text-sm font-semibold text-white/90 mb-3">Kernel Services</h4>
                                     <div className="bg-black/50 rounded-xl p-4 overflow-x-auto">
-                                        <pre className="text-xs text-green-400 font-mono">{`// Core kernel services in Rust
+                                        <pre className="text-xs text-fg-muted font-mono">{`// Core kernel services in Rust
 #[no_std]
 #[no_main]
 mod kernel {
@@ -529,7 +529,7 @@ mod kernel {
                                 <div>
                                     <h4 className="text-sm font-semibold text-white/90 mb-3">Memory Protection</h4>
                                     <div className="bg-black/50 rounded-xl p-4 overflow-x-auto">
-                                        <pre className="text-xs text-green-400 font-mono">{`// Hardware memory protection
+                                        <pre className="text-xs text-fg-muted font-mono">{`// Hardware memory protection
 pub struct MemoryProtectionUnit {
     regions: [MpuRegion; 16],
     fault_handler: fn(FaultInfo),
@@ -572,7 +572,7 @@ impl MemoryProtectionUnit {
                                 <div>
                                     <h4 className="text-sm font-semibold text-white/90 mb-3">Priority-Based Scheduling</h4>
                                     <div className="bg-black/50 rounded-xl p-4 overflow-x-auto">
-                                        <pre className="text-xs text-green-400 font-mono">{`// Real-time task scheduler
+                                        <pre className="text-xs text-fg-muted font-mono">{`// Real-time task scheduler
 pub struct RTScheduler {
     ready_queues: [TaskQueue; 256], // 256 priority levels
     current_task: Option<TaskId>,
@@ -615,25 +615,25 @@ impl RTScheduler {
                                 <div>
                                     <h4 className="text-sm font-semibold text-white/90 mb-3">Interrupt Handling</h4>
                                     <div className="bg-black/50 rounded-xl p-4 overflow-x-auto">
-                                        <pre className="text-xs text-green-400 font-mono">{`// Ultra-low latency interrupt handling
+                                        <pre className="text-xs text-fg-muted font-mono">{`// Ultra-low latency interrupt handling
 #[naked]
 #[no_mangle]
 unsafe extern "C" fn irq_handler() {
     asm!(
         // Save minimal context (ARM64)
-        "stp x0, x1, [sp, #-16]!",
-        "stp x2, x3, [sp, #-16]!",
+ "stp x0, x1, [sp, #-16]!",
+ "stp x2, x3, [sp, #-16]!",
         
         // Read interrupt vector
-        "mrs x0, #0x3000", // Read GICC_IAR
+ "mrs x0, #0x3000", // Read GICC_IAR
         
         // Branch to Rust handler
-        "bl handle_interrupt_rust",
+ "bl handle_interrupt_rust",
         
         // Restore context
-        "ldp x2, x3, [sp], #16",
-        "ldp x0, x1, [sp], #16",
-        "eret",
+ "ldp x2, x3, [sp], #16",
+ "ldp x0, x1, [sp], #16",
+ "eret",
         options(noreturn)
     );
 }
@@ -662,7 +662,7 @@ extern "C" fn handle_interrupt_rust(irq_num: u32) {
                             <div>
                                 <h4 className="text-sm font-semibold text-white/90 mb-3">Platform Support</h4>
                                 <div className="bg-black/50 rounded-xl p-4 overflow-x-auto mb-4">
-                                    <pre className="text-xs text-green-400 font-mono">{`// Multi-platform HAL trait system
+                                    <pre className="text-xs text-fg-muted font-mono">{`// Multi-platform HAL trait system
 pub trait PlatformHal {
     type Timer: HighResTimer;
     type Gpio: GpioController;
@@ -709,7 +709,7 @@ impl PlatformHal for CortexA78Hal {
                                 
                                 <h4 className="text-sm font-semibold text-white/90 mb-3">Sensor Integration</h4>
                                 <div className="bg-black/50 rounded-xl p-4 overflow-x-auto">
-                                    <pre className="text-xs text-green-400 font-mono">{`// Zero-copy sensor data processing
+                                    <pre className="text-xs text-fg-muted font-mono">{`// Zero-copy sensor data processing
 pub struct SensorArray<const N: usize> {
     sensors: [Box<dyn Sensor>; N],
     data_ring: RingBuffer<SensorData, 1024>,
@@ -736,7 +736,7 @@ impl<const N: usize> SensorArray<N> {
                             <div>
                                 <h4 className="text-sm font-semibold text-white/90 mb-3">Motor Control Interface</h4>
                                 <div className="bg-black/50 rounded-xl p-4 overflow-x-auto mb-4">
-                                    <pre className="text-xs text-green-400 font-mono">{`// High-precision motor control
+                                    <pre className="text-xs text-fg-muted font-mono">{`// High-precision motor control
 pub trait MotorController {
     fn set_position(&mut self, angle: f64) -> Result<(), MotorError>;
     fn set_velocity(&mut self, vel: f64) -> Result<(), MotorError>;
@@ -773,7 +773,7 @@ impl MotorController for ServoMotor {
                                 
                                 <h4 className="text-sm font-semibold text-white/90 mb-3">Neural Processing Unit</h4>
                                 <div className="bg-black/50 rounded-xl p-4 overflow-x-auto">
-                                    <pre className="text-xs text-green-400 font-mono">{`// Hardware-accelerated neural inference
+                                    <pre className="text-xs text-fg-muted font-mono">{`// Hardware-accelerated neural inference
 pub struct NeuralAccelerator {
     tensor_cores: [TensorCore; 8],
     shared_memory: SharedTensorMemory,
@@ -897,7 +897,7 @@ monitor.on_violation(|violation| {
                                     {api.description}
                                 </p>
                                 <div className="bg-black/50 rounded-xl p-4 overflow-x-auto">
-                                    <pre className="text-xs text-green-400 font-mono whitespace-pre-wrap">
+                                    <pre className="text-xs text-fg-muted font-mono whitespace-pre-wrap">
                                         {api.example}
                                     </pre>
                                 </div>
@@ -918,9 +918,9 @@ monitor.on_violation(|violation| {
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                         <Link
                             href="/contact"
-                            className="group relative px-8 py-4 text-lg font-semibold text-white rounded-2xl bg-gradient-to-r from-blue-600 via-purple-600 to-cyan-600 hover:from-blue-500 hover:via-purple-500 hover:to-cyan-500 transition-all-smooth hover:scale-105 shadow-2xl overflow-hidden"
+                            className="group relative px-8 py-4 text-lg font-semibold text-white rounded-2xl bg-gradient-to-r from-blue via-blue to-blue hover:from-blue hover:via-blue hover:to-blue transition-all-smooth hover:scale-105 shadow-2xl overflow-hidden"
                         >
-                            <div className="absolute inset-0 bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 opacity-0 group-hover:opacity-100 transition-all-smooth blur-xl"></div>
+                            <div className="absolute inset-0 bg-gradient-to-r from-blue via-blue to-blue opacity-0 group-hover:opacity-100 transition-all-smooth blur-xl"></div>
                             <span className="relative z-10 flex items-center gap-2">
                                 <CodeIcon className="w-5 h-5" />
                                 Download SDK

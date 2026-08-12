@@ -12,26 +12,26 @@ export const metadata: Metadata = {
     alternates: { canonical: "https://www.1martianway.com/artificialintelligence" },
     title: "AI Consciousness Platform | 1 Martian Way",
     description:
-        "Advanced AI consciousness and neural platforms powering the next generation of sentient humanoid robots.",
+ "Advanced AI consciousness and neural platforms powering the next generation of sentient humanoid robots.",
 };
 
 const consciousnessFeatures = [
     {
         name: "Neural Consciousness Engine",
         description:
-            "Built on Martian OS, our consciousness engine provides true self-awareness through multi-layered neural architectures running in real-time with <1μs latency for critical consciousness loops.",
+ "Built on Martian OS, our consciousness engine provides true self-awareness through multi-layered neural architectures running in real-time with <1μs latency for critical consciousness loops.",
         icon: Component1Icon,
     },
     {
         name: "Adaptive Learning Framework", 
         description:
-            "Rust-powered continuous learning with zero-copy memory management, enabling robots to evolve and adapt without system interruptions or garbage collection pauses.",
+ "Rust-powered continuous learning with zero-copy memory management, enabling robots to evolve and adapt without system interruptions or garbage collection pauses.",
         icon: CodeIcon,
     },
     {
         name: "Human-Robot Interface",
         description:
-            "Advanced natural language processing and empathetic AI running natively on Martian OS, with dedicated neural compute units for real-time emotional understanding.",
+ "Advanced natural language processing and empathetic AI running natively on Martian OS, with dedicated neural compute units for real-time emotional understanding.",
         icon: RocketIcon,
     },
 ];
@@ -48,7 +48,7 @@ export default function ArtificialIntelligence() {
                 }}
             />
             {/* Background */}
-            <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900"></div>
+            <div className="absolute inset-0 bg-gradient-to-br from-canvas via-blue to-canvas"></div>
             <div className="absolute inset-0 grid-bg opacity-20"></div>
             
             <div className="relative mx-auto max-w-7xl px-6 py-6 sm:py-8 lg:px-8">
@@ -85,7 +85,7 @@ export default function ArtificialIntelligence() {
                             <div className="text-center mt-4">
                                 <Link 
                                     href="/martianos" 
-                                    className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-lg border border-blue-500/30 text-blue-300 hover:from-blue-500/30 hover:to-purple-500/30 transition-all-smooth text-sm"
+                                    className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue to-blue rounded-lg border border-line-hi text-blue hover:from-blue hover:to-blue transition-all-smooth text-sm"
                                 >
                                     Explore Martian OS →
                                 </Link>
@@ -131,7 +131,7 @@ export default function ArtificialIntelligence() {
                                 key={feature.name}
                                 className="glass-card rounded-3xl p-8 hover:scale-105 transition-all-smooth group"
                             >
-                                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 mb-6">
+                                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-blue to-blue mb-6">
                                     <feature.icon
                                         className="h-6 w-6 text-white"
                                         aria-hidden="true"
@@ -166,28 +166,28 @@ export default function ArtificialIntelligence() {
                                 title: "Basic Awareness",
                                 description: "Self-recognition and environmental understanding",
                                 icon: "🔍",
-                                color: "from-blue-500 to-cyan-500"
+                                color: "from-blue to-blue"
                             },
                             {
                                 level: "Level 2", 
                                 title: "Cognitive Processing",
                                 description: "Complex reasoning and problem-solving capabilities",
                                 icon: "🧠",
-                                color: "from-purple-500 to-blue-500"
+                                color: "from-blue to-blue"
                             },
                             {
                                 level: "Level 3",
                                 title: "Emotional Intelligence",
                                 description: "Understanding and responding to emotions",
                                 icon: "❤️",
-                                color: "from-pink-500 to-purple-500"
+                                color: "from-blue to-blue"
                             },
                             {
                                 level: "Level 4",
                                 title: "Full Sentience",
                                 description: "Complete self-awareness and autonomous growth",
                                 icon: "✨",
-                                color: "from-yellow-500 to-pink-500"
+                                color: "from-yellow-500 to-blue"
                             }
                         ].map((level, index) => (
                             <div key={index} className="text-center glass rounded-3xl p-6 hover:scale-105 transition-all-smooth">
@@ -225,13 +225,13 @@ export default function ArtificialIntelligence() {
                         
                         <div className="grid grid-cols-2 gap-4 mb-6">
                             {[
-                                "Self-Awareness Protocols",
-                                "Emotion Recognition Systems", 
-                                "Autonomous Learning Algorithms",
-                                "Consciousness State Monitoring"
+ "Self-Awareness Protocols",
+ "Emotion Recognition Systems", 
+ "Autonomous Learning Algorithms",
+ "Consciousness State Monitoring"
                             ].map((feature, i) => (
                                 <div key={i} className="flex items-center gap-2 text-sm text-white/70">
-                                    <span className="w-1.5 h-1.5 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full"></span>
+                                    <span className="w-1.5 h-1.5 bg-gradient-to-r from-blue to-blue rounded-full"></span>
                                     {feature}
                                 </div>
                             ))}
@@ -239,7 +239,7 @@ export default function ArtificialIntelligence() {
                         
                         <Link
                             href="/contact"
-                            className="inline-flex items-center text-sm font-semibold gradient-text-cyan hover:text-cyan-300 transition-colors group"
+                            className="inline-flex items-center text-sm font-semibold gradient-text-cyan hover:text-blue transition-colors group"
                         >
                             Learn More <span className="ml-1 transition-transform group-hover:translate-x-1">→</span>
                         </Link>
@@ -266,13 +266,13 @@ export default function ArtificialIntelligence() {
                         
                         <div className="grid grid-cols-2 gap-4 mb-6">
                             {[
-                                "Natural Language Processing",
-                                "Gesture Recognition",
-                                "Predictive Assistance", 
-                                "Social Behavior Modeling"
+ "Natural Language Processing",
+ "Gesture Recognition",
+ "Predictive Assistance", 
+ "Social Behavior Modeling"
                             ].map((feature, i) => (
                                 <div key={i} className="flex items-center gap-2 text-sm text-white/70">
-                                    <span className="w-1.5 h-1.5 bg-gradient-to-r from-cyan-400 to-blue-400 rounded-full"></span>
+                                    <span className="w-1.5 h-1.5 bg-gradient-to-r from-blue to-blue rounded-full"></span>
                                     {feature}
                                 </div>
                             ))}
@@ -280,7 +280,7 @@ export default function ArtificialIntelligence() {
                         
                         <Link
                             href="/contact"
-                            className="inline-flex items-center text-sm font-semibold gradient-text-cyan hover:text-cyan-300 transition-colors group"
+                            className="inline-flex items-center text-sm font-semibold gradient-text-cyan hover:text-blue transition-colors group"
                         >
                             Request Demo <span className="ml-1 transition-transform group-hover:translate-x-1">→</span>
                         </Link>
@@ -318,7 +318,7 @@ export default function ArtificialIntelligence() {
                                 <ul className="space-y-2">
                                     {category.specs.map((spec, i) => (
                                         <li key={i} className="flex items-center gap-2 text-sm text-white/70">
-                                            <span className="w-1.5 h-1.5 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full"></span>
+                                            <span className="w-1.5 h-1.5 bg-gradient-to-r from-blue to-blue rounded-full"></span>
                                             {spec}
                                         </li>
                                     ))}
@@ -340,9 +340,9 @@ export default function ArtificialIntelligence() {
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                         <Link
                             href="/contact"
-                            className="group relative px-8 py-4 text-lg font-semibold text-white rounded-2xl bg-gradient-to-r from-blue-600 via-purple-600 to-cyan-600 hover:from-blue-500 hover:via-purple-500 hover:to-cyan-500 transition-all-smooth hover:scale-105 shadow-2xl overflow-hidden"
+                            className="group relative px-8 py-4 text-lg font-semibold text-white rounded-2xl bg-gradient-to-r from-blue via-blue to-blue hover:from-blue hover:via-blue hover:to-blue transition-all-smooth hover:scale-105 shadow-2xl overflow-hidden"
                         >
-                            <div className="absolute inset-0 bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 opacity-0 group-hover:opacity-100 transition-all-smooth blur-xl"></div>
+                            <div className="absolute inset-0 bg-gradient-to-r from-blue via-blue to-blue opacity-0 group-hover:opacity-100 transition-all-smooth blur-xl"></div>
                             <span className="relative z-10">Start Building Consciousness</span>
                         </Link>
                         <Link

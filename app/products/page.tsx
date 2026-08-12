@@ -7,14 +7,14 @@ export const metadata: Metadata = {
     alternates: { canonical: "https://www.1martianway.com/products" },
     title: "Humanoid Robots | 1 Martian Way",
     description:
-        "Explore our advanced humanoid robots with AI consciousness - the future of human-robot collaboration.",
+ "Explore our advanced humanoid robots with AI consciousness - the future of human-robot collaboration.",
 };
 
 const humanoidModels = [
     {
         name: "Martian-X1 Assistant",
         description:
-            "Advanced humanoid assistant with consciousness-level AI for professional environments. Features natural conversation, emotional intelligence, and autonomous task execution.",
+ "Advanced humanoid assistant with consciousness-level AI for professional environments. Features natural conversation, emotional intelligence, and autonomous task execution.",
         category: "Personal Assistant",
         href: "/contact",
         image: "/assets/img/humanoids/martian-x1-assistant.jpg",
@@ -24,7 +24,7 @@ const humanoidModels = [
     {
         name: "Martian-Worker Industrial",
         description:
-            "Heavy-duty humanoid robot designed for industrial applications with enhanced strength, precision manipulation, and comprehensive safety protocols.",
+ "Heavy-duty humanoid robot designed for industrial applications with enhanced strength, precision manipulation, and comprehensive safety protocols.",
         category: "Industrial",
         href: "/contact",
         image: "/assets/img/humanoids/martian-worker-industrial.jpg",
@@ -34,7 +34,7 @@ const humanoidModels = [
     {
         name: "Martian-Care Medical",
         description:
-            "Specialized humanoid robot for healthcare environments with advanced patient interaction capabilities and medical assistance protocols.",
+ "Specialized humanoid robot for healthcare environments with advanced patient interaction capabilities and medical assistance protocols.",
         category: "Healthcare",
         href: "/contact",
         image: "/assets/img/humanoids/martian-care-medical.jpg",
@@ -44,7 +44,7 @@ const humanoidModels = [
     {
         name: "Martian-Explorer Research",
         description:
-            "Ruggedized humanoid robot for extreme environments and research applications with enhanced sensors and autonomous decision-making.",
+ "Ruggedized humanoid robot for extreme environments and research applications with enhanced sensors and autonomous decision-making.",
         category: "Research",
         href: "/martianos",
         image: "/assets/img/humanoids/martian-explorer-research.jpg",
@@ -57,7 +57,7 @@ export default function Products() {
     return (
         <div className="relative min-h-screen">
             {/* Background */}
-            <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900"></div>
+            <div className="absolute inset-0 bg-gradient-to-br from-canvas via-blue to-canvas"></div>
             <div className="absolute inset-0 grid-bg opacity-20"></div>
             
             <div className="relative mx-auto max-w-7xl px-6 py-6 sm:py-8 lg:px-8">
@@ -73,7 +73,7 @@ export default function Products() {
                     </p>
                     <div className="glass rounded-2xl p-4 max-w-2xl mx-auto">
                         <p className="text-sm text-white/80 text-center">
-                            All robots powered by <Link href="/martianos" className="gradient-text-primary font-semibold hover:text-blue-300 transition-colors">Martian OS</Link> - 
+                            All robots powered by <Link href="/martianos" className="gradient-text-primary font-semibold hover:text-blue transition-colors">Martian OS</Link> - 
                             Ultra-low latency real-time operating system written in Rust
                         </p>
                     </div>
@@ -110,7 +110,7 @@ export default function Products() {
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                                 <div className="absolute top-4 left-4">
-                                    <span className="inline-flex items-center rounded-full bg-gradient-to-r from-blue-600/90 to-purple-600/90 backdrop-blur-sm px-3 py-1 text-xs font-medium text-white">
+                                    <span className="inline-flex items-center rounded-full bg-gradient-to-r from-blue to-blue backdrop-blur-sm px-3 py-1 text-xs font-medium text-white">
                                         {robot.category}
                                     </span>
                                 </div>
@@ -130,7 +130,7 @@ export default function Products() {
                                     <div className="grid grid-cols-2 gap-2">
                                         {robot.specs.map((spec, i) => (
                                             <div key={i} className="text-xs text-white/70 flex items-center gap-2">
-                                                <span className="w-1.5 h-1.5 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full"></span>
+                                                <span className="w-1.5 h-1.5 bg-gradient-to-r from-blue to-blue rounded-full"></span>
                                                 {spec}
                                             </div>
                                         ))}
@@ -143,7 +143,7 @@ export default function Products() {
                                     <div className="grid grid-cols-2 gap-2">
                                         {robot.capabilities.map((capability, i) => (
                                             <div key={i} className="text-xs text-white/70 flex items-center gap-2">
-                                                <span className="w-1.5 h-1.5 bg-gradient-to-r from-cyan-400 to-blue-400 rounded-full"></span>
+                                                <span className="w-1.5 h-1.5 bg-gradient-to-r from-blue to-blue rounded-full"></span>
                                                 {capability}
                                             </div>
                                         ))}
@@ -152,7 +152,7 @@ export default function Products() {
                                 
                                 <Link
                                     href={robot.href}
-                                    className="inline-flex items-center text-sm font-semibold gradient-text-cyan hover:text-cyan-300 transition-colors group"
+                                    className="inline-flex items-center text-sm font-semibold gradient-text-cyan hover:text-blue transition-colors group"
                                 >
                                     Request Demo{" "}
                                     <ArrowRightIcon className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -201,7 +201,7 @@ export default function Products() {
                     
                     <Link
                         href="/artificialintelligence"
-                        className="inline-flex items-center px-6 py-3 text-sm font-semibold text-white rounded-2xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 transition-all-smooth hover:scale-105 shadow-lg"
+                        className="inline-flex items-center px-6 py-3 text-sm font-semibold text-white rounded-2xl bg-gradient-to-r from-blue to-blue hover:from-blue hover:to-blue transition-all-smooth hover:scale-105 shadow-lg"
                     >
                         Learn About Our AI Platform
                         <ArrowRightIcon className="ml-2 h-4 w-4" />
@@ -221,9 +221,9 @@ export default function Products() {
                         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                             <Link
                                 href="/contact"
-                                className="group relative px-8 py-4 text-lg font-semibold text-white rounded-2xl bg-gradient-to-r from-blue-600 via-purple-600 to-cyan-600 hover:from-blue-500 hover:via-purple-500 hover:to-cyan-500 transition-all-smooth hover:scale-105 shadow-2xl overflow-hidden"
+                                className="group relative px-8 py-4 text-lg font-semibold text-white rounded-2xl bg-gradient-to-r from-blue via-blue to-blue hover:from-blue hover:via-blue hover:to-blue transition-all-smooth hover:scale-105 shadow-2xl overflow-hidden"
                             >
-                                <div className="absolute inset-0 bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 opacity-0 group-hover:opacity-100 transition-all-smooth blur-xl"></div>
+                                <div className="absolute inset-0 bg-gradient-to-r from-blue via-blue to-blue opacity-0 group-hover:opacity-100 transition-all-smooth blur-xl"></div>
                                 <span className="relative z-10">Schedule Demo</span>
                             </Link>
                             <Link

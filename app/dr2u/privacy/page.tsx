@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     alternates: { canonical: "https://www.1martianway.com/dr2u/privacy" },
     title: "Privacy Policy | DR2U",
     description:
-        "Privacy Policy for DR2U - Learn how we collect, use, and protect your personal information.",
+ "Privacy Policy for DR2U - Learn how we collect, use, and protect your personal information.",
 };
 
 export default function Privacy() {
@@ -30,11 +30,11 @@ export default function Privacy() {
 
                 <div className="mx-auto mt-8 max-w-2xl space-y-8">
                     {/* Introduction */}
-                    <div className="rounded-2xl bg-white dark:bg-gray-800 p-8 shadow-xs ring-1 ring-gray-900/5">
-                        <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">
+                    <div className="rounded-2xl bg-solid dark:bg-panel p-8 shadow-xs ring-1 ring-gray-900/5">
+                        <h2 className="text-2xl font-semibold text-fg dark:text-white">
                             Introduction
                         </h2>
-                        <p className="mt-4 text-sm text-gray-600 dark:text-gray-300">
+                        <p className="mt-4 text-sm text-fg-muted dark:text-fg-muted">
                             Welcome to DR2U ("we," "our," "us"). We are
                             committed to protecting your privacy and ensuring
                             that your personal information is handled in a safe
@@ -47,27 +47,27 @@ export default function Privacy() {
                     </div>
 
                     {/* Information We Collect */}
-                    <div className="rounded-2xl bg-white dark:bg-gray-800 p-8 shadow-xs ring-1 ring-gray-900/5">
-                        <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">
+                    <div className="rounded-2xl bg-solid dark:bg-panel p-8 shadow-xs ring-1 ring-gray-900/5">
+                        <h2 className="text-2xl font-semibold text-fg dark:text-white">
                             Information We Collect
                         </h2>
                         <div className="mt-4 space-y-4">
-                            <div className="rounded-lg bg-gray-50 dark:bg-gray-700/50 p-4">
-                                <h3 className="text-lg font-medium text-gray-900 dark:text-white">
+                            <div className="rounded-lg bg-sunk dark:bg-panel p-4">
+                                <h3 className="text-lg font-medium text-fg dark:text-white">
                                     User Registration Information
                                 </h3>
-                                <ul className="mt-2 text-sm text-gray-600 dark:text-gray-300 list-disc pl-5">
+                                <ul className="mt-2 text-sm text-fg-muted dark:text-fg-muted list-disc pl-5">
                                     <li>Name</li>
                                     <li>Email address</li>
                                     <li>Phone number</li>
                                     <li>Other contact details</li>
                                 </ul>
                             </div>
-                            <div className="rounded-lg bg-gray-50 dark:bg-gray-700/50 p-4">
-                                <h3 className="text-lg font-medium text-gray-900 dark:text-white">
+                            <div className="rounded-lg bg-sunk dark:bg-panel p-4">
+                                <h3 className="text-lg font-medium text-fg dark:text-white">
                                     Health-Related Information
                                 </h3>
-                                <ul className="mt-2 text-sm text-gray-600 dark:text-gray-300 list-disc pl-5">
+                                <ul className="mt-2 text-sm text-fg-muted dark:text-fg-muted list-disc pl-5">
                                     <li>Medical history</li>
                                     <li>Symptoms</li>
                                     <li>
@@ -76,20 +76,20 @@ export default function Privacy() {
                                     </li>
                                 </ul>
                             </div>
-                            <div className="rounded-lg bg-gray-50 dark:bg-gray-700/50 p-4">
-                                <h3 className="text-lg font-medium text-gray-900 dark:text-white">
+                            <div className="rounded-lg bg-sunk dark:bg-panel p-4">
+                                <h3 className="text-lg font-medium text-fg dark:text-white">
                                     Location Data
                                 </h3>
-                                <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">
+                                <p className="mt-2 text-sm text-fg-muted dark:text-fg-muted">
                                     Your current location to connect you with
                                     nearby doctors
                                 </p>
                             </div>
-                            <div className="rounded-lg bg-gray-50 dark:bg-gray-700/50 p-4">
-                                <h3 className="text-lg font-medium text-gray-900 dark:text-white">
+                            <div className="rounded-lg bg-sunk dark:bg-panel p-4">
+                                <h3 className="text-lg font-medium text-fg dark:text-white">
                                     Payment Information
                                 </h3>
-                                <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">
+                                <p className="mt-2 text-sm text-fg-muted dark:text-fg-muted">
                                     Credit card details or other payment methods
                                     for processing transactions
                                 </p>
@@ -98,12 +98,12 @@ export default function Privacy() {
                     </div>
 
                     {/* How We Use Your Information */}
-                    <div className="rounded-2xl bg-white dark:bg-gray-800 p-8 shadow-xs ring-1 ring-gray-900/5">
-                        <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">
+                    <div className="rounded-2xl bg-solid dark:bg-panel p-8 shadow-xs ring-1 ring-gray-900/5">
+                        <h2 className="text-2xl font-semibold text-fg dark:text-white">
                             How We Use Your Information
                         </h2>
                         <div className="mt-4 space-y-4">
-                            <ul className="text-sm text-gray-600 dark:text-gray-300 list-disc pl-5 space-y-2">
+                            <ul className="text-sm text-fg-muted dark:text-fg-muted list-disc pl-5 space-y-2">
                                 <li>
                                     User Registration Information: To create and
                                     manage your account.
@@ -126,21 +126,21 @@ export default function Privacy() {
                     </div>
 
                     {/* Data Sharing and Security */}
-                    <div className="rounded-2xl bg-white dark:bg-gray-800 p-8 shadow-xs ring-1 ring-gray-900/5">
-                        <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">
+                    <div className="rounded-2xl bg-solid dark:bg-panel p-8 shadow-xs ring-1 ring-gray-900/5">
+                        <h2 className="text-2xl font-semibold text-fg dark:text-white">
                             Data Sharing and Security
                         </h2>
                         <div className="mt-4 space-y-6">
                             <div>
-                                <h3 className="text-lg font-medium text-gray-900 dark:text-white">
+                                <h3 className="text-lg font-medium text-fg dark:text-white">
                                     Data Sharing and Third Parties
                                 </h3>
-                                <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">
+                                <p className="mt-2 text-sm text-fg-muted dark:text-fg-muted">
                                     We do not share your personal information
                                     with any third parties, except in the
                                     following limited circumstances:
                                 </p>
-                                <ul className="mt-2 text-sm text-gray-600 dark:text-gray-300 list-disc pl-5">
+                                <ul className="mt-2 text-sm text-fg-muted dark:text-fg-muted list-disc pl-5">
                                     <li>
                                         Healthcare Providers: We may share
                                         necessary health-related information
@@ -160,10 +160,10 @@ export default function Privacy() {
                                 </ul>
                             </div>
                             <div>
-                                <h3 className="text-lg font-medium text-gray-900 dark:text-white">
+                                <h3 className="text-lg font-medium text-fg dark:text-white">
                                     Data Security
                                 </h3>
-                                <ul className="mt-2 text-sm text-gray-600 dark:text-gray-300 list-disc pl-5">
+                                <ul className="mt-2 text-sm text-fg-muted dark:text-fg-muted list-disc pl-5">
                                     <li>
                                         Encryption: Sensitive data, such as
                                         health-related information and payment
@@ -185,16 +185,16 @@ export default function Privacy() {
                     </div>
 
                     {/* Your Rights */}
-                    <div className="rounded-2xl bg-white dark:bg-gray-800 p-8 shadow-xs ring-1 ring-gray-900/5">
-                        <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">
+                    <div className="rounded-2xl bg-solid dark:bg-panel p-8 shadow-xs ring-1 ring-gray-900/5">
+                        <h2 className="text-2xl font-semibold text-fg dark:text-white">
                             Your Rights
                         </h2>
                         <div className="mt-4">
-                            <p className="text-sm text-gray-600 dark:text-gray-300">
+                            <p className="text-sm text-fg-muted dark:text-fg-muted">
                                 You have the following rights regarding your
                                 personal information:
                             </p>
-                            <ul className="mt-2 text-sm text-gray-600 dark:text-gray-300 list-disc pl-5">
+                            <ul className="mt-2 text-sm text-fg-muted dark:text-fg-muted list-disc pl-5">
                                 <li>
                                     Access: You can request access to the
                                     personal information we hold about you.
@@ -214,11 +214,11 @@ export default function Privacy() {
                     </div>
 
                     {/* Contact Information */}
-                    <div className="rounded-2xl bg-white dark:bg-gray-800 p-8 shadow-xs ring-1 ring-gray-900/5">
-                        <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">
+                    <div className="rounded-2xl bg-solid dark:bg-panel p-8 shadow-xs ring-1 ring-gray-900/5">
+                        <h2 className="text-2xl font-semibold text-fg dark:text-white">
                             Contact Us
                         </h2>
-                        <p className="mt-4 mb-6 text-sm text-gray-600 dark:text-gray-300">
+                        <p className="mt-4 mb-6 text-sm text-fg-muted dark:text-fg-muted">
                             If you have any questions or concerns about this
                             Privacy Policy or our data practices, please contact
                             us:
@@ -226,21 +226,21 @@ export default function Privacy() {
 
                         <div className="space-y-4">
                             <div>
-                                <h3 className="text-base font-semibold text-gray-900 dark:text-white">
+                                <h3 className="text-base font-semibold text-fg dark:text-white">
                                     1 Martian Way Industries Pvt. Ltd
                                 </h3>
-                                <div className="mt-2 flex items-center text-sm text-gray-600 dark:text-gray-300">
-                                    <GlobeIcon className="h-5 w-5 text-gray-400 mr-2" />
+                                <div className="mt-2 flex items-center text-sm text-fg-muted dark:text-fg-muted">
+                                    <GlobeIcon className="h-5 w-5 text-fg-dim mr-2" />
                                     https://1martianway.com
                                 </div>
                             </div>
 
                             <div>
-                                <h3 className="text-base font-semibold text-gray-900 dark:text-white">
+                                <h3 className="text-base font-semibold text-fg dark:text-white">
                                     Registered Office
                                 </h3>
-                                <div className="mt-2 flex items-start text-sm text-gray-600 dark:text-gray-300">
-                                    <HomeIcon className="h-5 w-5 text-gray-400 mr-2 mt-0.5" />
+                                <div className="mt-2 flex items-start text-sm text-fg-muted dark:text-fg-muted">
+                                    <HomeIcon className="h-5 w-5 text-fg-dim mr-2 mt-0.5" />
                                     <div>
                                         502 Satya Sadan, Bhimani Street
                                         <br />
@@ -254,19 +254,19 @@ export default function Privacy() {
                             </div>
 
                             <div className="space-y-2">
-                                <div className="flex items-center text-sm text-gray-600 dark:text-gray-300">
-                                    <EnvelopeClosedIcon className="h-5 w-5 text-gray-400 mr-2" />
+                                <div className="flex items-center text-sm text-fg-muted dark:text-fg-muted">
+                                    <EnvelopeClosedIcon className="h-5 w-5 text-fg-dim mr-2" />
                                     sales[at]1martianway[dot]com
                                 </div>
-                                <div className="flex items-center text-sm text-gray-600 dark:text-gray-300">
-                                    <MobileIcon className="h-5 w-5 text-gray-400 mr-2" />
+                                <div className="flex items-center text-sm text-fg-muted dark:text-fg-muted">
+                                    <MobileIcon className="h-5 w-5 text-fg-dim mr-2" />
                                 </div>
                             </div>
 
                             <div className="pt-4">
                                 <Link
                                     href="/contact"
-                                    className="inline-flex items-center rounded-full bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+                                    className="inline-flex items-center rounded-full bg-blue-soft px-4 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-blue-soft focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
                                 >
                                     Contact Us
                                     <ArrowRightIcon className="ml-2 h-4 w-4" />
@@ -276,11 +276,11 @@ export default function Privacy() {
                     </div>
 
                     {/* Changes to Privacy Policy */}
-                    <div className="rounded-2xl bg-white dark:bg-gray-800 p-8 shadow-xs ring-1 ring-gray-900/5">
-                        <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">
+                    <div className="rounded-2xl bg-solid dark:bg-panel p-8 shadow-xs ring-1 ring-gray-900/5">
+                        <h2 className="text-2xl font-semibold text-fg dark:text-white">
                             Changes to This Privacy Policy
                         </h2>
-                        <p className="mt-4 text-sm text-gray-600 dark:text-gray-300">
+                        <p className="mt-4 text-sm text-fg-muted dark:text-fg-muted">
                             We may update this Privacy Policy from time to time.
                             We will notify you of any changes by posting the new
                             Privacy Policy on this page and updating the "Last

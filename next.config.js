@@ -8,6 +8,24 @@ const nextConfig = {
     },
     poweredByHeader: false,
 
+    /*
+      First-party analytics proxy. Ad-blockers match on hostname and path, so a
+      script served from our own origin at a non-obvious path survives most of
+      them. Without this, self-hosted analytics typically reports about half of
+      real traffic.
+
+      UMAMI_HOST is set at deploy time; when it is unset these rewrites are
+      simply not emitted, so a missing analytics host cannot break the build.
+    */
+    async rewrites() {
+        const host = process.env.UMAMI_HOST;
+        if (!host) return [];
+        return [
+            { source: "/js/mw.js", destination: `${host}/script.js` },
+            { source: "/api/send", destination: `${host}/api/send` },
+        ];
+    },
+
     async redirects() {
         return [
             // Apex -> www.

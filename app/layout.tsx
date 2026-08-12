@@ -4,6 +4,7 @@ import { Plus_Jakarta_Sans } from "next/font/google";
 import MainLayout from "./components/MainLayout";
 import StructuredData from "./components/StructuredData";
 import "./globals.css";
+import Script from "next/script";
 import { Providers } from "./providers";
 
 // Plus Jakarta Sans is the Mission Deck's own face — using it here is what
@@ -90,7 +91,7 @@ export const viewport: Viewport = {
     // Matches the two palettes in base.css so the browser chrome agrees with
     // the page in both themes rather than always painting the dark canvas.
     themeColor: [
-        { media: "(prefers-color-scheme: light)", color: "#EDF0F5" },
+        { media: "(prefers-color-scheme: light)", color: "#F2F3F7" },
         { media: "(prefers-color-scheme: dark)", color: "#0B0D12" },
     ],
 };
@@ -116,6 +117,17 @@ export default function RootLayout({
                 <Providers>
                     <MainLayout>{children}</MainLayout>
                 </Providers>
+                {/* Served from our own origin via the rewrite in next.config.js.
+                    Cookieless, so no consent banner is required — which stays
+                    true only as long as nothing else here sets one. */}
+                {process.env.NEXT_PUBLIC_UMAMI_ID && (
+                    <Script
+                        src="/js/mw.js"
+                        data-website-id={process.env.NEXT_PUBLIC_UMAMI_ID}
+                        data-host-url="/"
+                        strategy="afterInteractive"
+                    />
+                )}
             </body>
         </html>
     );

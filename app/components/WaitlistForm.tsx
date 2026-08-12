@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { signupError, signupSubmit, signupSuccess, signupView } from "@/app/lib/analytics";
 import type { SignupSource } from "@/app/lib/waitlist";
 
 type Status = "idle" | "sending" | "done" | "already" | "error";
@@ -35,6 +36,26 @@ export default function WaitlistForm({
     // anything submitted in under 2s (bot) or older than 24h (stale page).
     const token = useRef("");
 
+    // Fires once, when the form actually enters the viewport — the funnel's
+    // denominator. Counting renders instead would inflate it on every page that
+    // carries a form below the fold.
+    const box = useRef<HTMLDivElement>(null);
+    useEffect(() => {
+        const el = box.current;
+        if (!el) return;
+        const io = new IntersectionObserver(
+            ([e]) => {
+                if (e.isIntersecting) {
+                    signupView(source);
+                    io.disconnect();
+                }
+            },
+            { threshold: 0.4 }
+        );
+        io.observe(el);
+        return () => io.disconnect();
+    }, [source]);
+
     useEffect(() => {
         let cancelled = false;
         fetch("/api/waitlist/token")
@@ -53,6 +74,7 @@ export default function WaitlistForm({
         if (status === "sending") return;
         setStatus("sending");
         setError(null);
+        signupSubmit(source);
 
         const form = e.currentTarget;
         const params = new URLSearchParams(window.location.search);
@@ -80,6 +102,7 @@ export default function WaitlistForm({
 
             if (!res.ok) {
                 setStatus("error");
+                signupError(source, data?.error ?? "server");
                 setError(
                     data?.error === "invalid_email"
                         ? "That email doesn't look right."
@@ -89,10 +112,13 @@ export default function WaitlistForm({
                 );
                 return;
             }
-            setStatus(data.status === "already_subscribed" ? "already" : "done");
+            const dup = data.status === "already_subscribed";
+            signupSuccess(source, dup);
+            setStatus(dup ? "already" : "done");
             setEmail("");
         } catch {
             setStatus("error");
+            signupError(source, "network");
             setError("That didn't go through. Try again in a moment?");
         }
     }
@@ -118,7 +144,7 @@ export default function WaitlistForm({
     const hero = size === "hero";
 
     return (
-        <div className={className}>
+        <div ref={box} className={className}>
             <form onSubmit={onSubmit} noValidate>
                 {/* Honeypot — hidden from people and from screen readers, but a naive
                     bot fills every field it finds. A filled value returns 200 and
@@ -129,23 +155,27 @@ export default function WaitlistForm({
                 </div>
 
                 <div
-                    className={`border-line-hi bg-canvas focus-within:border-red focus-within:shadow-[0_0_0_3px_var(--color-red-soft)] flex gap-2 rounded-[11px] border p-1.5 transition-[border-color,box-shadow] max-[430px]:flex-col ${
+                    className={`border-line-hi bg-canvas focus-within:border-red focus-within:shadow-[0_0_0_3px_var(--color-red-soft)] [&:focus-within_.caret]:opacity-0 flex gap-2 rounded-[11px] border p-1.5 transition-[border-color,box-shadow] max-[430px]:flex-col ${
                         hero ? "sm:p-2" : ""
                     }`}
                 >
-                    {/* A caret, not a send arrow — it says "typable" while the labelled
-                        red button says "this submits". It fades once you start. */}
-                    <span
-                        aria-hidden
-                        className="text-red animate-blink flex items-center pl-2.5 font-mono text-sm [:focus-within>&]:opacity-0 max-[430px]:hidden"
-                    >
-                        ▍
-                    </span>
+                    {/* Caret + input share a gapless nested flex so the caret sits
+                        exactly where the text begins. As a direct flex sibling it
+                        inherited the parent's gap AND its own padding, landing ~12px
+                        adrift of the first character — which read as a stray red bar
+                        rather than a cursor. */}
+                    <div className="flex min-w-0 flex-1 items-center">
+                        <span
+                            aria-hidden
+                            className="caret text-red animate-blink select-none pl-3 pr-[3px] font-mono text-sm leading-none max-[430px]:hidden"
+                        >
+                            ▍
+                        </span>
 
-                    <label htmlFor={`email-${source}`} className="sr-only">
-                        Email address
-                    </label>
-                    <input
+                        <label htmlFor={`email-${source}`} className="sr-only">
+                            Email address
+                        </label>
+                        <input
                         id={`email-${source}`}
                         name="email"
                         type="email"
@@ -158,10 +188,11 @@ export default function WaitlistForm({
                         aria-invalid={status === "error" || undefined}
                         // The wrapper already shows focus; suppressing the global ring
                         // here avoids a ring drawn inside a ring.
-                        className={`text-fg placeholder:text-fg-dim min-w-0 flex-1 border-0 bg-transparent px-1 outline-none focus-visible:shadow-none ${
-                            hero ? "py-3 text-[15px]" : "py-2.5 text-sm"
-                        }`}
-                    />
+                            className={`text-fg placeholder:text-fg-dim min-w-0 flex-1 border-0 bg-transparent px-0 outline-none focus-visible:shadow-none ${
+                                hero ? "py-3 text-[15px]" : "py-2.5 text-sm"
+                            }`}
+                        />
+                    </div>
                     <button
                         type="submit"
                         disabled={status === "sending"}
