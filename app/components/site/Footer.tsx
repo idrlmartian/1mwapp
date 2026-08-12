@@ -100,7 +100,11 @@ function Column({
 export default function Footer() {
     return (
         <footer className="border-line bg-canvas-2 mt-3.5 border-t">
-            <div className="mx-auto max-w-[1280px] px-6 pb-8 pt-12">
+            {/* --container-page, not a literal. This was max-w-[1280px] with
+                px-6 while the page above it ran 1560 with px-3.5, so the footer
+                sat 126px right of everything else on a 1512px laptop and 150px
+                on a 1920. Same token, same padding, one left edge. */}
+            <div className="mx-auto max-w-[var(--container-page)] px-[var(--container-pad)] pb-8 pt-12">
                 <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-[1.6fr_repeat(3,1fr)]">
                     <div>
                         <Link href="/" className="flex items-center gap-2.5 text-[14.5px] font-extrabold tracking-[-0.015em]">

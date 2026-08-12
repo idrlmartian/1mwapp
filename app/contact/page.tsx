@@ -24,7 +24,7 @@ export default function ContactPage() {
     return (
         <>
             <StructuredData type="Organization" />
-            <div className="mx-auto max-w-[var(--container-page)] px-3.5 py-10">
+            <div className="mx-auto max-w-[var(--container-page)] px-[var(--container-pad)] py-10">
                 <div className="mx-auto max-w-[900px]">
                     <p className="deck-label mb-3">Contact</p>
                     <h1 className="text-[clamp(1.6rem,4vw,2.4rem)] font-extrabold tracking-[-0.03em]">

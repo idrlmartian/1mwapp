@@ -61,7 +61,7 @@ export default function AboutPage() {
     return (
         <>
             <StructuredData type="Organization" />
-            <div className="mx-auto grid max-w-[var(--container-page)] gap-3.5 p-3.5">
+            <div className="mx-auto grid max-w-[var(--container-page)] gap-3.5 px-[var(--container-pad)] py-3.5">
                 <Panel>
                     <p className="deck-label mb-3">About</p>
                     <h1 className="text-hero mb-4 max-w-[20ch]">

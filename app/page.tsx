@@ -140,7 +140,7 @@ export default function Home() {
             </main>
 
             {/* ── panels ────────────────────────────────────────────────── */}
-            <div className="mx-auto grid max-w-[var(--container-page)] gap-3.5 px-3.5 pb-3.5">
+            <div className="mx-auto grid max-w-[var(--container-page)] gap-3.5 px-[var(--container-pad)] pb-3.5">
                 <section className="deck-card p-5">
                     <p className="deck-label mb-3.5 flex items-center gap-2.5 after:h-px after:flex-1 after:bg-[var(--color-line)] after:content-['']">
                         The differentiator

@@ -59,6 +59,24 @@
   --c-atlas: #be123c;
 
   --body-glow: radial-gradient(120% 70% at 50% -10%, rgb(255 255 255 / 0.9), transparent 60%);
+  /*
+    The page gutter, and it has to scale.
+
+    --container-page is 1560px, which means it almost never engages: every
+    laptop viewport is under it, so the max-width does nothing and the only
+    thing holding content off the glass is this padding. At the flat 14px it
+    used to be, the site ran edge to edge from ~900px up and read as unfinished.
+
+      390px  → 18px      1280px → 44px
+      768px  → 26px      1512px → 51px
+      988px  → 34px      1650px+ → 56px (capped; the container takes over)
+
+    Deliberately NOT in @theme: values referenced through var() at runtime get
+    tree-shaken there when no utility claims them — the same failure that took
+    out the agent dot colours. Non-colour runtime tokens live here, beside
+    --glass and --dur.
+  */
+  --container-pad: clamp(18px, 3.4vw, 56px);
   --glass: blur(20px) saturate(1.25);
   --dur: 200ms;
   --dur-slow: 600ms;

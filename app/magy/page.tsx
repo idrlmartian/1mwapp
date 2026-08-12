@@ -176,7 +176,7 @@ export default function MagyPage() {
                 aria-label="On this page"
                 className="border-line bg-canvas/85 sticky top-14 z-40 -mb-1 overflow-x-auto border-y backdrop-blur-xl"
             >
-                <ul className="mx-auto flex max-w-[var(--container-page)] gap-1 px-3.5 py-2">
+                <ul className="mx-auto flex max-w-[var(--container-page)] gap-1 px-[var(--container-pad)] py-2">
                     {SECTIONS.map(([id, label]) => (
                         <li key={id}>
                             <a
@@ -190,7 +190,7 @@ export default function MagyPage() {
                 </ul>
             </nav>
 
-            <div className="mx-auto grid max-w-[var(--container-page)] gap-3.5 p-3.5">
+            <div className="mx-auto grid max-w-[var(--container-page)] gap-3.5 px-[var(--container-pad)] py-3.5">
                 {/* ── demo ─────────────────────────────────────────────── */}
                 <Panel id="demo" label="Watch it work">
                     {/* Two columns on purpose: full-bleed 16:9 at container width makes a

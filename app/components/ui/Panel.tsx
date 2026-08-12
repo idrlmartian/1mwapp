@@ -56,6 +56,6 @@ export function Quote({ children, className = "" }: { children: ReactNode; class
  */
 export function ComingSoon({ children }: { children: ReactNode }) {
     return (
-        <div className="mx-auto grid max-w-[var(--container-page)] gap-3.5 p-3.5">{children}</div>
+        <div className="mx-auto grid max-w-[var(--container-page)] gap-3.5 px-[var(--container-pad)] py-3.5">{children}</div>
     );
 }
