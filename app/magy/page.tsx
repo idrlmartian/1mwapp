@@ -117,7 +117,7 @@ export default function MagyPage() {
                                         className="grid grid-cols-[9px_42px_1fr] items-baseline gap-2.5 px-3.5 py-1 text-[11.5px]"
                                     >
                                         <i
-                                            className="size-1.5 translate-y-[3px] rounded-full bg-[var(--dot)]"
+                                            className="size-1.5 translate-y-[3px] rounded-full bg-[var(--dot)] shadow-[0_0_7px_var(--dot)]"
                                             style={{ ["--dot" as string]: `var(--color-${e.token})` }}
                                         />
                                         <time className="text-fg-dim tabnum font-mono">{e.time}</time>
