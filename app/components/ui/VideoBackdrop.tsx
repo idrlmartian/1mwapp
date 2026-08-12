@@ -111,7 +111,13 @@ export default function VideoBackdrop({ className = "" }: Props) {
             {/* Poster as a background rather than an <img>: it must cover, and it
                 must not be a second element competing to be the LCP candidate. */}
             <div
-                className="world-poster absolute inset-0 bg-[#0b0d12] bg-[38%_42%] bg-cover bg-no-repeat transition-opacity duration-[var(--dur-slow)] ease-[var(--ease-out-expo)]"
+                /* Focal point sits RIGHT of centre because the rail sits left.
+                   It was 38% when the rail was on the right; leaving it there
+                   after the flip would park the subject under the copy. In light
+                   the world is now a declared 16:9 box so a 16:9 capture does not
+                   crop at all and this is inert — it matters in dark, where the
+                   world is a full-bleed backdrop and `cover` still crops. */
+                className="world-poster absolute inset-0 bg-[#0b0d12] bg-[62%_42%] bg-cover bg-no-repeat transition-opacity duration-[var(--dur-slow)] ease-[var(--ease-out-expo)]"
                 style={{ backgroundImage: `image-set(url(${HERO.poster}) type("image/avif"), url(${HERO.posterFallback}) type("image/jpeg"))` }}
             />
             <video

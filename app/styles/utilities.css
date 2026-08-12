@@ -148,17 +148,28 @@
   leaves the grid flow, and without pinned columns the rail collapses into the
   1fr track and stretches full width.
 */
+/*
+  Rail LEFT, world right. The reading order is the reason: the headline and the
+  ask are the two things a visitor must not miss, and on a left-to-right page
+  they should not be the second thing the eye lands on.
+
+  Flipping the columns means flipping the dark scrim with them — see the
+  gradient below. It is a one-sided ramp that has to darken UNDER the rail, and
+  a rail that moves without it sits on the brightest part of the capture.
+*/
 .deck-grid {
   display: grid;
-  grid-template-columns: 1fr 404px;
+  grid-template-columns: 404px 1fr;
   gap: 14px;
   align-items: start;
   min-height: calc(100svh - 84px);
 }
-.deck-grid > .world { grid-column: 1; grid-row: 1; }
-.deck-grid > .deck-rail { grid-column: 2; grid-row: 1; }
+.deck-grid > .deck-rail { grid-column: 1; grid-row: 1; }
+.deck-grid > .world { grid-column: 2; grid-row: 1; }
 
 @media (max-width: 1000px) {
+  /* Stacked, world first: on a phone the capture is the hook and the rail is
+     what you scroll to, which is the opposite of the desktop priority. */
   .deck-grid { grid-template-columns: 1fr; min-height: 0; }
   .deck-grid > .world { grid-column: 1; grid-row: 1; }
   .deck-grid > .deck-rail { grid-column: 1; grid-row: 2; }
@@ -237,7 +248,7 @@
   }
   /* Legibility scrim, dark only — in light there is nothing to read through. */
   :root:not([data-theme="light"]) .world::after {
-    background: linear-gradient(90deg, rgb(11 13 18 / 0.10), rgb(11 13 18 / 0.52) 60%, rgb(11 13 18 / 0.80));
+    background: linear-gradient(270deg, rgb(11 13 18 / 0.10), rgb(11 13 18 / 0.52) 60%, rgb(11 13 18 / 0.80));
   }
 }
 :root[data-theme="dark"] .world {
@@ -250,7 +261,7 @@
   max-height: none;
 }
 :root[data-theme="dark"] .world::after {
-  background: linear-gradient(90deg, rgb(11 13 18 / 0.10), rgb(11 13 18 / 0.52) 60%, rgb(11 13 18 / 0.80));
+  background: linear-gradient(270deg, rgb(11 13 18 / 0.10), rgb(11 13 18 / 0.52) 60%, rgb(11 13 18 / 0.80));
 }
 @media (max-width: 1000px) {
   :root[data-theme="dark"] .world::after {

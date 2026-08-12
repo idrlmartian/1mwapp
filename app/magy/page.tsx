@@ -77,8 +77,20 @@ export default function MagyPage() {
         <>
             <StructuredData type="SoftwareApplication" />
 
-            <main className="relative isolate overflow-hidden p-3.5">
-                <div className="deck-grid">
+            {/*
+                The hero shares the site container and gutter with everything
+                below it. It was on a flat p-3.5 while the sections used
+                --container-pad, so the deck ran ~50px wider on each side than
+                the panels under it and the page had two different left edges
+                stacked vertically — the same defect the header and footer had.
+
+                In DARK the world is position:absolute inset:0 against this
+                <main>, so it still bleeds past the gutter to the window edges.
+                Padding the container does not contain the backdrop, which is
+                the behaviour we want: copy respects the grid, footage does not.
+            */}
+            <main className="relative isolate overflow-hidden px-[var(--container-pad)] py-3.5">
+                <div className="deck-grid mx-auto max-w-[var(--container-page)]">
                     <VideoBackdrop />
                     <div className="deck-rail flex flex-col gap-3">
                         <section className="deck-card p-4">
@@ -118,37 +130,6 @@ export default function MagyPage() {
                             </ul>
                         </section>
 
-                        <section className="deck-card overflow-hidden">
-                            <p className="deck-label border-line border-b px-3.5 py-2.5">Live activity</p>
-                            <ul className="py-1.5">
-                                {ACTIVITY.map((e) => (
-                                    <li
-                                        key={e.time}
-                                        className="grid grid-cols-[9px_42px_1fr] items-baseline gap-2.5 px-3.5 py-1 text-[11.5px]"
-                                    >
-                                        <i
-                                            className="size-1.5 translate-y-[3px] rounded-full bg-[var(--dot)] shadow-[0_0_7px_var(--dot)]"
-                                            style={{ ["--dot" as string]: `var(--c-${e.token})` }}
-                                        />
-                                        <time className="text-fg-dim tabnum font-mono">{e.time}</time>
-                                        <span className="text-fg-muted">
-                                            {e.agent && <b className="text-fg font-semibold">{e.agent} </b>}
-                                            {e.text}
-                                        </span>
-                                    </li>
-                                ))}
-                            </ul>
-                            <pre className="border-line bg-sunk text-fg-muted mx-3.5 mb-3 overflow-x-auto rounded-[var(--radius-md)] border p-2.5 font-mono text-[10.5px] leading-relaxed">
-                                <code>
-                                    {`$ magy delegate --to zara "extract the parser"\n`}
-                                    <span className="text-blue">zara</span> worktree{" "}
-                                    <span className="text-good">acquired</span> · feat/parser-extract{"\n"}
-                                    <span className="text-blue">luna</span> review{" "}
-                                    <span className="text-good">approved</span> → PR #482 opened
-                                </code>
-                            </pre>
-                        </section>
-
                         <section
                             id="early-access"
                             className="border-red bg-solid shadow-[var(--shadow-deck),0_0_0_4px_var(--color-red-soft)] scroll-mt-20 overflow-hidden rounded-[var(--radius-lg)] border"
@@ -176,6 +157,51 @@ export default function MagyPage() {
                     </div>
                 </div>
             </main>
+
+            {/*
+                Lifted out of the rail, where it was the third stacked card.
+
+                Three cards made the rail the tallest thing in the deck, which
+                pushed the world into whatever height was left over and buried
+                most of the capture behind the column. Two cards let the world
+                breathe at its own ratio.
+
+                It also reads better here: the feed and the command that produced
+                it, side by side, instead of crammed into a 404px column.
+            */}
+            <div className="mx-auto grid max-w-[var(--container-page)] px-[var(--container-pad)] pt-3.5">
+                <Panel label="Live activity">
+                    <div className="grid gap-6 lg:grid-cols-2">
+                        <ul>
+                            {ACTIVITY.map((e) => (
+                                <li
+                                    key={e.time}
+                                    className="grid grid-cols-[9px_46px_1fr] items-baseline gap-2.5 py-1 text-[12.5px]"
+                                >
+                                    <i
+                                        className="size-1.5 translate-y-[3px] rounded-full bg-[var(--dot)] shadow-[0_0_7px_var(--dot)]"
+                                        style={{ ["--dot" as string]: `var(--c-${e.token})` }}
+                                    />
+                                    <time className="text-fg-dim tabnum font-mono">{e.time}</time>
+                                    <span className="text-fg-muted">
+                                        {e.agent && <b className="text-fg font-semibold">{e.agent} </b>}
+                                        {e.text}
+                                    </span>
+                                </li>
+                            ))}
+                        </ul>
+                        <pre className="border-line bg-sunk text-fg-muted overflow-x-auto rounded-[var(--radius-md)] border p-3 font-mono text-[11px] leading-[1.85]">
+                            <code>
+                                {`$ magy delegate --to zara "extract the parser"\n`}
+                                <span className="text-blue">zara</span> worktree{" "}
+                                <span className="text-good">acquired</span> · feat/parser-extract{"\n"}
+                                <span className="text-blue">luna</span> review{" "}
+                                <span className="text-good">approved</span> → PR #482 opened
+                            </code>
+                        </pre>
+                    </div>
+                </Panel>
+            </div>
 
             {/* Sticky section nav. Active state matches the header's current-page
                 pill exactly — see the note in ui/SectionNav.tsx. */}
