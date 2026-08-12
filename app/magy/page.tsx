@@ -53,7 +53,7 @@ const FAQ = [
     },
     {
         q: "When can I use it?",
-        a: "The embedded path, the MagyVerse browser view and the Telegram channel are in daily use now. Pre-built binaries and the paid tier are next — which is what the early-access list is for.",
+        a: "We are opening access in stages. Everyone on the early-access list is notified by email as soon as their turn comes up — no waiting on an announcement, no queue to check.",
     },
 ];
 
