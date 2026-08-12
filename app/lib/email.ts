@@ -26,6 +26,9 @@ export const SALES_EMAIL = "sales@1martianway.com";
 
 const SES_REGION = process.env.SES_REGION ?? process.env.AWS_REGION ?? "ap-south-1";
 
+// undefined (not "") when unset — SES rejects an empty configuration set name.
+const CONFIG_SET = process.env.SES_CONFIGURATION_SET || undefined;
+
 /** Envelope sender. SES verifies the whole domain, so any @1martianway.com works. */
 const FROM_EMAIL =
     process.env.MAIL_FROM_EMAIL ?? process.env.SMTP_FROM_EMAIL ?? SALES_EMAIL;
@@ -91,9 +94,16 @@ export async function sendMail(msg: {
     // Destination is passed explicitly rather than left to SES's header
     // parsing. FromEmailAddress deliberately is NOT — supplying it overrides
     // the MIME From and would drop the "1 Martian Way" display name.
+    //
+    // ConfigurationSetName buys per-domain bounce/complaint metrics. It does
+    // NOT isolate risk: SES enforcement (throttle/pause) is account-level, and
+    // this account also carries droneracingindia.com's live transactional
+    // mail. So the value is seeing a bounce problem building here before AWS
+    // acts on it and takes IDRL's mail down with ours.
     await getClient().send(
         new SendEmailCommand({
             Destination: { ToAddresses: [msg.to] },
+            ConfigurationSetName: CONFIG_SET,
             Content: { Raw: { Data: new Uint8Array(raw) } },
         })
     );
