@@ -86,6 +86,22 @@ export const NAV = [
 export const COMPANY = {
     legal: "1 Martian Way Industries Pvt. Ltd.",
     email: "sales@1martianway.com",
+    /*
+      DPDP Act 2023 requires a Data Fiduciary to publish the contact details of
+      a named person who can answer questions about how personal data is
+      processed. The waitlist makes us one the moment it collects an address,
+      so this is an obligation rather than a courtesy — and it must stay a real
+      reachable person, not a role placeholder.
+
+      privacy@ is deliberately a separate alias from sales@: grievances should
+      not compete with sales mail for attention, and the address outlives
+      whoever holds the role.
+    */
+    grievanceOfficer: {
+        name: "Karan Kamdar",
+        title: "Grievance Officer",
+        email: "privacy@1martianway.com",
+    },
     address: [
         "1 Martian Way Industries Pvt. Ltd.",
         "502 Satya Sadan, Bhimani Street",

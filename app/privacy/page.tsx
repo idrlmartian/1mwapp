@@ -13,7 +13,9 @@ export const metadata: Metadata = {
   line beside every signup field links here. India's DPDP Act 2023 also
   requires a notice and a named grievance officer.
 
-  TODO before launch: name the grievance officer.
+  The officer is named in COMPANY.grievanceOfficer and must remain a real
+  reachable person — the obligation is to publish someone who can actually
+  answer, so a generic inbox with no name behind it does not satisfy it.
 */
 export default function PrivacyPage() {
     const updated = "12 August 2026";
@@ -73,8 +75,28 @@ export default function PrivacyPage() {
                     You can ask us what we hold about you, ask us to correct it, or ask us to delete
                     it — write to{" "}
                     <a href={`mailto:${COMPANY.email}`} className="text-blue hover:underline">{COMPANY.email}</a>{" "}
-                    and we will action it. Under India&rsquo;s Digital Personal Data Protection Act,
-                    2023 you may also raise a grievance with us directly at that address.
+                    and we will action it.
+                </p>
+
+                <h2>Grievance Officer</h2>
+                <p>
+                    Under India&rsquo;s Digital Personal Data Protection Act, 2023 you may raise a
+                    grievance about how we handle your personal data with our Grievance Officer:
+                </p>
+                <address className="not-italic">
+                    <span className="block font-medium text-[var(--color-fg)]">
+                        {COMPANY.grievanceOfficer.name}
+                    </span>
+                    <span className="block">{COMPANY.grievanceOfficer.title}, {COMPANY.legal}</span>
+                    <a
+                        href={`mailto:${COMPANY.grievanceOfficer.email}`}
+                        className="text-blue mt-1 inline-block hover:underline"
+                    >
+                        {COMPANY.grievanceOfficer.email}
+                    </a>
+                </address>
+                <p>
+                    We aim to acknowledge a grievance within 48 hours and resolve it within 30 days.
                 </p>
 
                 <h2>Contact</h2>
