@@ -12,23 +12,35 @@ export default function StructuredData({ type, data }: StructuredDataProps) {
             "@type": "Organization",
             name: "1 Martian Way Industries",
             description: "World's leading developer of conscious humanoid robots and advanced robot operating systems",
-            url: "https://1martianway.com",
-            logo: "https://1martianway.com/assets/img/1mw-logo.png",
+            url: "https://www.1martianway.com",
+            logo: "https://www.1martianway.com/assets/img/1mw-mark-512.png",
+            // sameAs must list profiles that actually resolve and are ours.
+            // github.com/1martianway is removed until the repos are public — an
+            // org page with nothing in it is a weaker signal than no entry.
+            // TODO: confirm these two are the real handles before launch.
             sameAs: [
-                "https://twitter.com/1MartianWay",
-                "https://linkedin.com/company/1martianway",
-                "https://github.com/1martianway"
+                "https://x.com/1MartianWay",
+                "https://www.linkedin.com/company/1martianway"
             ],
             industry: "Robotics Technology",
+            // TODO: verify. The chess-robot press coverage predates 2020.
             foundingDate: "2020",
+            founder: {
+                "@type": "Person",
+                name: "Karan Kamdar",
+                jobTitle: "CEO"
+            },
             address: {
                 "@type": "PostalAddress",
-                addressCountry: "India"
+                streetAddress: "502 Satya Sadan, Bhimani Street, Matunga East",
+                addressLocality: "Mumbai",
+                postalCode: "400019",
+                addressCountry: "IN"
             },
             contactPoint: {
                 "@type": "ContactPoint",
                 contactType: "Research Partnerships",
-                url: "https://1martianway.com/contact"
+                url: "https://www.1martianway.com/contact"
             },
             makesOffer: [
                 {
@@ -69,7 +81,7 @@ export default function StructuredData({ type, data }: StructuredDataProps) {
                     manufacturer: {
                         "@type": "Organization",
                         name: "1 Martian Way Industries",
-                        url: "https://1martianway.com"
+                        url: "https://www.1martianway.com"
                     },
                     category: "Humanoid Robotics",
                     audience: {
@@ -90,15 +102,11 @@ export default function StructuredData({ type, data }: StructuredDataProps) {
                     creator: {
                         "@type": "Organization",
                         name: "1 Martian Way Industries",
-                        url: "https://1martianway.com"
+                        url: "https://www.1martianway.com"
                     },
-                    offers: {
-                        "@type": "Offer",
-                        price: "Contact for licensing",
-                        priceCurrency: "USD",
-                        availability: "https://schema.org/InStock",
-                        url: "https://1martianway.com/licensing"
-                    },
+                    // No `offers` block: there is no published price, and the
+                    // previous value ("Contact for licensing") is not a number,
+                    // which Google's structured-data test rejects outright.
                     featureList: [
                         "Sub-microsecond interrupt latency",
                         "Memory safety guarantees",
@@ -117,21 +125,21 @@ export default function StructuredData({ type, data }: StructuredDataProps) {
                     author: {
                         "@type": "Organization",
                         name: "1 Martian Way Industries",
-                        url: "https://1martianway.com"
+                        url: "https://www.1martianway.com"
                     },
                     publisher: {
                         "@type": "Organization",
                         name: "1 Martian Way Industries",
-                        url: "https://1martianway.com",
+                        url: "https://www.1martianway.com",
                         logo: {
                             "@type": "ImageObject",
-                            url: "https://1martianway.com/assets/img/1mw-logo.png"
+                            url: "https://www.1martianway.com/assets/img/1mw-mark-512.png"
                         }
                     },
                     dateModified: new Date().toISOString(),
                     mainEntityOfPage: {
                         "@type": "WebPage",
-                        "@id": data?.url || "https://1martianway.com"
+                        "@id": data?.url || "https://www.1martianway.com"
                     }
                 };
 

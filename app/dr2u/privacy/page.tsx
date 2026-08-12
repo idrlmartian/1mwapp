@@ -9,6 +9,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
+    alternates: { canonical: "https://www.1martianway.com/dr2u/privacy" },
     title: "Privacy Policy | DR2U",
     description:
         "Privacy Policy for DR2U - Learn how we collect, use, and protect your personal information.",
@@ -259,7 +260,6 @@ export default function Privacy() {
                                 </div>
                                 <div className="flex items-center text-sm text-gray-600 dark:text-gray-300">
                                     <MobileIcon className="h-5 w-5 text-gray-400 mr-2" />
-                                    +91 8850.227233
                                 </div>
                             </div>
 

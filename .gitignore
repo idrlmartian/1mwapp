@@ -41,3 +41,6 @@ yarn-error.log*
 next-env.d.ts
 
 # .serena: track project.yml + memories; local-only paths in .serena/.gitignore
+
+# raw MagyVerse captures — source material, not shipped
+.captures/

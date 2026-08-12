@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
+    alternates: { canonical: "https://www.1martianway.com/press" },
     title: "Press | 1 Martian Way",
     description:
         "1 Martian Way has been featured in numerous local and international media.",

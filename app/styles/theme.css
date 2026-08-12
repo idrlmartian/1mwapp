@@ -1,0 +1,101 @@
+/*
+  Design tokens — 1martianway.com, in Magy's Mission Deck chrome.
+
+  Lifted from magyverse/public/mockups/mission-deck.html so the marketing site
+  and the product are the same design, not two designs that resemble each other.
+
+  ── THE COLOUR RULE ────────────────────────────────────────────────────────
+  Two accents, separate jobs, never swapped:
+
+    BLUE   the product. Nav state, links, focus, deck chrome, agent state.
+    RED    the 1MW mark, and EVERY conversion action.
+
+  Nothing decorative is ever red. That is what makes a red control on this site
+  unambiguously a call to action — and it is why the signup can sit in the
+  composer position without being mistaken for a chat input.
+
+  Agent colours are DATA. They may tint a dot, a chip or a timeline node. They
+  may never colour a button, a border, a heading or a link.
+
+  ── THEMING ────────────────────────────────────────────────────────────────
+  Tokens below resolve through runtime CSS variables (--c-*) rather than literal
+  values, so a single set of Tailwind utilities is theme-reactive. The palettes
+  live in base.css. Light and dark are two COMPOSITIONS, not a recolour — see
+  the note on .world there.
+*/
+
+@theme {
+  /* ── TYPE ──────────────────────────────────────────────────────────────── */
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-display: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --text-hero: clamp(1.4375rem, 2.7vw, 2rem);
+  --text-hero--line-height: 1.06;
+  --text-hero--letter-spacing: -0.03em;
+  --text-h2: clamp(1.125rem, 2vw, 1.5625rem);
+  --text-h2--line-height: 1.14;
+  --text-h2--letter-spacing: -0.025em;
+  --text-h3: 1.03125rem;
+  --text-h3--line-height: 1.3;
+  --text-label: 0.625rem;
+  --text-label--line-height: 1;
+  --text-label--letter-spacing: 0.17em;
+  --text-data: 1.3125rem;
+  --text-data--line-height: 1;
+  --text-data--letter-spacing: -0.02em;
+
+  /* ── SURFACES ──────────────────────────────────────────────────────────── */
+  --color-canvas: var(--c-bg);
+  --color-canvas-2: var(--c-bg-2);
+  --color-panel: var(--c-panel);
+  --color-solid: var(--c-panel-solid);
+  --color-sunk: var(--c-sunk);
+  --color-line: var(--c-border);
+  --color-line-hi: var(--c-border-hi);
+
+  --color-fg: var(--c-text);
+  --color-fg-muted: var(--c-muted);
+  --color-fg-dim: var(--c-dim);
+
+  /* ── ACCENTS ───────────────────────────────────────────────────────────── */
+  --color-blue: var(--c-blue);
+  --color-blue-soft: var(--c-blue-soft);
+  --color-red: var(--c-red);
+  --color-red-hover: var(--c-red-hover);
+  --color-red-soft: var(--c-red-soft);
+  --color-good: var(--c-good);
+  --color-warn: var(--c-warn);
+
+  /* ── AGENT DATA ACCENTS — dots and chips only ──────────────────────────── */
+  --color-aria: var(--c-aria);
+  --color-juno: var(--c-juno);
+  --color-nova: var(--c-nova);
+  --color-kai: var(--c-kai);
+  --color-zara: var(--c-zara);
+  --color-luna: var(--c-luna);
+  --color-atlas: var(--c-atlas);
+
+  /* ── GEOMETRY — the deck's own 14px radius ─────────────────────────────── */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-capsule: 999px;
+
+  --shadow-deck: var(--c-shadow);
+  --shadow-cta: 0 1px 0 rgb(255 255 255 / 0.14) inset, 0 6px 18px -8px var(--c-red);
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --container-page: 1560px;
+
+  --animate-blink: blink 1.15s steps(1) infinite;
+  --animate-sweep: sweep 1.1s linear infinite;
+
+  @keyframes blink {
+    50% { opacity: 0.2; }
+  }
+  @keyframes sweep {
+    to { background-position: -240% 0; }
+  }
+}

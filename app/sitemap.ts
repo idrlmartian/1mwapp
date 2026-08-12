@@ -1,23 +1,18 @@
-import { MetadataRoute } from "next";
+import type { MetadataRoute } from "next";
+import { ROUTES, SITE_URL } from "@/app/lib/routes";
 
+/*
+  Generated from app/lib/routes.ts, so adding a route cannot silently omit it.
+
+  Note there is no `priority`. Google ignores it, and the old hand-written
+  values (0.95 for /martianos, 0.6 for /licensing) were invented — they signalled
+  nothing except that someone had guessed.
+*/
 export default function sitemap(): MetadataRoute.Sitemap {
-    const baseUrl = "https://1martianway.com";
-
-    const routes = [
-        { route: "", priority: 1.0, changeFreq: "weekly" as const },
-        { route: "/martianos", priority: 0.95, changeFreq: "weekly" as const },
-        { route: "/artificialintelligence", priority: 0.9, changeFreq: "weekly" as const },
-        { route: "/products", priority: 0.85, changeFreq: "weekly" as const },
-        { route: "/brands", priority: 0.8, changeFreq: "monthly" as const },
-        { route: "/contact", priority: 0.8, changeFreq: "monthly" as const },
-        { route: "/press", priority: 0.7, changeFreq: "monthly" as const },
-        { route: "/licensing", priority: 0.6, changeFreq: "monthly" as const },
-    ].map(({ route, priority, changeFreq }) => ({
-        url: `${baseUrl}${route}`,
-        lastModified: new Date(),
-        changeFrequency: changeFreq,
-        priority: priority,
+    const now = new Date();
+    return ROUTES.map((r) => ({
+        url: `${SITE_URL}${r.path === "/" ? "" : r.path}`,
+        lastModified: now,
+        changeFrequency: r.changeFrequency,
     }));
-
-    return routes;
 }

@@ -1,0 +1,17 @@
+.git
+.github
+node_modules
+.next
+.yarn/cache
+.yarn/install-state.gz
+.env
+.env.*
+.vscode
+.serena
+.remember
+*.md
+!README.md
+download-images.sh
+optimize-images.js
+scripts/compress-image.js
+ecosystem.config.js

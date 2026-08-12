@@ -1,0 +1,373 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import WaitlistForm from "@/app/components/WaitlistForm";
+import StructuredData from "@/app/components/StructuredData";
+import VideoBackdrop from "@/app/components/ui/VideoBackdrop";
+import { Metrics, Panel, Quote } from "@/app/components/ui/Panel";
+import { AGENTS, MAGY_YOUTUBE_ID, METRICS, STATUS } from "@/app/lib/constants";
+
+export const metadata: Metadata = {
+    title: "Magy — the 3D embodied multi-agent platform",
+    description:
+        "AI engineers embodied in a world you build. They delegate face to face, walk to the library to learn what they don't know, and ship a pull request while you watch. Measured at 100,000 agents at 60 fps.",
+    alternates: { canonical: "https://www.1martianway.com/magy" },
+    openGraph: {
+        title: "Magy — the 3D embodied multi-agent platform",
+        description:
+            "Infinite agents. Infinite worlds. Any work. Measured at 100,000 agents at 60 fps.",
+        url: "https://www.1martianway.com/magy",
+    },
+};
+
+const SECTIONS = [
+    ["demo", "Demo"],
+    ["how", "How it works"],
+    ["world", "The world"],
+    ["learning", "Learning"],
+    ["cast", "Cast"],
+    ["scale", "Scale"],
+    ["status", "Status"],
+    ["faq", "FAQ"],
+] as const;
+
+const FAQ = [
+    {
+        q: "Does it run locally?",
+        a: "Yes. `magy assistant` is a single agent in a REPL with no NATS, no Postgres and no Redis — it runs on your machine with zero external services. The full seven-agent runtime and the 3D world need the production path.",
+    },
+    {
+        q: "Which models does it use?",
+        a: "Claude is the fleet default, with a cost-aware router across seven providers — Anthropic, OpenAI, Gemini, Bedrock, Ollama, Kimi and MiniMax. Set an agent to `auto` and it walks a ladder from the strongest model down, with circuit breakers and per-agent budgets.",
+    },
+    {
+        q: "Does my code leave my machine?",
+        a: "Your prompts and the code context go to whichever LLM provider you configure, the same as any AI coding tool. Magy adds a per-conversation TaskScope that hard-limits which repositories an agent may touch, and every task runs in its own git worktree.",
+    },
+    {
+        q: "Is it open source?",
+        a: "No. Magy is a subscription product — source-available, with commercial use restricted.",
+    },
+    {
+        q: "What does it cost?",
+        a: "Pricing is not live yet. Early-access signups hear first, and founding-member pricing goes to that list.",
+    },
+    {
+        q: "When can I use it?",
+        a: "The embedded path, the MagyVerse browser view and the Telegram channel are in daily use now. Pre-built binaries and the paid tier are next — which is what the early-access list is for.",
+    },
+];
+
+const STATUS_DOT = {
+    shipping: "bg-good",
+    building: "shadow-[inset_0_0_0_1.5px_var(--color-warn)]",
+    planned: "shadow-[inset_0_0_0_1.5px_var(--color-fg-dim)]",
+} as const;
+
+export default function MagyPage() {
+    return (
+        <>
+            <StructuredData type="SoftwareApplication" />
+
+            <main className="relative isolate overflow-hidden p-3.5">
+                <div className="deck-grid">
+                    <VideoBackdrop />
+                    <div className="deck-rail flex flex-col gap-3">
+                        <section className="deck-card p-4">
+                            <p className="deck-label mb-3 flex items-center gap-2">
+                                <i className="bg-red size-1.5 rounded-full" />
+                                Magy · early access
+                            </p>
+                            <h1 className="text-hero">
+                                Infinite agents.
+                                <br />
+                                Infinite worlds.
+                                <br />
+                                <em className="text-blue not-italic">Any work.</em>
+                            </h1>
+                            <p className="text-fg-muted mt-3 text-[13.5px]">
+                                The world&apos;s first 3D embodied multi-agent platform. Build the
+                                world, hire the team, watch the work happen.
+                            </p>
+                        </section>
+
+                        <section
+                            id="early-access"
+                            className="border-red bg-solid shadow-[var(--shadow-deck),0_0_0_4px_var(--color-red-soft)] scroll-mt-20 overflow-hidden rounded-[var(--radius-lg)] border"
+                        >
+                            <div className="border-line bg-red-soft flex items-center gap-2 border-b px-3.5 py-2.5">
+                                <h2 className="text-red font-mono text-[12px] font-extrabold uppercase tracking-[0.15em]">
+                                    Get Early Access
+                                </h2>
+                                <span className="text-fg-dim ml-auto inline-flex items-center gap-1.5 font-mono text-[10px] font-semibold uppercase tracking-[0.12em]">
+                                    <svg viewBox="0 0 24 24" className="size-3" fill="none" stroke="currentColor" strokeWidth={2.2} aria-hidden>
+                                        <rect x="4" y="10" width="16" height="11" rx="2" />
+                                        <path d="M8 10V7a4 4 0 0 1 8 0v3" />
+                                    </svg>
+                                    Composer locked
+                                </span>
+                            </div>
+                            <div className="p-3.5">
+                                <p className="text-fg-muted mb-3 text-[12.5px]">
+                                    This is where you&apos;ll{" "}
+                                    <b className="text-fg font-bold">assign work to your agents</b>.
+                                </p>
+                                <WaitlistForm source="magy-hero" cta="Get Early Access" />
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </main>
+
+            {/* sticky section nav */}
+            <nav
+                aria-label="On this page"
+                className="border-line bg-canvas/85 sticky top-14 z-40 -mb-1 overflow-x-auto border-y backdrop-blur-xl"
+            >
+                <ul className="mx-auto flex max-w-[var(--container-page)] gap-1 px-3.5 py-2">
+                    {SECTIONS.map(([id, label]) => (
+                        <li key={id}>
+                            <a
+                                href={`#${id}`}
+                                className="text-fg-muted hover:text-fg hover:bg-sunk whitespace-nowrap rounded-[var(--radius-sm)] px-2.5 py-1.5 font-mono text-[10.5px] font-semibold uppercase tracking-[0.13em] transition-colors"
+                            >
+                                {label}
+                            </a>
+                        </li>
+                    ))}
+                </ul>
+            </nav>
+
+            <div className="mx-auto grid max-w-[var(--container-page)] gap-3.5 p-3.5">
+                {/* ── demo ─────────────────────────────────────────────── */}
+                <Panel id="demo" label="Watch it work">
+                    {MAGY_YOUTUBE_ID ? (
+                        <div className="border-line overflow-hidden rounded-[var(--radius-md)] border">
+                            <iframe
+                                className="aspect-video w-full"
+                                src={`https://www.youtube-nocookie.com/embed/${MAGY_YOUTUBE_ID}?rel=0`}
+                                title="Magy — the Magyverse"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowFullScreen
+                            />
+                        </div>
+                    ) : (
+                        /* The placeholder is designed to convert rather than to
+                           apologise: the missing video becomes a second reason to
+                           sign up. Swap MAGY_YOUTUBE_ID and this becomes the embed. */
+                        <div className="border-line bg-sunk relative grid aspect-video place-items-center overflow-hidden rounded-[var(--radius-md)] border text-center">
+                            <div className="max-w-[44ch] p-6">
+                                <h2 className="text-h2 mb-2">The demo lands this week.</h2>
+                                <p className="text-fg-muted mb-5 text-[13.5px]">
+                                    We&apos;re recording Magy building a feature end to end — plan,
+                                    delegate, code, review, pull request. Get it the moment it&apos;s up.
+                                </p>
+                                <div className="mx-auto max-w-[420px]">
+                                    <WaitlistForm source="magy-demo" cta="Notify me" />
+                                </div>
+                            </div>
+                            <p className="deck-label absolute bottom-3 left-4">
+                                Magyverse · live capture · coming
+                            </p>
+                        </div>
+                    )}
+                </Panel>
+
+                {/* ── how it works ─────────────────────────────────────── */}
+                <Panel id="how" label="How it works">
+                    <h2 className="text-h2 mb-4">You describe the work. They do it.</h2>
+                    <ol className="grid gap-3.5 sm:grid-cols-2 lg:grid-cols-4">
+                        {[
+                            ["01", "You describe the work", "In plain language, in the composer or from Telegram."],
+                            ["02", "The team plans and delegates", "Juno writes the spec, Aria assigns it. Delegation happens face to face in the world."],
+                            ["03", "Each agent works isolated", "One git worktree per task, with file leases so two agents can never write the same path."],
+                            ["04", "Pull requests come back", "Luna reviews before merge. Atlas ships. Nothing lands unreviewed."],
+                        ].map(([n, title, body]) => (
+                            <li key={n} className="border-line bg-sunk rounded-[var(--radius-md)] border p-4">
+                                <span className="text-blue font-mono text-[11px] font-bold tracking-[0.14em]">{n}</span>
+                                <h3 className="text-h3 mt-2 font-bold">{title}</h3>
+                                <p className="text-fg-muted mt-1.5 text-[13px]">{body}</p>
+                            </li>
+                        ))}
+                    </ol>
+                </Panel>
+
+                {/* ── the world ────────────────────────────────────────── */}
+                <Panel id="world" label="The world is the UI">
+                    <div className="grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
+                        <div>
+                            <h2 className="text-h2 mb-2">A place, not a chat window.</h2>
+                            <p className="text-fg-muted text-[13.5px]">
+                                MagyVerse is a 36 × 20 × 5 m office with an outdoor lawn, laid out in
+                                six zones. Agents walk it on a real navmesh. They sit down and type —
+                                and what they are typing renders on the monitor in front of them.
+                                When one needs another, it walks over, and a dashed arc is drawn
+                                between them for as long as the delegation is open.
+                            </p>
+                            <p className="text-fg-muted mt-3 text-[13.5px]">
+                                You can walk around it yourself, right-click any agent for a quick
+                                action, or type a task straight into its head.
+                            </p>
+                        </div>
+                        <ul className="border-line grid grid-cols-2 gap-px self-start overflow-hidden rounded-[var(--radius-md)] border bg-[var(--color-line)] sm:grid-cols-3">
+                            {[
+                                ["Tower", "oversight"],
+                                ["Forge", "builds"],
+                                ["Library", "knowledge"],
+                                ["Arena", "tests"],
+                                ["Mine", "data"],
+                                ["Harbor", "deploys"],
+                            ].map(([zone, what]) => (
+                                <li key={zone} className="bg-solid p-3.5">
+                                    <b className="block text-[13px] font-bold">{zone}</b>
+                                    <span className="deck-label mt-1 block">{what}</span>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                </Panel>
+
+                {/* ── learning ─────────────────────────────────────────── */}
+                <Panel id="learning" label="Real learning, not cosmetic">
+                    <div className="grid gap-5 lg:grid-cols-2">
+                        <div>
+                            <h2 className="text-h2 mb-2">They get better while you&apos;re asleep.</h2>
+                            <p className="text-fg-muted text-[13.5px]">
+                                An agent that doesn&apos;t know something walks to the library, takes a
+                                real book, and reads it. The contents are ingested into its knowledge
+                                graph and fed back into its next turn — so the reading changes what it
+                                can do, rather than playing an animation. They also sleep, and dream,
+                                and the dream has a mood drawn from what actually happened that day.
+                            </p>
+                            <p className="text-fg-muted mt-3 text-[13.5px]">
+                                A server-side director keeps the world living at 1&nbsp;Hz whether or
+                                not a browser is open.
+                            </p>
+                        </div>
+                        <Quote className="self-center">
+                            <p className="text-fg-muted text-[13.5px]">
+                                &ldquo;The user comes back surprised — oh, she went to the library
+                                while I was gone, and now she knows about X. That surprise is the
+                                retention mechanism. It is the difference between an LLM with a 3D
+                                mascot and a world you want to log into.&rdquo;
+                            </p>
+                        </Quote>
+                    </div>
+                </Panel>
+
+                {/* ── cast ─────────────────────────────────────────────── */}
+                <Panel id="cast" label="The cast">
+                    <h2 className="text-h2 mb-1">Seven to start. Then whoever you need.</h2>
+                    <p className="text-fg-muted mb-4 max-w-[66ch] text-[13.5px]">
+                        The live fleet already runs a CFO, an investor-relations agent and a
+                        fundraising agent alongside the engineers. You define the rest.
+                    </p>
+                    <ul className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+                        {AGENTS.map((a) => (
+                            <li key={a.id} className="border-line bg-sunk rounded-[var(--radius-md)] border p-3.5">
+                                <span className="flex items-center gap-2">
+                                    <i
+                                        className="size-2 rounded-full bg-[var(--dot)] shadow-[0_0_7px_var(--dot)]"
+                                        style={{ ["--dot" as string]: `var(--color-${a.token})` }}
+                                    />
+                                    <b className="text-[13.5px] font-bold">{a.name}</b>
+                                    <span className="text-fg-dim text-[12px]">{a.role}</span>
+                                </span>
+                            </li>
+                        ))}
+                        <li className="border-line text-fg-dim rounded-[var(--radius-md)] border border-dashed p-3.5 text-[13px]">
+                            <b className="text-fg font-bold">+ ∞</b> any role you can describe
+                        </li>
+                    </ul>
+                </Panel>
+
+                {/* ── scale ────────────────────────────────────────────── */}
+                <Panel id="scale" label="Scale">
+                    <div className="grid gap-5 lg:grid-cols-2">
+                        <div>
+                            <h2 className="text-h2 mb-2">Not seven agents. As many as the work needs.</h2>
+                            <p className="text-fg-muted text-[13.5px]">
+                                Ambient population is a closed-form function of time rather than an
+                                integration — every agent&apos;s state is computed from a seed and a
+                                clock, never accumulated frame to frame.
+                            </p>
+                            <p className="text-fg-muted mt-3 text-[13.5px]">
+                                Three things follow. The server ships a seed instead of a population.
+                                Two clients cannot drift apart. And an agent nobody evaluates costs
+                                nothing at all — not merely less.
+                            </p>
+                            <Quote className="mt-3.5">
+                                <p className="text-fg font-mono text-[12.5px] leading-relaxed">
+                                    &ldquo;State is a closed-form function of time, not an integration.&rdquo;
+                                </p>
+                            </Quote>
+                        </div>
+                        <div>
+                            <Metrics items={METRICS} />
+                            <p className="text-fg-dim mt-3 font-mono text-[11px]">
+                                Dev build capture · 2026-08-05 · high preset, dpr 1
+                            </p>
+                        </div>
+                    </div>
+                </Panel>
+
+                {/* ── status ───────────────────────────────────────────── */}
+                <Panel id="status" label="Straight answers">
+                    <h2 className="text-h2 mb-1">What&apos;s shipping, and what isn&apos;t.</h2>
+                    <ul>
+                        {STATUS.map((s) => (
+                            <li key={s.state} className="border-line grid items-start gap-3.5 border-t py-3 sm:grid-cols-[112px_1fr]">
+                                <span className="text-fg-muted inline-flex items-center gap-2 font-mono text-[9.5px] font-bold uppercase tracking-[0.14em]">
+                                    <span className={`size-2 rounded-full ${STATUS_DOT[s.state]}`} />
+                                    {s.label}
+                                </span>
+                                <p className="text-fg-muted text-[13px]">{s.text}</p>
+                            </li>
+                        ))}
+                    </ul>
+                    <p className="text-fg-dim mt-4 font-mono text-[11.5px]">
+                        Magy is a subscription product. Source-available, commercial use restricted.
+                        It is not open source.
+                    </p>
+                </Panel>
+
+                {/* ── faq ──────────────────────────────────────────────── */}
+                <Panel id="faq" label="FAQ">
+                    <h2 className="text-h2 mb-4">Questions worth asking.</h2>
+                    <div className="grid gap-2">
+                        {FAQ.map((f) => (
+                            <details key={f.q} className="border-line bg-sunk group rounded-[var(--radius-md)] border">
+                                <summary className="flex cursor-pointer items-center gap-3 p-3.5 text-[13.5px] font-bold">
+                                    {f.q}
+                                    <svg viewBox="0 0 24 24" className="text-fg-dim ml-auto size-4 shrink-0 transition-transform group-open:rotate-45" fill="none" stroke="currentColor" strokeWidth={2} aria-hidden>
+                                        <path d="M12 5v14M5 12h14" />
+                                    </svg>
+                                </summary>
+                                <p className="text-fg-muted px-3.5 pb-3.5 text-[13px]">{f.a}</p>
+                            </details>
+                        ))}
+                    </div>
+                </Panel>
+
+                <section className="border-line bg-solid shadow-[var(--shadow-deck)] rounded-[var(--radius-lg)] border px-6 py-10 text-center [background:radial-gradient(70%_120%_at_50%_0%,var(--color-red-soft),transparent_68%),var(--color-solid)] sm:py-14">
+                    <h2 className="text-[clamp(1.4rem,3.2vw,2.2rem)] font-extrabold tracking-[-0.03em]">
+                        Get Early Access
+                    </h2>
+                    <p className="text-fg-muted mx-auto mt-2.5 max-w-[48ch] text-sm">
+                        One email when the first build is ready. Nothing else, ever.
+                    </p>
+                    <div className="mx-auto mt-5 max-w-[480px]">
+                        <WaitlistForm source="magy-final" size="hero" cta="Get Early Access" />
+                    </div>
+                    <p className="text-fg-dim mt-6 text-[12.5px]">
+                        Also from 1 Martian Way:{" "}
+                        <Link href="/mos" className="text-blue hover:underline">MOS</Link>
+                        {" · "}
+                        <Link href="/toowl" className="text-blue hover:underline">Toowl</Link>
+                        {" · "}
+                        <Link href="/martianos" className="text-blue hover:underline">Martian OS</Link>
+                    </p>
+                </section>
+            </div>
+        </>
+    );
+}

@@ -1,0 +1,178 @@
+/*
+  Two halves:
+    1. The deck's own materials, as utilities.
+    2. DEPRECATED shims keeping the legacy pages (/martianos, /products, /press,
+       /brands, /licensing, /artificialintelligence, /dr2u/privacy) rendering
+       while they wait their turn. Each is retargeted at the new tokens so the
+       whole site changed palette on day one; they get deleted as those pages
+       are rewritten.
+*/
+
+/* ── 1. deck materials ────────────────────────────────────────────────────── */
+
+/* A glass panel. In LIGHT it is a solid card — near-white at 80% over near-black
+   footage goes muddy and stops reading as glass, so light theme doesn't try. */
+@utility deck-card {
+  background: var(--color-solid);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-deck);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .deck-card {
+    background: var(--color-panel);
+    backdrop-filter: var(--glass);
+  }
+}
+:root[data-theme="dark"] .deck-card {
+  background: var(--color-panel);
+  backdrop-filter: var(--glass);
+}
+
+/* Mono uppercase micro-label. Used for every panel header and eyebrow. */
+@utility deck-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  font-weight: 700;
+  letter-spacing: 0.17em;
+  text-transform: uppercase;
+  color: var(--color-fg-dim);
+}
+
+@utility tabnum {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── 2. deprecated shims ──────────────────────────────────────────────────── */
+
+/* @deprecated — use deck-card */
+.glass,
+.glass-card,
+.glass-dark {
+  background: color-mix(in oklab, var(--color-panel) 82%, transparent);
+  backdrop-filter: var(--glass);
+  border: 1px solid var(--color-line);
+  box-shadow: var(--shadow-deck);
+}
+
+/* @deprecated — the brand has one action colour; every legacy gradient-text
+   variant now resolves to the blue product accent so nothing renders indigo. */
+.gradient-text,
+.gradient-text-primary,
+.gradient-text-cyan,
+.gradient-text-orange {
+  background: linear-gradient(135deg, var(--color-fg) 0%, var(--color-blue) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* @deprecated */
+.glow { filter: drop-shadow(0 0 10px var(--color-blue-soft)); }
+.glow-hover { transition: filter var(--dur) var(--ease-out-expo); }
+.glow-hover:hover { filter: drop-shadow(0 0 18px var(--color-blue-soft)); }
+
+/* @deprecated — was an animated four-colour gradient. Now inert. */
+.bg-animated { background: var(--color-canvas-2); }
+
+/* @deprecated */
+.grid-bg {
+  background-image:
+    linear-gradient(color-mix(in oklab, var(--color-fg) 5%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in oklab, var(--color-fg) 5%, transparent) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* @deprecated — the original was a 20px, 6s bob. Seasick. */
+.float { animation: none; }
+.shimmer { background: none; }
+.transition-all-smooth { transition: all var(--dur) var(--ease-out-expo); }
+.gpu-accelerated { transform: translateZ(0); }
+.focus-glow:focus { outline: none; box-shadow: 0 0 0 3px var(--color-red-soft); }
+
+/* ── 3. the world pane: two compositions ──────────────────────────────────── */
+/*
+  LIGHT — the world is a CONTAINED SCREEN sitting in the grid, the way a product
+  screenshot sits on a marketing page. Solid cards beside it.
+
+  DARK — the world escapes the grid and becomes the full-bleed backdrop, with
+  glass floating over it.
+
+  This is not a preference. Near-white panels at 80% opacity over near-black
+  footage go muddy grey and stop reading as glass, and the footage cannot invert
+  the way a colour token can. So the composition changes instead.
+
+  NOTE the explicit grid placement below. When .world goes position:absolute it
+  leaves the grid flow, and without pinned columns the rail collapses into the
+  1fr track and stretches full width.
+*/
+.deck-grid {
+  display: grid;
+  grid-template-columns: 1fr 404px;
+  gap: 14px;
+  align-items: start;
+  min-height: calc(100svh - 84px);
+}
+.deck-grid > .world { grid-column: 1; grid-row: 1; }
+.deck-grid > .deck-rail { grid-column: 2; grid-row: 1; }
+
+@media (max-width: 1000px) {
+  .deck-grid { grid-template-columns: 1fr; min-height: 0; }
+  .deck-grid > .world { grid-column: 1; grid-row: 1; }
+  .deck-grid > .deck-rail { grid-column: 1; grid-row: 2; }
+}
+
+.world {
+  position: relative;
+  background: #0b0d12;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-deck);
+  min-height: min(74svh, 620px);
+}
+
+.world::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: none;
+}
+
+.world[data-state="playing"] .world-video { opacity: 1; }
+.world[data-state="playing"] .world-poster { opacity: 0; }
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .world {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    min-height: 0;
+  }
+  /* Legibility scrim, dark only — in light there is nothing to read through. */
+  :root:not([data-theme="light"]) .world::after {
+    background: linear-gradient(90deg, rgb(11 13 18 / 0.10), rgb(11 13 18 / 0.52) 60%, rgb(11 13 18 / 0.80));
+  }
+}
+:root[data-theme="dark"] .world {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  min-height: 0;
+}
+:root[data-theme="dark"] .world::after {
+  background: linear-gradient(90deg, rgb(11 13 18 / 0.10), rgb(11 13 18 / 0.52) 60%, rgb(11 13 18 / 0.80));
+}
+@media (max-width: 1000px) {
+  :root[data-theme="dark"] .world::after {
+    background: linear-gradient(180deg, rgb(11 13 18 / 0.15), rgb(11 13 18 / 0.82));
+  }
+}

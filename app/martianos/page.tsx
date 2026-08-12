@@ -11,6 +11,7 @@ import Link from "next/link";
 import StructuredData from "../components/StructuredData";
 
 export const metadata: Metadata = {
+    alternates: { canonical: "https://www.1martianway.com/martianos" },
     title: "Martian OS | Advanced Robot Operating System | 1 Martian Way",
     description:
         "Martian OS - A high-performance, real-time robot operating system written in Rust, designed specifically for conscious humanoid robots.",

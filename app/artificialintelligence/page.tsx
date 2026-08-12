@@ -9,6 +9,7 @@ import Link from "next/link";
 import StructuredData from "../components/StructuredData";
 
 export const metadata: Metadata = {
+    alternates: { canonical: "https://www.1martianway.com/artificialintelligence" },
     title: "AI Consciousness Platform | 1 Martian Way",
     description:
         "Advanced AI consciousness and neural platforms powering the next generation of sentient humanoid robots.",

@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
+    alternates: { canonical: "https://www.1martianway.com/brands" },
     title: "Our Brands & Divisions | 1 Martian Way",
     description:
         "Discover 1 Martian Way's innovative brands including IDRL Drone Racing India, Consciousness Labs, and Integration Studios - pioneering the future of AI and robotics.",

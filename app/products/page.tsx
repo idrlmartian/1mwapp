@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 export const metadata: Metadata = {
+    alternates: { canonical: "https://www.1martianway.com/products" },
     title: "Humanoid Robots | 1 Martian Way",
     description:
         "Explore our advanced humanoid robots with AI consciousness - the future of human-robot collaboration.",
@@ -45,7 +46,7 @@ const humanoidModels = [
         description:
             "Ruggedized humanoid robot for extreme environments and research applications with enhanced sensors and autonomous decision-making.",
         category: "Research",
-        href: "/geospatial",
+        href: "/martianos",
         image: "/assets/img/humanoids/martian-explorer-research.jpg",
         specs: ["Height: 5'10\" (178cm)", "Weight: 200 lbs", "Range: 50 miles", "Temp: -40°C to 80°C"],
         capabilities: ["Environmental Mapping", "Sample Collection", "Data Transmission", "Autonomous Navigation"]

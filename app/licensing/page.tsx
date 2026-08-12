@@ -9,6 +9,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
+    alternates: { canonical: "https://www.1martianway.com/licensing" },
     title: "Licensing | 1 Martian Way",
     description:
         "1 Martian Way licenses its innovations for third-party usage.",
@@ -115,7 +116,6 @@ export default function Licensing() {
                                 </div>
                                 <div className="flex items-center text-sm text-gray-600 dark:text-gray-300">
                                     <MobileIcon className="h-5 w-5 text-gray-400 mr-2" />
-                                    +91 8850.227233
                                 </div>
                             </div>
 
