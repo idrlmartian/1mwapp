@@ -141,7 +141,15 @@ export default function Footer() {
                 </div>
 
                 <div className="border-line text-fg-dim mt-8 flex flex-wrap items-center justify-between gap-3.5 border-t pt-5 text-[12.5px]">
-                    <span>© {new Date().getFullYear()} {COMPANY.legal} All rights reserved.</span>
+                    <span>
+                        © {new Date().getFullYear()} {COMPANY.legal} All rights reserved.
+                        {/* Visible build stamp. Baked in at docker build time, so it
+                            identifies the exact commit a visitor is looking at — the
+                            fastest way to tell a stale page from a current one. */}
+                        <span className="text-fg-dim ml-2 font-mono text-[11px]">
+                            build {process.env.NEXT_PUBLIC_BUILD_SHA ?? "dev"}
+                        </span>
+                    </span>
                     <nav className="flex flex-wrap gap-4">
                         <Link href="/privacy" className="hover:text-fg transition-colors">Privacy</Link>
                         <Link href="/terms" className="hover:text-fg transition-colors">Terms</Link>
