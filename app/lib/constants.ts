@@ -19,7 +19,9 @@ export const HERO = {
 export const WORLD = {
     name: "magy",
     dims: "36 × 20 × 5 m",
-    zones: "tower · forge · library · arena · mine · harbor",
+    outdoor: "26 × 18 m",
+    // Verified against magyverse/public/worlds/magy/scene.json.
+    zones: "office · outdoors · library",
 } as const;
 
 export type Agent = { id: string; name: string; role: string; token: string };

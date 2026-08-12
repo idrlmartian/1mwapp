@@ -192,6 +192,18 @@ export default function Home() {
                     </section>
 
                     <section className="deck-card p-5">
+                        <p className="deck-label mb-3.5">Infinite worlds</p>
+                        <h2 className="text-h2 mb-2">The world is editable, all of it.</h2>
+                        <p className="text-fg-muted text-[13.5px]">
+                            Open the in-world editor and move a desk, add a room, relight the
+                            scene — gizmos, multi-select, full undo. Or describe the change in
+                            plain language and watch it apply. Agents adapt without new code,
+                            because objects advertise what can be done with them rather than
+                            every interaction being hardcoded.
+                        </p>
+                    </section>
+
+                    <section className="deck-card p-5">
                         <p className="deck-label mb-3.5">Under the hood</p>
                         <h2 className="text-h2 mb-2">Rust, all the way down.</h2>
                         <p className="text-fg-muted font-mono text-[12px] leading-[1.95]">

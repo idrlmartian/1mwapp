@@ -195,31 +195,42 @@ export default function MagyPage() {
                 <Panel id="world" label="The world is the UI">
                     <div className="grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
                         <div>
-                            <h2 className="text-h2 mb-2">A place, not a chat window.</h2>
+                            <h2 className="text-h2 mb-2">A world you author, not a scene we shipped.</h2>
                             <p className="text-fg-muted text-[13.5px]">
-                                MagyVerse is a 36 × 20 × 5 m office with an outdoor lawn, laid out in
-                                six zones. Agents walk it on a real navmesh. They sit down and type —
+                                MagyVerse is a 36 × 20 × 5 m open-plan office, a 26 × 18 m lawn outside,
+                                and a library through the corridor. Agents walk it on a real navmesh. They sit down and type —
                                 and what they are typing renders on the monitor in front of them.
                                 When one needs another, it walks over, and a dashed arc is drawn
                                 between them for as long as the delegation is open.
                             </p>
                             <p className="text-fg-muted mt-3 text-[13.5px]">
-                                You can walk around it yourself, right-click any agent for a quick
-                                action, or type a task straight into its head.
+                                And none of it is fixed. Press <kbd className="border-line bg-sunk text-fg rounded-[4px] border px-1.5 py-0.5 font-mono text-[11px]">E</kbd>{" "}
+                                and you are in the scene editor — move a desk, add a room, change
+                                the lighting, with gizmos, multi-select and full undo. Or just
+                                describe the change in words and let the world rebuild itself.
+                            </p>
+                            <p className="text-fg-muted mt-3 text-[13.5px]">
+                                That is what &ldquo;infinite worlds&rdquo; means here: not a menu of
+                                scenes to pick from, but a world that is yours to extend — and
+                                agents whose behaviour follows the objects you put in it, because
+                                furniture advertises what can be done with it rather than being
+                                hardcoded.
+                            </p>
+                            <p className="text-fg-muted mt-3 text-[13.5px]">
+                                You can also walk around it yourself, right-click any agent for a
+                                quick action, or type a task straight into its head.
                             </p>
                         </div>
-                        <ul className="border-line grid grid-cols-2 gap-px self-start overflow-hidden rounded-[var(--radius-md)] border bg-[var(--color-line)] sm:grid-cols-3">
+                        <ul className="border-line grid gap-px self-start overflow-hidden rounded-[var(--radius-md)] border bg-[var(--color-line)] sm:grid-cols-3">
                             {[
-                                ["Tower", "oversight"],
-                                ["Forge", "builds"],
-                                ["Library", "knowledge"],
-                                ["Arena", "tests"],
-                                ["Mine", "data"],
-                                ["Harbor", "deploys"],
-                            ].map(([zone, what]) => (
-                                <li key={zone} className="bg-solid p-3.5">
-                                    <b className="block text-[13px] font-bold">{zone}</b>
-                                    <span className="deck-label mt-1 block">{what}</span>
+                                ["Office", "36 × 20 × 5 m", "Desks, whiteboard, coffee, the pool"],
+                                ["Outdoors", "26 × 18 m", "The lawn, reached through a door that opens itself"],
+                                ["Library", "adjoining", "Shelves of real books, and somewhere to read them"],
+                            ].map(([area, size, what]) => (
+                                <li key={area} className="bg-solid p-4">
+                                    <b className="block text-[13.5px] font-bold">{area}</b>
+                                    <span className="deck-label mt-1 block">{size}</span>
+                                    <p className="text-fg-muted mt-2 text-[12.5px]">{what}</p>
                                 </li>
                             ))}
                         </ul>
