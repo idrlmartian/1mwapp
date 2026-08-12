@@ -17,9 +17,11 @@ export default function StructuredData({ type, data }: StructuredDataProps) {
             // sameAs must list profiles that actually resolve and are ours.
             // github.com/1martianway is removed until the repos are public — an
             // org page with nothing in it is a weaker signal than no entry.
-            // TODO: confirm these two are the real handles before launch.
             sameAs: [
-                "https://x.com/1MartianWay",
+                "https://x.com/1martianway",
+                "https://facebook.com/1martianway",
+                "https://instagram.com/1martianway",
+                "https://www.youtube.com/@1martianway",
                 "https://www.linkedin.com/company/1martianway"
             ],
             industry: "Robotics Technology",

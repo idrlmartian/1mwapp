@@ -6,6 +6,11 @@
 // scripts/measure-logo.mjs and verified at 0.126% XOR mismatch against the
 // source mask. Do not hand-edit these numbers — re-run the measure script.
 //
+// THE SYMBOL IS THE BRAND — the white figure, which stands for unlimited
+// growth. The red field behind it is a background and may be any colour; the
+// mark also ships standalone (1mw-mark.svg, currentColor) for surfaces that
+// need no field at all.
+//
 // Three optical sizes, because one file cannot serve all of them:
 //   tile     — the mark as drawn. Site logo, OG images, email.
 //   compact  — mark scaled 1.30x. At 16px the as-drawn legs thin to ~1px and

@@ -9,10 +9,19 @@ import Link from "next/link";
  * generate every raster in scripts/generate-brand-assets.mjs — if the mark ever
  * changes, change it there and re-run, never by hand-editing paths here.
  *
+ * THE SYMBOL IS THE BRAND. The white figure — a head above two splayed legs,
+ * opening upward and outward — is the mark, and it stands for unlimited growth.
+ * The red square behind it is a background, not part of the identity: it can be
+ * any colour the surface calls for, and the mark can sit on no background at all.
+ *
+ * So `variant="mark"` is the primary form and inherits currentColor; `tile` is
+ * the convenience wrapper for places that need a self-contained app icon.
+ *
  * Rules:
- *   - Clear space is 0.25x the tile width on every side.
+ *   - Never distort the figure's proportions, and never rotate it — the upward
+ *     opening is the whole point.
+ *   - Clear space is 0.25x the width on every side.
  *   - Minimum 20px for `tile`, 16px for `mark`.
- *   - Never place the red tile on a red surface — use variant="mark" in white.
  *   - Never recolour the figure to an agent colour. Agent colours are data.
  */
 
