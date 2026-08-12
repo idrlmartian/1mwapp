@@ -159,18 +159,27 @@ export default function WaitlistForm({
                         hero ? "sm:p-2" : ""
                     }`}
                 >
-                    {/* Caret + input share a gapless nested flex so the caret sits
-                        exactly where the text begins. As a direct flex sibling it
-                        inherited the parent's gap AND its own padding, landing ~12px
-                        adrift of the first character — which read as a stray red bar
-                        rather than a cursor. */}
-                    <div className="flex min-w-0 flex-1 items-center">
+                    {/* The caret is absolutely positioned and takes NO layout space,
+                        so it lands on exactly the same x as the input's text origin
+                        (both at left-3) and clicking the field produces no jump.
+
+                        It is a painted box, not the ▍ glyph it used to be. A glyph
+                        can never line up: it advances the full character width while
+                        its ink starts at whatever left side bearing the font chose,
+                        so the real caret always sat ~12px to its right. A 2px box
+                        starts its ink at its own origin, which is where a browser
+                        draws the text caret too.
+
+                        Overlapping the placeholder's first character is correct, not
+                        a bug — a native empty input draws its caret in exactly that
+                        spot. */}
+                    <div className="relative flex min-w-0 flex-1 items-center">
                         <span
                             aria-hidden
-                            className="caret text-red animate-blink select-none pl-3 pr-[3px] font-mono text-sm leading-none max-[430px]:hidden"
-                        >
-                            ▍
-                        </span>
+                            className={`caret bg-red animate-blink pointer-events-none absolute left-3 top-1/2 w-[2px] -translate-y-1/2 rounded-[1px] max-[430px]:hidden ${
+                                hero ? "h-[17px]" : "h-[15px]"
+                            }`}
+                        />
 
                         <label htmlFor={`email-${source}`} className="sr-only">
                             Email address
@@ -188,7 +197,9 @@ export default function WaitlistForm({
                         aria-invalid={status === "error" || undefined}
                         // The wrapper already shows focus; suppressing the global ring
                         // here avoids a ring drawn inside a ring.
-                            className={`text-fg placeholder:text-fg-dim min-w-0 flex-1 border-0 bg-transparent px-0 outline-none focus-visible:shadow-none ${
+                            // pl-3 must stay in lockstep with the caret's left-3
+                            // above: that shared value IS the alignment.
+                            className={`text-fg placeholder:text-fg-dim min-w-0 flex-1 border-0 bg-transparent pl-3 pr-0 outline-none focus-visible:shadow-none ${
                                 hero ? "py-3 text-[15px]" : "py-2.5 text-sm"
                             }`}
                         />
