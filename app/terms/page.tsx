@@ -35,9 +35,10 @@ export default function TermsPage() {
 
                 <h2>Product licensing</h2>
                 <p>
-                    Magy is a subscription product, source-available with commercial use restricted.
-                    MOS is proprietary. Toowl is open source under MIT or Apache-2.0. Each is
-                    governed by its own licence, which takes precedence over anything on this page.
+                    Magy, MOS and Toowl are commercial products. Licensing terms for each are
+                    being finalised and will be published alongside their pricing; where a licence
+                    has been issued it takes precedence over anything on this page. For specific
+                    terms, write to licensing@1martianway.com.
                 </p>
 
                 <h2>Trademarks and content</h2>

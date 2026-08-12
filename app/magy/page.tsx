@@ -45,7 +45,7 @@ const FAQ = [
     },
     {
         q: "Is it open source?",
-        a: "No. Magy is a subscription product — source-available, with commercial use restricted.",
+        a: "No. Magy is a commercial product. Licensing and pricing are being finalised — talk to us if you need specific terms.",
     },
     {
         q: "What does it cost?",
@@ -335,9 +335,13 @@ export default function MagyPage() {
                             </li>
                         ))}
                     </ul>
-                    <p className="text-fg-dim mt-4 font-mono text-[11.5px]">
-                        Magy is a subscription product. Source-available, commercial use restricted.
-                        It is not open source.
+                    <p className="text-fg-dim mt-4 text-[12.5px]">
+                        Magy is a commercial product, not open source. Licensing terms are being
+                        finalised —{" "}
+                        <a href="mailto:licensing@1martianway.com" className="text-blue hover:underline">
+                            licensing@1martianway.com
+                        </a>{" "}
+                        if you need specifics.
                     </p>
                 </Panel>
 
