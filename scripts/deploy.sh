@@ -84,16 +84,8 @@ if [ "$USED" -gt 85 ]; then
   df -h /
 fi
 
-sudo docker build \
-  --provenance=false \
-  --build-arg NEXT_PUBLIC_APP_VERSION="$NEW_VERSION" \
-  --build-arg NEXT_PUBLIC_BUILD_DATE="$BUILD_DATE" \
-  --build-arg NEXT_PUBLIC_BUILD_SHA="$BUILD_SHA" \
-  -t "${NAME}:latest" .
-
-sudo docker stop "$NAME" 2>/dev/null || true
-sudo docker rm "$NAME" 2>/dev/null || true
-
+# Checked BEFORE the build, not after: a missing env file used to be discovered
+# only once the image had already been built, wasting the whole build.
 # --network host matches every other app on this box (and is why kamal targets
 # are all localhost:PORT). --memory caps blast radius if the app leaks.
 # Secrets live in a 0600 file on the host, never in the image and never in git.
@@ -104,6 +96,26 @@ if [ ! -f "$ENV_FILE" ]; then
   echo "!! $ENV_FILE missing — the waitlist would fall back to disk on every signup." >&2
   exit 1
 fi
+
+# The Umami site id is a BUILD input, unlike every other value in the env file.
+# NEXT_PUBLIC_* is inlined into the client bundle by `next build`, so passing it
+# only via --env-file would leave the tracker permanently unrendered — which is
+# exactly the shape of bug where analytics silently reports nothing.
+UMAMI_ID=$(sed -n 's/^NEXT_PUBLIC_UMAMI_ID=//p' "$ENV_FILE" | tail -1)
+if [ -z "$UMAMI_ID" ]; then
+  echo "note: NEXT_PUBLIC_UMAMI_ID unset in $ENV_FILE — building without analytics."
+fi
+
+sudo docker build \
+  --provenance=false \
+  --build-arg NEXT_PUBLIC_APP_VERSION="$NEW_VERSION" \
+  --build-arg NEXT_PUBLIC_BUILD_DATE="$BUILD_DATE" \
+  --build-arg NEXT_PUBLIC_BUILD_SHA="$BUILD_SHA" \
+  --build-arg NEXT_PUBLIC_UMAMI_ID="$UMAMI_ID" \
+  -t "${NAME}:latest" .
+
+sudo docker stop "$NAME" 2>/dev/null || true
+sudo docker rm "$NAME" 2>/dev/null || true
 
 # /data is a HOST volume: the NDJSON signup fallback must survive a deploy, and
 # anything written inside the image is destroyed when the container is replaced.
@@ -118,6 +130,7 @@ sudo docker run -d --name "$NAME" --network host --restart always --init \
   -e TRUST_PROXY_HEADERS=1 \
   -e NEXT_PUBLIC_APP_VERSION="$NEW_VERSION" \
   -e NEXT_PUBLIC_BUILD_SHA="$BUILD_SHA" \
+  -e NEXT_PUBLIC_UMAMI_ID="$UMAMI_ID" \
   -v /home/ubuntu/data/1mwapp:/data \
   "${NAME}:latest"
 

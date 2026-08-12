@@ -24,9 +24,16 @@ COPY . .
 ARG NEXT_PUBLIC_APP_VERSION=dev
 ARG NEXT_PUBLIC_BUILD_DATE=unknown
 ARG NEXT_PUBLIC_BUILD_SHA=dev
+# Analytics. NEXT_PUBLIC_* is inlined into the client bundle at BUILD time, so
+# this cannot come from --env-file at run time the way UMAMI_HOST does: the
+# <Script> tag in layout.tsx is gated on it and would never render.
+# Empty default = no tracker, which is the correct behaviour for any build
+# that has not been given an id.
+ARG NEXT_PUBLIC_UMAMI_ID=
 ENV NEXT_PUBLIC_APP_VERSION=$NEXT_PUBLIC_APP_VERSION \
     NEXT_PUBLIC_BUILD_DATE=$NEXT_PUBLIC_BUILD_DATE \
     NEXT_PUBLIC_BUILD_SHA=$NEXT_PUBLIC_BUILD_SHA \
+    NEXT_PUBLIC_UMAMI_ID=$NEXT_PUBLIC_UMAMI_ID \
     NEXT_TELEMETRY_DISABLED=1
 RUN yarn build
 
