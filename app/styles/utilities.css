@@ -165,19 +165,43 @@
 }
 
 /*
-  LIGHT: sticky, one viewport tall. Two bugs die here.
+  LIGHT: sticky, and pinned to the SOURCE's aspect ratio.
 
-  It used to be a fixed 620px block in a grid cell as tall as the rail (~1100px),
-  which left a dead grey gap underneath. And because `cover` had to fill whatever
-  box it was given, a 1.78:1 capture in a 1.3:1 box got cropped and over-zoomed.
-  Pinning it to viewport height fixes the framing AND removes the gap, because
-  the world now travels with the scroll instead of ending early.
+  History, because this box has been wrong twice in different directions.
+
+  First it was a fixed 620px block in a grid cell as tall as the rail (~1100px),
+  which left a dead grey gap underneath. That was fixed by giving it viewport
+  height — which removed the gap, because sticky makes it travel with the scroll
+  instead of ending early, but did NOT fix the framing. It only changed which
+  wrong box the capture was being poured into.
+
+  The framing was still wrong because the height came from the VIEWPORT and the
+  width from the grid, so the ratio was whatever those two happened to produce.
+  At 1512 the world lands ~955 x 760, which is 1.26:1. `cover` fitting a 1.78:1
+  capture into that has to throw away 29% of the frame, off the sides — and the
+  sides are where a room reads as a room.
+
+  So the ratio is now declared rather than inherited. The capture fills it with
+  nothing cropped, and the shot can be composed against a box that is known.
+
+  height:auto is load-bearing — without it the old height wins and aspect-ratio
+  is ignored. max-height stays as a floor-guard for very short windows; it only
+  binds past ~1540px of world width, which the 1560px container cannot produce.
+
+  Sticky still does the gap work: the card is shorter than the rail now, but it
+  pins while the rail scrolls past, and the column beneath it is the page's own
+  ranged ground rather than the dead grey it used to be.
+
+  DARK is unaffected. There the world is position:absolute + inset:0 as a
+  full-bleed backdrop, which fully constrains the box, so aspect-ratio does not
+  apply — and a backdrop is one of the few places cropping is the correct answer.
 */
 .world {
   position: sticky;
   top: 70px;
-  height: calc(100svh - 84px);
-  max-height: 760px;
+  aspect-ratio: 16 / 9;
+  height: auto;
+  max-height: calc(100svh - 84px);
   background: #0b0d12;
   border: 1px solid var(--color-line);
   border-radius: var(--radius-lg);
@@ -185,7 +209,9 @@
   overflow: hidden;
 }
 @media (max-width: 1000px) {
-  .world { position: relative; top: 0; height: min(56svh, 420px); }
+  /* Stacked above the rail with the full column to itself, so it can simply be
+     the ratio of the source — no viewport arithmetic involved. */
+  .world { position: relative; top: 0; height: auto; max-height: none; }
 }
 
 .world::after {
