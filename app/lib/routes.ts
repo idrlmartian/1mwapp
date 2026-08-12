@@ -11,7 +11,9 @@ export const SITE_URL = "https://www.1martianway.com";
 export type Route = { path: string; changeFrequency: "daily" | "weekly" | "monthly" | "yearly" };
 
 export const ROUTES: Route[] = [
-    { path: "/", changeFrequency: "daily" },
+    // "/" is deliberately absent: it 307s to /magy (see next.config.js), and a
+    // sitemap that lists a redirecting URL is a Search Console warning. Put it
+    // back in the same change that removes the redirect.
     { path: "/magy", changeFrequency: "daily" },
     { path: "/mos", changeFrequency: "weekly" },
     { path: "/toowl", changeFrequency: "weekly" },

@@ -55,6 +55,23 @@ const nextConfig = {
 
     async redirects() {
         return [
+            // "/" -> "/magy", TEMPORARY (founder's call, 2026-08-12).
+            //
+            // Two rules, not one, and the apex variant has to sit ABOVE the
+            // apex->www catch-all below: otherwise apex "/" would take two hops
+            // (apex/ -> www/ -> www/magy), and the cutover runbook requires no
+            // redirect chain longer than one hop.
+            //
+            // permanent:false (307) is load-bearing. A 308 is cached by browsers
+            // more or less forever, so "for now" would become "until every
+            // visitor clears their cache". app/page.tsx is left in place and
+            // unreachable so reverting is deleting these two entries.
+            {
+                source: "/",
+                has: [{ type: "host", value: "1martianway.com" }],
+                destination: "https://www.1martianway.com/magy",
+                permanent: false,
+            },
             // Apex -> www.
             //
             // This redirect USED to be a Vercel dashboard setting, which means it
@@ -71,6 +88,8 @@ const nextConfig = {
                 destination: "https://www.1martianway.com/:path",
                 permanent: true,
             },
+            // The www (and any other host) case of the "/" -> "/magy" rule above.
+            { source: "/", destination: "/magy", permanent: false },
             // /geospatial was deleted in 31f48af but four links kept pointing at
             // it. Those are fixed now; this catches external inbound links.
             { source: "/geospatial", destination: "/martianos", permanent: true },
