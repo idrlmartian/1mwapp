@@ -140,36 +140,72 @@ export default function MagyPage() {
             <div className="mx-auto grid max-w-[var(--container-page)] gap-3.5 p-3.5">
                 {/* ── demo ─────────────────────────────────────────────── */}
                 <Panel id="demo" label="Watch it work">
-                    {MAGY_YOUTUBE_ID ? (
-                        <div className="border-line overflow-hidden rounded-[var(--radius-md)] border">
-                            <iframe
-                                className="aspect-video w-full"
-                                src={`https://www.youtube-nocookie.com/embed/${MAGY_YOUTUBE_ID}?rel=0`}
-                                title="Magy — the Magyverse"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                allowFullScreen
-                            />
-                        </div>
-                    ) : (
-                        /* The placeholder is designed to convert rather than to
-                           apologise: the missing video becomes a second reason to
-                           sign up. Swap MAGY_YOUTUBE_ID and this becomes the embed. */
-                        <div className="border-line bg-sunk relative grid aspect-video place-items-center overflow-hidden rounded-[var(--radius-md)] border text-center">
-                            <div className="max-w-[44ch] p-6">
-                                <h2 className="text-h2 mb-2">The demo lands this week.</h2>
-                                <p className="text-fg-muted mb-5 text-[13.5px]">
-                                    We&apos;re recording Magy building a feature end to end — plan,
-                                    delegate, code, review, pull request. Get it the moment it&apos;s up.
-                                </p>
-                                <div className="mx-auto max-w-[420px]">
-                                    <WaitlistForm source="magy-demo" cta="Notify me" />
+                    {/* Two columns on purpose: full-bleed 16:9 at container width makes a
+                        cinema-sized player for a 90-second film, and leaves the eye nowhere
+                        to go afterwards. Constraining it and putting the beats beside it
+                        gives the video context and the section a second job. */}
+                    <div className="grid items-start gap-5 lg:grid-cols-[1.5fr_1fr]">
+                        <div>
+                            {MAGY_YOUTUBE_ID ? (
+                                <div className="border-line overflow-hidden rounded-[var(--radius-md)] border">
+                                    <iframe
+                                        className="aspect-video w-full"
+                                        src={`https://www.youtube-nocookie.com/embed/${MAGY_YOUTUBE_ID}?rel=0`}
+                                        title="Magy — the Magyverse"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                        allowFullScreen
+                                    />
                                 </div>
-                            </div>
-                            <p className="deck-label absolute bottom-3 left-4">
-                                Magyverse · live capture · coming
-                            </p>
+                            ) : (
+                                /* The placeholder converts rather than apologises — the missing
+                                   video becomes a second reason to sign up. Swap
+                                   MAGY_YOUTUBE_ID and this becomes the embed. */
+                                <div className="border-line bg-sunk relative grid aspect-video place-items-center overflow-hidden rounded-[var(--radius-md)] border text-center">
+                                    <div className="p-6">
+                                        <span className="border-line bg-solid mx-auto mb-4 grid size-12 place-items-center rounded-full border">
+                                            <svg viewBox="0 0 24 24" className="text-red ml-0.5 size-5" fill="currentColor" aria-hidden>
+                                                <path d="M8 5v14l11-7z" />
+                                            </svg>
+                                        </span>
+                                        <h2 className="text-h3 mb-1.5 font-bold">The demo lands this week.</h2>
+                                        <p className="text-fg-muted mx-auto max-w-[38ch] text-[13px]">
+                                            A real capture, driven live — no mockups.
+                                        </p>
+                                    </div>
+                                    <p className="deck-label absolute bottom-3 left-4">
+                                        Magyverse · live capture · coming
+                                    </p>
+                                </div>
+                            )}
                         </div>
-                    )}
+
+                        <div>
+                            <h2 className="text-h2 mb-2">What you&apos;ll see.</h2>
+                            <p className="text-fg-muted mb-4 text-[13.5px]">
+                                One feature, start to finish, in the world — captured live from a
+                                running instance rather than staged.
+                            </p>
+                            <ol className="mb-5 grid gap-2">
+                                {[
+                                    "A request typed into the composer",
+                                    "Juno writes the spec, Aria assigns it",
+                                    "A delegation drawn between two agents",
+                                    "Code appearing on the monitor as it's written",
+                                    "Luna reviewing, and a pull request opening",
+                                ].map((beat, i) => (
+                                    <li key={beat} className="border-line flex gap-3 border-t pt-2 text-[13px]">
+                                        <span className="text-blue mt-px shrink-0 font-mono text-[11px] font-bold">
+                                            0{i + 1}
+                                        </span>
+                                        <span className="text-fg-muted">{beat}</span>
+                                    </li>
+                                ))}
+                            </ol>
+                            {!MAGY_YOUTUBE_ID && (
+                                <WaitlistForm source="magy-demo" cta="Notify me" />
+                            )}
+                        </div>
+                    </div>
                 </Panel>
 
                 {/* ── how it works ─────────────────────────────────────── */}
