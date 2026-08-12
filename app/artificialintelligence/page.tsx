@@ -345,13 +345,8 @@ export default function ArtificialIntelligence() {
                             <div className="absolute inset-0 bg-gradient-to-r from-blue via-blue to-blue opacity-0 group-hover:opacity-100 transition-all-smooth blur-xl"></div>
                             <span className="relative z-10">Start Building Consciousness</span>
                         </Link>
-                        <Link
-                            href="/products"
-                            className="group text-lg font-semibold text-white/80 hover:text-white transition-colors"
-                        >
-                            View Humanoid Robots{" "}
-                            <span className="inline-block transition-transform group-hover:translate-x-1">→</span>
-                        </Link>
+                        {/* "View Humanoid Robots" (/products) removed — the product
+                            isn't ready to be shown, so it is unlinked sitewide. */}
                     </div>
                 </div>
             </div>

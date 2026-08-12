@@ -216,7 +216,12 @@ export default function MagyPage() {
                                                 <path d="M8 5v14l11-7z" />
                                             </svg>
                                         </span>
-                                        <h2 className="text-h3 mb-1.5 font-bold">The demo lands this week.</h2>
+                                        {/* Untimed on purpose. This said "lands this week",
+                                            which becomes false the moment the date slips —
+                                            on the one page whose whole strategy is being
+                                            believed. Don't reintroduce a deadline here
+                                            unless the capture is already recorded. */}
+                                        <h2 className="text-h3 mb-1.5 font-bold">The demo is coming.</h2>
                                         <p className="text-fg-muted mx-auto max-w-[38ch] text-[13px]">
                                             A real capture, driven live — no mockups.
                                         </p>

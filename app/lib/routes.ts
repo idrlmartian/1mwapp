@@ -18,7 +18,9 @@ export const ROUTES: Route[] = [
     { path: "/mos", changeFrequency: "weekly" },
     { path: "/toowl", changeFrequency: "weekly" },
     { path: "/martianos", changeFrequency: "monthly" },
-    { path: "/products", changeFrequency: "monthly" },
+    // "/products" (Humanoid robots) is deliberately absent: the product isn't
+    // ready to be shown, so it is unlinked sitewide and noindex'd. A sitemap
+    // entry would defeat that by inviting Google to crawl and rank it anyway.
     { path: "/artificialintelligence", changeFrequency: "monthly" },
     { path: "/brands", changeFrequency: "monthly" },
     { path: "/press", changeFrequency: "monthly" },

@@ -3,7 +3,18 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 
+/*
+  Unlinked and de-indexed on purpose: the humanoid line isn't ready to be
+  shown, so every link to it was removed sitewide and it is out of the sitemap.
+  noindex is what makes that stick — removing links and the sitemap entry does
+  NOT deindex a page that search engines already know about, and this page
+  describes four products with capability claims nobody has verified.
+
+  Delete the robots block and restore the link in site/Footer.tsx + the
+  sitemap registry when the line is ready.
+*/
 export const metadata: Metadata = {
+    robots: { index: false, follow: false },
     alternates: { canonical: "https://www.1martianway.com/products" },
     title: "Humanoid Robots | 1 Martian Way",
     description:

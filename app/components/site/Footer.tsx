@@ -19,7 +19,9 @@ const PRODUCTS = [
     { href: "/mos", label: "MOS — robotics simulation" },
     { href: "/toowl", label: "Toowl — terminal" },
     { href: "/martianos", label: "Martian OS" },
-    { href: "/products", label: "Humanoid robots" },
+    // "Humanoid robots" (/products) is deliberately unlisted — the product
+    // isn't ready to be shown. The page still exists but is unlinked and
+    // noindex'd; restore this entry when it is.
 ];
 
 const COMPANY_LINKS: { href: string; label: string; external?: boolean }[] = [
