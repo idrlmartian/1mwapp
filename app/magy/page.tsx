@@ -36,6 +36,10 @@ const FAQ = [
         a: "Yes. `magy assistant` is a single agent in a REPL with no NATS, no Postgres and no Redis — it runs on your machine with zero external services. The full seven-agent runtime and the 3D world need the production path.",
     },
     {
+        q: "How many agents can I actually run?",
+        a: "Two different numbers, and we keep them apart on purpose. The 100,000 figure is what the world renders — ambient agents drawn at 60 fps on a laptop and 56.2 on a phone. Agents that actually think are backed by an LLM, and an agent turn is spent almost entirely waiting on your model provider rather than on a server, so there is no cap on agent count in our runtime. What sets your ceiling is your model budget and your provider's rate limits — your keys, your call. We have not published a number for that because we have not measured one, and a figure we estimated would tell you less than this paragraph does.",
+    },
+    {
         q: "Which models does it use — and do I control that?",
         a: "You control it completely, per agent. Bring your own API keys or your Claude subscription, and assign whichever model you want to whichever agent: the strongest one for your CTO, something cheap for routine work. Seven providers are supported — Anthropic, OpenAI, Gemini, Bedrock, Ollama, Kimi and MiniMax. Set an agent to `auto` instead and a cost-aware router walks a ladder from the strongest model down, with circuit breakers and per-agent budgets. Keys live in your own config, never in our database.",
     },
@@ -401,6 +405,20 @@ export default function MagyPage() {
                                     &ldquo;State is a closed-form function of time, not an integration.&rdquo;
                                 </p>
                             </Quote>
+                            {/* Stated rather than left to inference. Beside copy about
+                                engineers shipping pull requests, "100,000 agents" reads
+                                as 100,000 workers — and a reader who works out that it
+                                means rendered avatars stops believing the other five
+                                numbers too. Saying it plainly costs nothing and is the
+                                reason the rest is credible. */}
+                            <p className="text-fg-muted mt-3.5 text-[13.5px]">
+                                Those numbers are what the world <em>renders</em>. The agents that
+                                think are backed by an LLM, and a turn is spent almost entirely
+                                waiting on your model provider rather than on a server — so nothing
+                                in the runtime caps how many you run. Your model budget and your
+                                provider&apos;s rate limits do. We publish no figure for that
+                                because we have not measured one.
+                            </p>
                         </div>
                         <div>
                             <Metrics items={METRICS} />
