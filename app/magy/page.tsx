@@ -36,8 +36,8 @@ const FAQ = [
         a: "Yes. `magy assistant` is a single agent in a REPL with no NATS, no Postgres and no Redis — it runs on your machine with zero external services. The full seven-agent runtime and the 3D world need the production path.",
     },
     {
-        q: "Which models does it use?",
-        a: "Claude is the fleet default, with a cost-aware router across seven providers — Anthropic, OpenAI, Gemini, Bedrock, Ollama, Kimi and MiniMax. Set an agent to `auto` and it walks a ladder from the strongest model down, with circuit breakers and per-agent budgets.",
+        q: "Which models does it use — and do I control that?",
+        a: "You control it completely, per agent. Bring your own API keys or your Claude subscription, and assign whichever model you want to whichever agent: the strongest one for your CTO, something cheap for routine work. Seven providers are supported — Anthropic, OpenAI, Gemini, Bedrock, Ollama, Kimi and MiniMax. Set an agent to `auto` instead and a cost-aware router walks a ladder from the strongest model down, with circuit breakers and per-agent budgets. Keys live in your own config, never in our database.",
     },
     {
         q: "Does my code leave my machine?",

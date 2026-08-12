@@ -62,7 +62,7 @@ export const STATUS = [
     {
         state: "shipping" as const,
         label: "Shipping",
-        text: "Agents, MagyVerse, worktree isolation with auto-PR, four-tier memory, knowledge graph, cost-aware routing across seven providers, Telegram, cron, skills.",
+        text: "Agents, MagyVerse, worktree isolation with auto-PR, four-tier memory, knowledge graph, per-agent model choice with your own keys across seven providers, Telegram, cron, skills.",
     },
     {
         state: "building" as const,
