@@ -7,6 +7,7 @@ import { Metrics, Panel, Quote } from "@/app/components/ui/Panel";
 import { Bullets, CaptureSlot, Eyebrow, Receipts, Showcase, Visual } from "@/app/components/ui/Showcase";
 import MagyWorkspace from "@/app/components/ui/MagyWorkspace";
 import CortexGraph from "@/app/components/ui/CortexGraph";
+import SectionNav from "@/app/components/ui/SectionNav";
 import { ACTIVITY, AGENTS, MAGY_YOUTUBE_ID, METRICS, SHIPPING_AGENTS, STATUS, WORLD } from "@/app/lib/constants";
 
 export const metadata: Metadata = {
@@ -176,24 +177,9 @@ export default function MagyPage() {
                 </div>
             </main>
 
-            {/* sticky section nav */}
-            <nav
-                aria-label="On this page"
-                className="border-line bg-canvas/85 sticky top-14 z-40 -mb-1 overflow-x-auto border-y backdrop-blur-xl"
-            >
-                <ul className="mx-auto flex max-w-[var(--container-page)] gap-1 px-[var(--container-pad)] py-2">
-                    {SECTIONS.map(([id, label]) => (
-                        <li key={id}>
-                            <a
-                                href={`#${id}`}
-                                className="text-fg-muted hover:text-fg hover:bg-sunk whitespace-nowrap rounded-[var(--radius-sm)] px-2.5 py-1.5 font-mono text-[10.5px] font-semibold uppercase tracking-[0.13em] transition-colors"
-                            >
-                                {label}
-                            </a>
-                        </li>
-                    ))}
-                </ul>
-            </nav>
+            {/* Sticky section nav. Active state matches the header's current-page
+                pill exactly — see the note in ui/SectionNav.tsx. */}
+            <SectionNav sections={SECTIONS} />
 
             <div className="mx-auto grid max-w-[var(--container-page)] gap-3.5 px-[var(--container-pad)] py-3.5">
                 {/* ── demo ─────────────────────────────────────────────── */}
