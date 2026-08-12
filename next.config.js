@@ -80,6 +80,20 @@ const nextConfig = {
                 destination: "https://www.1martianway.com/magy",
                 permanent: false,
             },
+            // /idrl -> droneracingindia.com.
+            //
+            // Sits ABOVE the apex->www rule and carries NO host condition on
+            // purpose: the destination is an absolute external URL, so one rule
+            // serves apex and www visitors alike in a single hop. Adding a host
+            // condition here would push apex traffic through www first and
+            // break the one-hop rule the cutover runbook verifies against.
+            //
+            // 307, because the plan's position was to BUILD this page rather
+            // than link out — IDRL is the only venture with third-party proof
+            // (the DD Sports coverage), and an outbound link exports that
+            // credibility off-domain. Keeping it temporary leaves that open.
+            { source: "/idrl", destination: "https://droneracingindia.com", permanent: false },
+            { source: "/idrl/:path*", destination: "https://droneracingindia.com", permanent: false },
             // Apex -> www.
             //
             // This redirect USED to be a Vercel dashboard setting, which means it
