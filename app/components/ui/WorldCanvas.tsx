@@ -57,8 +57,35 @@ export default function WorldCanvas({ className = "" }: { className?: string }) 
           themes — and scoping the lookup here is what lets those win. Reading
           the root would paint light mode's chip-safe darkened agent colours
           onto a dark ground, and the crowd would disappear.
+
+          EVERY LOOKUP NEEDS A FALLBACK. getComputedStyle returns "" for a custom
+          property whose stylesheet has not been applied yet, and canvas throws
+          on an empty colour rather than ignoring it — so one unstyled frame took
+          the whole page down with "The value provided ('') could not be parsed
+          as a color". In dev, Turbopack injects CSS through JS, so that window
+          is real and reproducible; in production it is rarer but not impossible.
+
+          The fallbacks mirror the .world block in utilities.css. They are a
+          safety net, not a second source of truth: CSS still wins whenever it
+          has loaded, so retheming there still works.
         */
-        const css = (n: string) => getComputedStyle(c).getPropertyValue(n).trim();
+        const FALLBACK: Record<string, string> = {
+            "--c-world-1": "#16203a",
+            "--c-world-2": "#0d1526",
+            "--c-world-3": "#1e2b4d",
+            "--c-bg": "#0b0d12",
+            "--c-border-hi": "rgb(255 255 255 / 0.17)",
+            "--c-aria": "#00f0ff",
+            "--c-juno": "#4ade80",
+            "--c-nova": "#8b5cf6",
+            "--c-kai": "#38bdf8",
+            "--c-zara": "#f472b6",
+            "--c-luna": "#f59e0b",
+            "--c-atlas": "#fb7185",
+            "--c-argus": "#a3e635",
+        };
+        const css = (n: string) =>
+            getComputedStyle(c).getPropertyValue(n).trim() || FALLBACK[n] || "#6ea8ff";
         const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
         let raf = 0;
 
