@@ -179,9 +179,11 @@ fi
 
 case "$VHOST_MODE" in
   staging)
-    echo "Registering STAGING vhost 1mw.karmasteels.com -> localhost:${PORT}"
+    # Moved off karmasteels.com 2026-08-13. `--host` REPLACES the route's
+    # host list, so a deploy with a stale value silently un-migrates staging.
+    echo "Registering STAGING vhost 1mw.1martianway.com -> localhost:${PORT}"
     sudo docker exec kamal-proxy kamal-proxy deploy 1mwapp-stage \
-      --target "localhost:${PORT}" --host 1mw.karmasteels.com \
+      --target "localhost:${PORT}" --host 1mw.1martianway.com \
       --tls --health-check-path /up --deploy-timeout 120s
     ;;
   prod)
