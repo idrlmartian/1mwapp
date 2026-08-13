@@ -12,12 +12,19 @@ import CopyCommand from "@/app/components/ui/CopyCommand";
   say the same thing. Copy is verbatim where it is the brand's own voice.
 
   Two things to know:
-    · Links point at https://toowl.sh, which does not resolve yet. That is a
-      deliberate call — the founder wants the destination published now.
-    · Toowl is NOT open source and the repository is private. The live site at
-      toowl.karmasteels.com still says "Open source. Free forever." and carries
-      a GitHub CTA — both are wrong and should be corrected there too. Nothing
-      on this page claims an open licence, and there is no repo link.
+    · The install domain is toowl.dev — registered to us at Cloudflare, and the
+      single name used by install.sh's header, website/src/content/seo.ts, and
+      the Homebrew formula's homepage. This page previously printed toowl.sh,
+      which RDAP and whois.nic.sh confirm was never registered by anyone; that
+      is why `curl -fsSL https://toowl.sh/install.sh | sh` returned 000 rather
+      than a 404. The toowl.dev apex still has no A/CNAME record, so the
+      command here does not work yet — see deploy-website.yml's LAUNCH GATE in
+      the toowl repo for the four steps that make it resolve.
+    · Toowl WILL be open source (decision 2026-08-13); the toowl-pro repo stays
+      private. Until the repo is actually flipped public, this page must not
+      link to it or call it open — a 404'd repo link is exactly the kind of
+      unverifiable claim the site's strategy depends on avoiding. Add the CTA
+      on flip day, not before.
 */
 
 export const metadata: Metadata = {
@@ -33,7 +40,7 @@ export const metadata: Metadata = {
     },
 };
 
-const TOOWL_URL = "https://toowl.sh";
+const TOOWL_URL = "https://toowl.dev";
 
 const STATS = [
     { value: "<80ms", label: "cold start" },
