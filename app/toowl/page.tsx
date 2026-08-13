@@ -84,12 +84,32 @@ export default function ToowlPage() {
             <Panel>
                 <div className="flex flex-wrap items-start justify-between gap-6">
                     <div className="min-w-0 flex-1">
-                        <p className="deck-label mb-3 flex items-center gap-2">
-                            <i className="bg-good size-1.5 rounded-full" />
-                            v1.0 — Claude on Perch, day one
-                        </p>
-                        <h1 className="text-hero mb-3">
-                            Terminal <em className="text-blue not-italic">You Will Love.</em>
+                        {/*
+                            Same wordmark treatment as /magy, and for the same
+                            reason: the loudest thing here was a tagline that
+                            never says which product it belongs to, and the <h1>
+                            did not contain "toowl" at all.
+
+                            Caps with open tracking reads as a NAME rather than a
+                            second headline, so it sits above the tagline without
+                            competing. The hairline rule is deck-label's device.
+                            Status chip is green, not red — v1.0 has shipped,
+                            where Magy is still early access.
+                        */}
+                        <h1 className="mb-3">
+                            <span className="flex items-center gap-3">
+                                <span className="-mr-[0.16em] text-[clamp(1.55rem,3vw,2rem)] font-extrabold uppercase leading-none tracking-[0.16em]">
+                                    toowl
+                                </span>
+                                <span className="bg-line h-px flex-1" />
+                                <span className="text-good inline-flex shrink-0 items-center gap-1.5 rounded-[var(--radius-capsule)] bg-[color-mix(in_srgb,var(--color-good)_14%,transparent)] px-2.5 py-1 font-mono text-[9.5px] font-bold uppercase tracking-[0.14em]">
+                                    <i className="bg-good size-1.5 rounded-full" />
+                                    v1.0 shipped
+                                </span>
+                            </span>
+                            <span className="text-hero mt-4 block">
+                                Terminal <em className="text-blue not-italic">You Will Love.</em>
+                            </span>
                         </h1>
                         <p className="text-fg-dim mb-3 font-mono text-[12.5px]">
                             <b className="text-fg">toowl</b> · pronounced /tuːl/ — like &ldquo;tool&rdquo;.
@@ -100,7 +120,12 @@ export default function ToowlPage() {
                             — with daemon-backed workspaces and Claude on the Perch.
                         </p>
 
-                        <div className="border-line bg-sunk mt-5 flex items-center gap-3 overflow-x-auto rounded-[var(--radius-md)] border px-3.5 py-3 font-mono text-[12.5px]">
+                        {/* inline-flex, not flex: a block-level flex container
+                            fills its parent, so the box ran the full column
+                            width with most of it empty. w-fit shrink-wraps to
+                            the command; max-w-full keeps it scrollable rather
+                            than overflowing on a narrow screen. */}
+                        <div className="border-line bg-sunk mt-5 inline-flex w-fit max-w-full items-center gap-3 overflow-x-auto rounded-[var(--radius-md)] border px-3.5 py-3 font-mono text-[12.5px]">
                             <span className="text-good shrink-0">$</span>
                             <code className="text-fg-muted whitespace-nowrap">
                                 curl -fsSL {TOOWL_URL}/install.sh | sh

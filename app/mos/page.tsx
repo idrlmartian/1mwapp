@@ -43,12 +43,22 @@ export default function MosPage() {
     return (
         <ComingSoon>
             <Panel>
-                <p className="deck-label mb-3 flex items-center gap-2">
-                    <i className="bg-red size-1.5 rounded-full" />
-                    Coming shortly · private alpha
-                </p>
-                <h1 className="text-hero mb-3 max-w-[18ch]">
-                    The robotics simulator that <em className="text-blue not-italic">runs everywhere</em>.
+                {/* Wordmark, matching /magy and /toowl. All three product pages
+                    led with a tagline and never named the product in the <h1>. */}
+                <h1 className="mb-3">
+                    <span className="flex items-center gap-3">
+                        <span className="-mr-[0.16em] text-[clamp(1.55rem,3vw,2rem)] font-extrabold uppercase leading-none tracking-[0.16em]">
+                            MOS
+                        </span>
+                        <span className="bg-line h-px flex-1" />
+                        <span className="text-red bg-red-soft inline-flex shrink-0 items-center gap-1.5 rounded-[var(--radius-capsule)] px-2.5 py-1 font-mono text-[9.5px] font-bold uppercase tracking-[0.14em]">
+                            <i className="bg-red size-1.5 rounded-full" />
+                            Private alpha
+                        </span>
+                    </span>
+                    <span className="text-hero mt-4 block max-w-[18ch]">
+                        The robotics simulator that <em className="text-blue not-italic">runs everywhere</em>.
+                    </span>
                 </h1>
                 <p className="text-fg-muted max-w-[62ch] text-[14px]">
                     A robotics simulation platform with a portable dynamics kernel — the same
