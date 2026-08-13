@@ -4,6 +4,7 @@ import WaitlistForm from "@/app/components/WaitlistForm";
 import { ComingSoon, Metrics, Panel } from "@/app/components/ui/Panel";
 import { Bullets, Eyebrow, Receipts, Showcase, Visual } from "@/app/components/ui/Showcase";
 import ToowlPerch from "@/app/components/ui/ToowlPerch";
+import ToowlOwl from "@/app/components/ui/ToowlOwl";
 
 /*
   Content mirrored from the live site at toowl.karmasteels.com so the two pages
@@ -77,50 +78,6 @@ const GLOSSARY = [
     ["Hoot", "banner-style notifications from feathers — planned"],
 ] as const;
 
-/*
-  The real Toowl mark, taken verbatim from the geometry the live site serves at
-  toowl.karmasteels.com/favicon.svg. The previous version was a hand-drawn
-  stand-in in this site's blue/red palette, which is why it did not look like
-  Toowl.
-
-  Its own Catppuccin colours are kept deliberately rather than remapped onto our
-  tokens: this is another product's identity, and a mark recoloured to match its
-  host stops being that product's mark. Hard-coded hexes are correct here for
-  the same reason the agent colours are data — brand identity, not chrome.
-
-  Inline rather than an <img>: it costs no request, scales to any `size`, and
-  matches how the page already used the stand-in.
-*/
-function Owl({ size = 84 }: { size?: number }) {
-    const id = "toowl-owl-fill";
-    return (
-        <svg viewBox="0 0 32 32" width={size} height={size} aria-hidden className="shrink-0">
-            <defs>
-                <linearGradient id={id} x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#fab387" />
-                    <stop offset="50%" stopColor="#f9e2af" />
-                    <stop offset="100%" stopColor="#fab387" />
-                </linearGradient>
-            </defs>
-            <rect width="32" height="32" rx="7" fill="#1e1e2e" />
-            {/* ear tufts */}
-            <path d="M8 9 L10 5 L12 9 Z" fill={`url(#${id})`} stroke="#f5c2e7" strokeWidth="0.7" strokeLinejoin="round" />
-            <path d="M20 9 L22 5 L24 9 Z" fill={`url(#${id})`} stroke="#f5c2e7" strokeWidth="0.7" strokeLinejoin="round" />
-            {/* head / body */}
-            <ellipse cx="16" cy="18" rx="11" ry="11" fill={`url(#${id})`} stroke="#f5c2e7" strokeWidth="0.8" />
-            {/* eyes */}
-            <circle cx="11.5" cy="15.5" r="3.6" fill="#fff" />
-            <circle cx="20.5" cy="15.5" r="3.6" fill="#fff" />
-            <circle cx="11.8" cy="15.8" r="1.9" fill="#b4befe" />
-            <circle cx="20.2" cy="15.8" r="1.9" fill="#b4befe" />
-            <circle cx="12" cy="16" r="1.1" fill="#1e1e2e" />
-            <circle cx="20" cy="16" r="1.1" fill="#1e1e2e" />
-            {/* beak */}
-            <path d="M16 19 L14.5 21 L16 22.5 L17.5 21 Z" fill="#f9e2af" stroke="#f5c2e7" strokeWidth="0.5" strokeLinejoin="round" />
-        </svg>
-    );
-}
-
 export default function ToowlPage() {
     return (
         <ComingSoon>
@@ -169,11 +126,24 @@ export default function ToowlPage() {
                         </p>
                     </div>
 
-                    <div className="mx-auto flex items-center gap-3 sm:mx-0">
-                        <span className="border-line bg-sunk text-fg-muted rounded-[var(--radius-md)] border px-3 py-2 font-mono text-[12px]">
-                            Oh so <b className="text-fg">toowl</b>
+                    {/*
+                        The mascot as toowl actually draws it, not the favicon
+                        mark. The bubble is content rather than decoration — the
+                        rhyme is what teaches the /tuːl/ pronunciation — so the
+                        visible text is aria-hidden and a real sentence sits
+                        behind it for anyone who cannot see the joke land.
+                    */}
+                    <div className="owl-stage mx-auto shrink-0 sm:mx-0">
+                        <div className="owl-bubble left-[-118px] top-[52px] max-lg:hidden" aria-hidden>
+                            <span>
+                                Oh so <em>toowl</em>
+                            </span>
+                        </div>
+                        <span className="sr-only">
+                            toowl is pronounced like the word &ldquo;tool&rdquo;, and rhymes with
+                            &ldquo;cool&rdquo;.
                         </span>
-                        <Owl />
+                        <ToowlOwl size={232} />
                     </div>
                 </div>
             </Panel>

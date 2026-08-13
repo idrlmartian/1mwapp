@@ -208,3 +208,120 @@
   }
   .deck-grid > .deck-rail { grid-column: 1; grid-row: 2; }
 }
+
+/* ── 4. the t-owl ─────────────────────────────────────────────────────────── */
+/*
+  Animations for ui/ToowlOwl.tsx, timings copied from toowl's own Owl.astro.
+
+  The bolt pulse is why that component nests two groups: a CSS `transform`
+  OVERRIDES an SVG transform attribute rather than composing with it, so
+  animating scale on the same <g> that carries translate/scale placement throws
+  the placement away. Outer group places, inner group animates.
+*/
+.toowl-owl .owl-float {
+  transform-origin: 100px 200px;
+  animation: owl-float 4.2s ease-in-out infinite;
+}
+.toowl-owl .owl-eyes {
+  transform-origin: 100px 100px;
+  transform-box: fill-box;
+  animation: owl-blink 7s ease-in-out infinite;
+}
+.toowl-owl .owl-bolt {
+  transform-origin: center;
+  transform-box: fill-box;
+  animation: owl-bolt-pulse 3.6s ease-in-out infinite;
+}
+
+@keyframes owl-float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50%      { transform: translateY(-7px) rotate(-0.5deg); }
+}
+@keyframes owl-blink {
+  0%, 90%, 100% { transform: scaleY(1); }
+  92%, 94%      { transform: scaleY(0.06); }
+}
+@keyframes owl-bolt-pulse {
+  0%, 100% { opacity: 0.92; transform: scale(1); }
+  50%      { opacity: 1;    transform: scale(1.08); }
+}
+
+/* The mascot's speech bubble. The rhyme is the point — it teaches the /tuːl/
+   pronunciation, so it is content, not decoration, and carries a real label. */
+.owl-bubble {
+  position: absolute;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 18px;
+  background: #fff7e6;
+  border: 2px solid #f5c2e7;
+  border-radius: 999px;
+  box-shadow: 0 10px 26px -10px rgb(0 0 0 / 0.5), 0 0 0 1px rgb(245 194 231 / 0.25);
+  transform-origin: 90% 50%;
+  animation:
+    bubble-pop 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) 1.6s backwards,
+    bubble-bob 4.2s ease-in-out 2.2s infinite;
+}
+.owl-bubble span {
+  font-family: var(--font-mono);
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  background: linear-gradient(135deg, #fab387, #eba0ac);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.owl-bubble em { font-style: italic; font-weight: 900; }
+/* Tail: two triangles, the outer one the border colour, the inner the fill. */
+.owl-bubble::before,
+.owl-bubble::after { content: ""; position: absolute; width: 0; height: 0; top: 50%; }
+.owl-bubble::before {
+  right: -16px; transform: translateY(-50%);
+  border-top: 10px solid transparent; border-bottom: 10px solid transparent;
+  border-left: 16px solid #f5c2e7;
+}
+.owl-bubble::after {
+  right: -12px; transform: translateY(-50%);
+  border-top: 8px solid transparent; border-bottom: 8px solid transparent;
+  border-left: 13px solid #fff7e6;
+}
+
+@keyframes bubble-pop {
+  from { opacity: 0; transform: scale(0.6); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes bubble-bob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-5px); }
+}
+
+/* The owl's ground shadow, bobbing in sync with the float. */
+.owl-stage { position: relative; display: flex; justify-content: center; }
+.owl-stage::after {
+  content: "";
+  position: absolute;
+  bottom: -16px;
+  left: 50%;
+  width: 200px;
+  height: 26px;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse at center, rgb(0 0 0 / 0.5), transparent 70%);
+  filter: blur(8px);
+  z-index: -1;
+  animation: shadow-bob 4.2s ease-in-out infinite;
+}
+@keyframes shadow-bob {
+  0%, 100% { opacity: 0.55; transform: translateX(-50%) scaleX(1); }
+  50%      { opacity: 0.35; transform: translateX(-50%) scaleX(0.88); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toowl-owl .owl-float,
+  .toowl-owl .owl-eyes,
+  .toowl-owl .owl-bolt,
+  .owl-bubble,
+  .owl-stage::after { animation: none; }
+}
