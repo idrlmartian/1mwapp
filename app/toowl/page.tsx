@@ -5,6 +5,7 @@ import { ComingSoon, Metrics, Panel } from "@/app/components/ui/Panel";
 import { Bullets, Eyebrow, Receipts, Showcase, Visual } from "@/app/components/ui/Showcase";
 import ToowlPerch from "@/app/components/ui/ToowlPerch";
 import ToowlOwl from "@/app/components/ui/ToowlOwl";
+import CopyCommand from "@/app/components/ui/CopyCommand";
 
 /*
   Content mirrored from the live site at toowl.karmasteels.com so the two pages
@@ -120,17 +121,8 @@ export default function ToowlPage() {
                             — with daemon-backed workspaces and Claude on the Perch.
                         </p>
 
-                        {/* inline-flex, not flex: a block-level flex container
-                            fills its parent, so the box ran the full column
-                            width with most of it empty. w-fit shrink-wraps to
-                            the command; max-w-full keeps it scrollable rather
-                            than overflowing on a narrow screen. */}
-                        <div className="border-line bg-sunk mt-5 inline-flex w-fit max-w-full items-center gap-3 overflow-x-auto rounded-[var(--radius-md)] border px-3.5 py-3 font-mono text-[12.5px]">
-                            <span className="text-good shrink-0">$</span>
-                            <code className="text-fg-muted whitespace-nowrap">
-                                curl -fsSL {TOOWL_URL}/install.sh | sh
-                            </code>
-                        </div>
+                        {/* The `$` is rendered but NOT copied — see CopyCommand. */}
+                        <CopyCommand className="mt-5" command={`curl -fsSL ${TOOWL_URL}/install.sh | sh`} />
 
                         <div className="mt-4 flex flex-wrap gap-2.5">
                             <a
@@ -279,8 +271,12 @@ export default function ToowlPage() {
                     ].map(([title, cmd, body]) => (
                         <div key={title} className="border-line bg-sunk rounded-[var(--radius-md)] border p-4">
                             <p className="deck-label mb-2">{title}</p>
-                            <code className="text-fg block overflow-x-auto whitespace-nowrap font-mono text-[12px]">{cmd}</code>
-                            <p className="text-fg-muted mt-2.5 text-[12.5px]">{body}</p>
+                            {/* Copyable here too. A visitor who scrolls to the
+                                install section is further along than one who
+                                skimmed the hero, so this is the more likely
+                                place they actually reach for the command. */}
+                            <CopyCommand command={cmd} />
+                            <p className="text-fg-muted mt-1 text-[12.5px]">{body}</p>
                         </div>
                     ))}
                 </div>

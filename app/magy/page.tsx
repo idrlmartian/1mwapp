@@ -580,7 +580,7 @@ export default function MagyPage() {
                 <Panel id="scale" label="Scale">
                     <div className="grid gap-5 lg:grid-cols-2">
                         <div>
-                            <h2 className="text-h2 mb-2">Not seven agents. As many as the work needs.</h2>
+                            <h2 className="text-h2 mb-2">Not eight agents. As many as the work needs.</h2>
                             <p className="text-fg-muted text-[13.5px]">
                                 Ambient population is a closed-form function of time rather than an
                                 integration — every agent&apos;s state is computed from a seed and a

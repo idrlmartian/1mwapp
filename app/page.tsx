@@ -147,7 +147,7 @@ export default function Home() {
                     </p>
                     <div className="grid gap-3.5 lg:grid-cols-2">
                         <div>
-                            <h2 className="text-h2 mb-2">Not seven agents. As many as the work needs.</h2>
+                            <h2 className="text-h2 mb-2">Not eight agents. As many as the work needs.</h2>
                             <p className="text-fg-muted max-w-[66ch] text-[13.5px]">
                                 Every other multi-agent product ships a fixed cast. Magy ships a world
                                 measured at a hundred thousand — because ambient population is a
