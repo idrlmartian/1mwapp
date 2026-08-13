@@ -155,6 +155,7 @@ sudo docker run -d --name "$NAME" --network host --restart always --init \
   -e TRUST_PROXY_HEADERS=1 \
   -e NEXT_PUBLIC_APP_VERSION="$NEW_VERSION" \
   -e NEXT_PUBLIC_BUILD_SHA="$BUILD_SHA" \
+  -e NEXT_PUBLIC_BUILD_DATE="$BUILD_DATE" \
   -e NEXT_PUBLIC_UMAMI_ID="$UMAMI_ID" \
   -v /home/ubuntu/data/1mwapp:/data \
   "${NAME}:latest"

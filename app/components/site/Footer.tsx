@@ -157,11 +157,29 @@ export default function Footer() {
                     <span>
                         © {new Date().getFullYear()} {COMPANY.legal} All rights reserved.
                         <span className="ml-2">CIN: {COMPANY.cin}</span>
-                        {/* Visible build stamp. Baked in at docker build time, so it
-                            identifies the exact commit a visitor is looking at — the
-                            fastest way to tell a stale page from a current one. */}
+                        {/*
+                            Visible build stamp: version, commit, and WHEN it was
+                            built. All three baked in at docker build time.
+
+                            The timestamp is the half that was missing and the
+                            half that actually answers the question you ask a
+                            build stamp — a SHA tells you which commit, but not
+                            whether you are looking at a stale page. "Is this
+                            older than the fix I just deployed?" is a question a
+                            date answers and a hash does not. It is IST because
+                            that is the timezone the deploy script stamps in, and
+                            a time with no zone is a time you cannot compare.
+
+                            scripts/deploy.sh already computed BUILD_DATE and
+                            passed it as a --build-arg; nothing rendered it.
+                        */}
                         <span className="text-fg-dim ml-2 font-mono text-[11px]">
-                            build {process.env.NEXT_PUBLIC_BUILD_SHA ?? "dev"}
+                            {process.env.NEXT_PUBLIC_APP_VERSION ?? "dev"}
+                            {" · "}
+                            {process.env.NEXT_PUBLIC_BUILD_SHA ?? "local"}
+                            {process.env.NEXT_PUBLIC_BUILD_DATE
+                                ? ` · ${process.env.NEXT_PUBLIC_BUILD_DATE}`
+                                : ""}
                         </span>
                     </span>
                     <nav className="flex flex-wrap gap-4">
