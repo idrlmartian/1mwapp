@@ -52,10 +52,19 @@ export const tileSvg = (scale = 1, radius = 0) =>
     markGroup(scale) +
     `</svg>`;
 
-/** Mark alone, inherits colour from the caller. */
-export const markSvg = (fill = "currentColor") =>
+/**
+ * Mark alone on transparency, inheriting colour from the caller.
+ *
+ * This is the PRIMARY form. The figure is the identity; the red field is a
+ * background that may be any colour or none — so anywhere alpha is honoured,
+ * the box comes off and the mark carries the brand colour itself.
+ *
+ * Takes the same optical scale as tileSvg: at 16px the as-drawn legs thin to
+ * ~1px and the head merges into them, so favicons need the compact 1.3x.
+ */
+export const markSvg = (fill = "currentColor", scale = 1) =>
     `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">` +
-    markGroup(1, fill) +
+    markGroup(scale, fill) +
     `</svg>`;
 
 const out = (p) => join(ROOT, p);
@@ -69,8 +78,11 @@ writeFileSync(out("public/assets/img/1mw-mark-red.svg"), markSvg(BRAND_RED));
 // (Header x2, Footer x1) with no component edits, and deletes ~4KB of SMIL
 // animation loops and two Gaussian blur filters that ran forever on every page.
 writeFileSync(out("public/assets/img/1mw-logo.svg"), tileSvg());
-// app/icon.svg is the browser-tab favicon -> compact optical size.
-writeFileSync(out("app/icon.svg"), tileSvg(1.3));
+// app/icon.svg is the browser-tab favicon -> mark alone on transparency, at the
+// compact optical size. No field: a tab strip already has its own background,
+// and a red square fighting it is what made this read as a button rather than
+// a mark.
+writeFileSync(out("app/icon.svg"), markSvg(BRAND_RED, 1.3));
 
 // ── rasters ─────────────────────────────────────────────────────────────────
 const png = (svg, size, path, bg) => {
@@ -79,27 +91,44 @@ const png = (svg, size, path, bg) => {
     return img.png({ compressionLevel: 9 }).toFile(out(path));
 };
 
+/*
+  Transparent WHERE ALPHA IS HONOURED, solid where it is not. Two surfaces are
+  deliberate exceptions and must keep the red field:
+
+    apple-icon — iOS ignores alpha and composites on BLACK. A transparent
+      apple-touch icon is not a floating mark, it is a red mark on a black
+      square that nobody chose.
+
+    maskable — Android masks to a circle/squircle and expects the icon to fill
+      its safe area edge to edge. A transparent maskable renders the mark
+      floating on whatever grey the launcher picks, which reads as broken. The
+      field IS the icon here; that is what "maskable" means.
+*/
 await Promise.all([
-    // iOS ignores alpha and composites on black — always flatten onto the red.
     png(tileSvg(1.3), 180, "app/apple-icon.png", BRAND_RED),
-    png(tileSvg(1.3), 192, "public/icons/icon-192.png", BRAND_RED),
-    png(tileSvg(1.3), 512, "public/icons/icon-512.png", BRAND_RED),
     png(tileSvg(0.78), 512, "public/icons/icon-512-maskable.png", BRAND_RED),
-    // Email CID logo: 240px source displayed at 120px for retina.
-    png(tileSvg(1.15), 240, "public/assets/img/1mw-mark-240.png", BRAND_RED),
-    png(tileSvg(), 512, "public/assets/img/1mw-mark-512.png", BRAND_RED),
+
+    // PWA "any" icons: alpha honoured, so the box comes off.
+    png(markSvg(BRAND_RED, 1.3), 192, "public/icons/icon-192.png"),
+    png(markSvg(BRAND_RED, 1.3), 512, "public/icons/icon-512.png"),
+    // Email CID logo: 240px source displayed at 120px for retina. Transparent
+    // reads on both white and dark-mode clients; the red carries either way.
+    png(markSvg(BRAND_RED, 1.15), 240, "public/assets/img/1mw-mark-240.png"),
+    png(markSvg(BRAND_RED), 512, "public/assets/img/1mw-mark-512.png"),
 ]);
 
 // ── favicon.ico (16/32/48) ──────────────────────────────────────────────────
 // sharp cannot write ICO, but the container format is trivial: a 6-byte header,
 // one 16-byte directory entry per image, then the PNG payloads concatenated.
 // (PNG-in-ICO is valid and universally supported since Vista.)
+// No flatten: ICO carries a full alpha channel through its PNG payload, and a
+// transparent favicon sits on the browser's own tab colour in both themes
+// instead of punching a red square through it.
 const icoSizes = [16, 32, 48];
 const icoPngs = await Promise.all(
     icoSizes.map((s) =>
-        sharp(Buffer.from(tileSvg(1.3)), { density: 400 })
+        sharp(Buffer.from(markSvg(BRAND_RED, 1.3)), { density: 400 })
             .resize(s, s)
-            .flatten({ background: BRAND_RED })
             .png({ compressionLevel: 9 })
             .toBuffer()
     )
@@ -144,7 +173,9 @@ const ogSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630"
   <rect width="1200" height="630" fill="#0A0A0B"/>
   <rect x="0" y="0" width="1200" height="4" fill="${BRAND_RED}"/>
   <g transform="translate(84 84)">
-    <g transform="scale(0.27)"><rect width="512" height="512" rx="32" fill="${BRAND_RED}"/>${markGroup(1.15)}</g>
+    <!-- Mark alone. The card already supplies a ground (#0A0A0B), so a red
+         square on top of it is a second background, not an identity. -->
+    <g transform="scale(0.27)">${markGroup(1.15, BRAND_RED)}</g>
   </g>
   <text x="238" y="176" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="30" font-weight="600" fill="#FFFFFF" letter-spacing="-0.5">1 Martian Way</text>
   <text x="238" y="212" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="19" font-weight="500" fill="#7C7C88" letter-spacing="2.5">MAGY · EARLY ACCESS</text>

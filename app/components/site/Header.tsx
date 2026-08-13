@@ -33,7 +33,10 @@ export default function Header() {
                     href="/"
                     className="flex shrink-0 items-center gap-2.5 text-[14.5px] font-extrabold tracking-[-0.015em]"
                 >
-                    <LogoGlyph size={21} radius={64} />
+                    {/* mark, not tile — the figure IS the identity and the red
+                    square was only ever a background. It carries the brand red
+                    itself now, so nothing is lost by dropping the field. */}
+                <LogoGlyph variant="mark" size={23} className="text-red" />
                     <span className="hidden sm:inline">1 Martian Way</span>
                 </Link>
 

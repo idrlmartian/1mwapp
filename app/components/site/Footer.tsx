@@ -108,7 +108,7 @@ export default function Footer() {
                 <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-[1.6fr_repeat(3,1fr)]">
                     <div>
                         <Link href="/" className="flex items-center gap-2.5 text-[14.5px] font-extrabold tracking-[-0.015em]">
-                            <LogoGlyph size={21} radius={64} />
+                            <LogoGlyph variant="mark" size={23} className="text-red" />
                             1 Martian Way
                         </Link>
                         <p className="text-fg-muted mt-3 max-w-[34ch] text-[13px]">
