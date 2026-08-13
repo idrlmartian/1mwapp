@@ -137,7 +137,7 @@ export default function MagyPage() {
                                         Magy
                                     </span>
                                     <span className="bg-line h-px flex-1" />
-                                    <span className="text-red bg-red-soft inline-flex shrink-0 items-center gap-1.5 rounded-[var(--radius-capsule)] px-2.5 py-1 font-mono text-[10.5px] font-bold uppercase tracking-[0.14em]">
+                                    <span className="text-red-ink bg-red-soft inline-flex shrink-0 items-center gap-1.5 rounded-[var(--radius-capsule)] px-2.5 py-1 font-mono text-[10.5px] font-bold uppercase tracking-[0.14em]">
                                         <i className="bg-red size-1.5 rounded-full" />
                                         Early access
                                     </span>
@@ -180,7 +180,7 @@ export default function MagyPage() {
                             className="border-red bg-solid shadow-[var(--shadow-deck),0_0_0_4px_var(--color-red-soft)] scroll-mt-20 overflow-hidden rounded-[var(--radius-lg)] border"
                         >
                             <div className="border-line bg-red-soft flex items-center gap-2 border-b px-3.5 py-2.5">
-                                <h2 className="text-red font-mono text-[12px] font-extrabold uppercase tracking-[0.15em]">
+                                <h2 className="text-red-ink font-mono text-[12px] font-extrabold uppercase tracking-[0.15em]">
                                     Get Early Access
                                 </h2>
                                 <span className="text-fg-dim ml-auto inline-flex items-center gap-1.5 font-mono text-[10px] font-semibold uppercase tracking-[0.12em]">
@@ -281,7 +281,7 @@ export default function MagyPage() {
                                 <div className="border-line bg-sunk relative grid aspect-video place-items-center overflow-hidden rounded-[var(--radius-md)] border text-center">
                                     <div className="p-6">
                                         <span className="border-line bg-solid mx-auto mb-4 grid size-12 place-items-center rounded-full border">
-                                            <svg viewBox="0 0 24 24" className="text-red ml-0.5 size-5" fill="currentColor" aria-hidden>
+                                            <svg viewBox="0 0 24 24" className="text-red-ink ml-0.5 size-5" fill="currentColor" aria-hidden>
                                                 <path d="M8 5v14l11-7z" />
                                             </svg>
                                         </span>

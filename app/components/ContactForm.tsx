@@ -144,7 +144,7 @@ export default function ContactForm() {
             </div>
 
             {error && (
-                <p role="alert" className="text-red text-[13px]">{error}</p>
+                <p role="alert" className="text-red-ink text-[13px]">{error}</p>
             )}
 
             <div className="flex flex-wrap items-center gap-3">

@@ -66,6 +66,8 @@
   --color-red: var(--c-red);
   --color-red-hover: var(--c-red-hover);
   --color-red-soft: var(--c-red-soft);
+  /* Red as TEXT. Fills keep --color-red; see the note in base.css. */
+  --color-red-ink: var(--c-red-ink);
   --color-good: var(--c-good);
   --color-warn: var(--c-warn);
   /* Affirmation only — check badges, eyebrows, "Shipping". Never a button,

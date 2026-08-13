@@ -115,7 +115,7 @@ export default function Home() {
                             className="border-red bg-solid shadow-[var(--shadow-deck),0_0_0_4px_var(--color-red-soft)] overflow-hidden rounded-[var(--radius-lg)] border scroll-mt-20"
                         >
                             <div className="border-line bg-red-soft flex items-center gap-2 border-b px-3.5 py-2.5">
-                                <h2 className="text-red font-mono text-[12px] font-extrabold uppercase tracking-[0.15em]">
+                                <h2 className="text-red-ink font-mono text-[12px] font-extrabold uppercase tracking-[0.15em]">
                                     Get Early Access
                                 </h2>
                                 <span className="text-fg-dim ml-auto inline-flex items-center gap-1.5 font-mono text-[10px] font-semibold uppercase tracking-[0.12em]">

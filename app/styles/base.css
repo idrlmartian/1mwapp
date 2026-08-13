@@ -44,8 +44,22 @@
   --c-red: #cf2020;
   --c-red-hover: #b01a1a;
   --c-red-soft: rgb(207 32 32 / 0.075);
-  --c-good: #0f9d58;
-  --c-warn: #b26b00;
+  /*
+    Red used as TEXT, separate from red used as a FILL.
+
+    The button is white-on-red and passes in both themes (5.41 / 5.26). But red
+    text on the dark card measured 3.37 — the "Get Early Access" panel heading
+    and the early-access chips are text, and they failed. Lightening --c-red
+    itself would have changed the brand and every CTA with it, so the ink is a
+    separate token. In light the brand red already passes, so it is the same
+    value there and only dark diverges.
+  */
+  --c-red-ink: #cf2020;
+  /* Darkened from #0f9d58 (3.51 on white) to clear AA as TEXT — it labels the
+     "Shipping" state and the toowl "v1.0 shipped" chip, both of which are read. */
+  --c-good: #0a7d46;
+  /* 4.20 → 4.83. Marks pending capture slots, which is a caption you read. */
+  --c-warn: #a56200;
   /*
     The affirmation accent, and it has ONE job: things that are already true.
     Check badges, section eyebrows, "Shipping" states.
@@ -176,6 +190,7 @@
     --c-red: #d22222;
     --c-red-hover: #e63229;
     --c-red-soft: rgb(210 34 34 / 0.18);
+    --c-red-ink: #f04a3f;
     --c-good: #3dd68c;
     --c-warn: #f5a524;
     --c-warm: #fab387;
@@ -222,6 +237,7 @@
   --c-red: #d22222;
   --c-red-hover: #e63229;
   --c-red-soft: rgb(210 34 34 / 0.18);
+  --c-red-ink: #f04a3f;
   --c-good: #3dd68c;
   --c-warn: #f5a524;
   --c-warm: #fab387;

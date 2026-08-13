@@ -269,7 +269,7 @@ export default function WaitlistForm({
 
             <p
                 role={error ? "alert" : undefined}
-                className={`mt-2.5 text-[11.5px] ${error ? "text-red" : "text-fg-dim"}`}
+                className={`mt-2.5 text-[11.5px] ${error ? "text-red-ink" : "text-fg-dim"}`}
             >
                 {error ?? "One email. No spam, unsubscribe any time."}
             </p>
