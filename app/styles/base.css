@@ -34,7 +34,11 @@
   --c-border-hi: rgb(17 24 39 / 0.14);
   --c-text: #111827;
   --c-muted: #4b5563;
-  --c-dim: #8a94a6;
+  /* AA at 4.5:1 on BOTH the card and the page ground — was #8a94a6, which
+     measured 3.06 and 2.76. This is the colour of every deck-label, caption and
+     metric label on the site, all of it 10-11px, where contrast matters MOST.
+     Kept 1.41 away from --c-muted so it still reads as a quieter tier. */
+  --c-dim: #636b7a;
   --c-blue: #2563eb;
   --c-blue-soft: rgb(37 99 235 / 0.10);
   --c-red: #cf2020;
@@ -80,11 +84,6 @@
     rejected — a grey dot in a row of seven saturated ones reads as disabled.
   */
   --c-argus: #4d7c0f;
-  /* Ground for the animated world pane (ui/WorldCanvas.tsx). Light is a cool
-     daylit haze; dark is the deep blue the capture was graded toward. */
-  --c-world-1: #dbe4f0;
-  --c-world-2: #c3d2e6;
-  --c-world-3: #eef2f8;
 
   /*
     A ground that ranges in hue instead of sitting flat.
@@ -170,7 +169,8 @@
     --c-border-hi: rgb(255 255 255 / 0.17);
     --c-text: #e8ecf4;
     --c-muted: #8b93a7;
-    --c-dim: #616a7d;
+    /* AA on card and page; was #616a7d at 3.27 / 3.58. */
+    --c-dim: #7b8496;
     --c-blue: #6ea8ff;
     --c-blue-soft: rgb(110 168 255 / 0.16);
     --c-red: #d22222;
@@ -189,9 +189,6 @@
     --c-luna: #f59e0b;
     --c-atlas: #fb7185;
     --c-argus: #a3e635;
-    --c-world-1: #16203a;
-    --c-world-2: #0d1526;
-    --c-world-3: #1e2b4d;
     /* Dark takes the SOLID badge: a 15% tint of peach over #141822 barely
        separates from the card, so the badge reads as a smudge. Light keeps
        the tint — see base.css :root. */
@@ -218,7 +215,8 @@
   --c-border-hi: rgb(255 255 255 / 0.17);
   --c-text: #e8ecf4;
   --c-muted: #8b93a7;
-  --c-dim: #616a7d;
+  /* AA on card and page; was #616a7d at 3.27 / 3.58. */
+  --c-dim: #7b8496;
   --c-blue: #6ea8ff;
   --c-blue-soft: rgb(110 168 255 / 0.16);
   --c-red: #d22222;
@@ -237,9 +235,6 @@
   --c-luna: #f59e0b;
   --c-atlas: #fb7185;
   --c-argus: #a3e635;
-  --c-world-1: #16203a;
-  --c-world-2: #0d1526;
-  --c-world-3: #1e2b4d;
   /* Dark takes the SOLID badge: a 15% tint of peach over #141822 barely
      separates from the card, so the badge reads as a smudge. Light keeps
      the tint — see base.css :root. */

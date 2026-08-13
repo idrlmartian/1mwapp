@@ -38,7 +38,9 @@
   --text-h2--letter-spacing: -0.025em;
   --text-h3: 1.03125rem;
   --text-h3--line-height: 1.3;
-  --text-label: 0.625rem;
+  /* 11px, was 10px. At 10px with 0.17em tracking the strokes fall below what
+     antialiasing preserves, and this size carries every panel header. */
+  --text-label: 0.6875rem;
   --text-label--line-height: 1;
   --text-label--letter-spacing: 0.17em;
   --text-data: 1.3125rem;

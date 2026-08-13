@@ -62,7 +62,7 @@ export default function MosPage() {
                             MOS
                         </span>
                         <span className="bg-line h-px flex-1" />
-                        <span className="text-red bg-red-soft inline-flex shrink-0 items-center gap-1.5 rounded-[var(--radius-capsule)] px-2.5 py-1 font-mono text-[9.5px] font-bold uppercase tracking-[0.14em]">
+                        <span className="text-red bg-red-soft inline-flex shrink-0 items-center gap-1.5 rounded-[var(--radius-capsule)] px-2.5 py-1 font-mono text-[10.5px] font-bold uppercase tracking-[0.14em]">
                             <i className="bg-red size-1.5 rounded-full" />
                             Private alpha
                         </span>

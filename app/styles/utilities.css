@@ -325,3 +325,52 @@
   .owl-bubble,
   .owl-stage::after { animation: none; }
 }
+
+/* ── 5. the world is a SCREEN ──────────────────────────────────────────────── */
+/*
+  Its palette is declared HERE, once, and does not invert with the theme.
+
+  In light the pane used to paint from a pale set (#dbe4f0 / #c3d2e6 / #eef2f8),
+  and the measurements said why that failed: the card is luminance 100, the page
+  89.7, and the world's lightest stop 88.5 — so the "screen" was brighter than
+  the page and only 11 points below the card sitting on it. The depth order
+  inverted and the right half of the hero read as a pale void.
+
+  A screenshot of a 3D application is dark. utilities.css has always called this
+  pane "a CONTAINED SCREEN sitting in the grid, the way a product screenshot sits
+  on a marketing page" — so it is dark in both themes now, which restores the
+  order (screen below, cards above) and gives the light theme the anchor it
+  never had.
+
+  The agent colours are overridden here too, and that is the point of scoping:
+  WorldCanvas reads getComputedStyle(canvas) rather than the document root, so
+  it picks up THESE values. Without it, light mode would paint the darkened
+  chip-safe agent colours onto a dark ground and the crowd would vanish.
+
+  --c-bg is redeclared because the canvas fades it as the legibility scrim.
+  --c-border-hi likewise, for the floor grid: at 14% black over a light ground
+  the grid was invisible; on this ground it needs to be light-on-dark.
+*/
+.world {
+  --c-world-1: #16203a;
+  --c-world-2: #0d1526;
+  --c-world-3: #1e2b4d;
+  --c-bg: #0b0d12;
+  --c-border-hi: rgb(255 255 255 / 0.17);
+  --c-aria: #00f0ff;
+  --c-juno: #4ade80;
+  --c-nova: #8b5cf6;
+  --c-kai: #38bdf8;
+  --c-zara: #f472b6;
+  --c-luna: #f59e0b;
+  --c-atlas: #fb7185;
+  --c-argus: #a3e635;
+}
+/* The overlay chips sit ON the screen, so they take the screen's colours too
+   rather than the page's — white-on-dark in both themes. */
+.world .world-chip {
+  color: #e8ecf4;
+  background: rgb(11 13 18 / 0.55);
+  border-color: rgb(255 255 255 / 0.17);
+}
+.world .world-meta { color: #8b93a7; }

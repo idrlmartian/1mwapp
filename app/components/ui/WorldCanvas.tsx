@@ -51,7 +51,14 @@ export default function WorldCanvas({ className = "" }: { className?: string }) 
         const ctx = c.getContext("2d");
         if (!ctx) return;
 
-        const css = (n: string) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+        /*
+          Read from the CANVAS, not the document root. `.world` redeclares the
+          screen's palette — dark grounds and the neon agent colours in both
+          themes — and scoping the lookup here is what lets those win. Reading
+          the root would paint light mode's chip-safe darkened agent colours
+          onto a dark ground, and the crowd would disappear.
+        */
+        const css = (n: string) => getComputedStyle(c).getPropertyValue(n).trim();
         const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
         let raf = 0;
 
@@ -164,12 +171,12 @@ export default function WorldCanvas({ className = "" }: { className?: string }) 
             */}
             {/* Right-aligned, both of them: the rail floats over the LEFT of the
                 stage, so anything at left-4 would sit underneath it. */}
-            <span className="border-line-hi text-fg bg-canvas/55 absolute right-4 top-4 z-2 inline-flex items-center gap-2 rounded-[var(--radius-capsule)] border px-3 py-1.5 font-mono text-[10.5px] font-semibold uppercase tracking-[0.12em] backdrop-blur-md">
+            <span className="world-chip absolute right-4 top-4 z-2 inline-flex items-center gap-2 rounded-[var(--radius-capsule)] border px-3 py-1.5 font-mono text-[10.5px] font-semibold uppercase tracking-[0.12em] backdrop-blur-md">
                 <i className="bg-blue size-1.5 rounded-full" />
                 MagyVerse
             </span>
 
-            <p className="text-fg-dim absolute bottom-4 right-4 z-2 hidden gap-4 font-mono text-[10px] font-semibold uppercase tracking-[0.15em] sm:flex">
+            <p className="world-meta absolute bottom-4 right-4 z-2 hidden gap-4 font-mono text-[10.5px] font-semibold uppercase tracking-[0.15em] sm:flex">
                 <span>{WORLD.dims}</span>
                 <span>{WORLD.zones}</span>
             </p>

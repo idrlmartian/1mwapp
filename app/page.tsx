@@ -224,7 +224,7 @@ export default function Home() {
                                 key={s.state}
                                 className="border-line grid items-start gap-3.5 border-t py-3 sm:grid-cols-[112px_1fr]"
                             >
-                                <span className="text-fg-muted inline-flex items-center gap-2 font-mono text-[9.5px] font-bold uppercase tracking-[0.14em]">
+                                <span className="text-fg-muted inline-flex items-center gap-2 font-mono text-[10.5px] font-bold uppercase tracking-[0.14em]">
                                     <span className={`size-2 rounded-full ${STATUS_DOT[s.state]}`} />
                                     {s.label}
                                 </span>

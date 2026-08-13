@@ -267,7 +267,7 @@ export default function CortexGraph() {
                 </div>
             )}
 
-            <p className="deck-label pointer-events-none absolute bottom-3 right-3 text-[9.5px]">drag to rotate</p>
+            <p className="deck-label pointer-events-none absolute bottom-3 right-3 text-[10.5px]">drag to rotate</p>
         </div>
     );
 }

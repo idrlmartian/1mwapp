@@ -123,7 +123,7 @@ export default function ToowlPage() {
                                     toowl
                                 </span>
                                 <span className="bg-line h-px flex-1" />
-                                <span className="text-good inline-flex shrink-0 items-center gap-1.5 rounded-[var(--radius-capsule)] bg-[color-mix(in_srgb,var(--color-good)_14%,transparent)] px-2.5 py-1 font-mono text-[9.5px] font-bold uppercase tracking-[0.14em]">
+                                <span className="text-good inline-flex shrink-0 items-center gap-1.5 rounded-[var(--radius-capsule)] bg-[color-mix(in_srgb,var(--color-good)_14%,transparent)] px-2.5 py-1 font-mono text-[10.5px] font-bold uppercase tracking-[0.14em]">
                                     <i className="bg-good size-1.5 rounded-full" />
                                     v1.0 shipped
                                 </span>
