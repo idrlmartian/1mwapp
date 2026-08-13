@@ -106,6 +106,56 @@ export default function WaitlistForm({
         el.focus({ preventScroll: true });
     }, [autoFocus]);
 
+    /*
+      THE BUTTON YIELDS TO A LONG ADDRESS, AND ONLY THEN.
+
+      "Get Early Access" is ~150px of fixed width, and the field takes what is
+      left. `firstname.lastname@somelongcompany.com` does not fit in what is
+      left, so it scrolls under its own left edge and the visitor cannot see
+      what they typed while typing it — at the exact moment they are checking
+      it for a typo.
+
+      Measured, not guessed. `scrollWidth > clientWidth` is the browser telling
+      us the text genuinely overflows, so nothing moves for the ordinary
+      address that fits, whatever the font or zoom or window width happens to
+      be. A character-count threshold would be a guess about all three.
+
+      HYSTERESIS IS THE WHOLE TRICK. Collapsing the button hands ~120px back to
+      the field, which usually removes the overflow that triggered it — so a
+      naive "collapse while overflowing" oscillates on every keystroke around
+      the boundary. Collapse is therefore one-way for the life of one entry and
+      is released only when the field is emptied: a state the visitor reaches
+      deliberately, never mid-typing.
+
+      TWO STAGES, because one was not enough. Measured on /magy at 1280px:
+      the field is 170px inline, and 277px once the button collapses. That
+      covers an address up to ~31 characters — `alexander.thompson@techcorp.com`
+      fits — but not 39+, where even the collapsed row runs out. So a second
+      step drops the button onto its own line and gives the field the whole
+      width. Rare, and the alternative is text the visitor cannot read.
+
+      Each step is entered only when the browser says the text still does not
+      fit, so nobody pays for a stage they do not need.
+
+      Inline layout only. Under 430px the button already sits full-width on its
+      own row, where it is not competing with the field for anything.
+    */
+    const [fit, setFit] = useState<"full" | "compact" | "stacked">("full");
+    useEffect(() => {
+        if (email === "") {
+            setFit("full");
+            return;
+        }
+        if (fit === "stacked") return;
+        const el = input.current;
+        if (!el) return;
+        if (!window.matchMedia("(min-width: 431px)").matches) return;
+        if (el.scrollWidth <= el.clientWidth) return;
+        // Still overflowing after the button already gave up its label? Then
+        // the row is out of room and only a whole line will do.
+        setFit(fit === "full" ? "compact" : "stacked");
+    }, [email, fit]);
+
     useEffect(() => {
         let cancelled = false;
         fetch("/api/waitlist/token")
@@ -206,8 +256,8 @@ export default function WaitlistForm({
 
                 <div
                     className={`border-line-hi bg-canvas focus-within:border-red focus-within:shadow-[0_0_0_3px_var(--color-red-soft)] [&:focus-within_.caret]:opacity-0 flex gap-2 rounded-[11px] border p-1.5 transition-[border-color,box-shadow] max-[430px]:flex-col ${
-                        hero ? "sm:p-2" : ""
-                    }`}
+                        fit === "stacked" ? "flex-col" : ""
+                    } ${hero ? "sm:p-2" : ""}`}
                 >
                     {/* The caret is absolutely positioned and takes NO layout space,
                         so it lands on exactly the same x as the input's text origin
@@ -255,14 +305,38 @@ export default function WaitlistForm({
                             }`}
                         />
                     </div>
+                    {/* The label is the accessible name whether or not the
+                        glyph is showing, so the button never becomes "→" to a
+                        screen reader, and a pointer user who wonders what the
+                        arrow does gets the same words in a tooltip.
+
+                        `max-[430px]:` overrides put the full label back in the
+                        stacked layout: there the button owns a whole row, so
+                        the arrow would be shrinking to fit a space nothing else
+                        wants. */}
                     <button
                         type="submit"
                         disabled={status === "sending"}
+                        aria-label={cta}
+                        title={cta}
                         className={`bg-red hover:bg-red-hover shadow-[var(--shadow-cta)] shrink-0 rounded-[var(--radius-md)] font-bold text-white transition-colors disabled:opacity-60 max-[430px]:w-full ${
-                            hero ? "px-6 py-3.5 text-[15px]" : "px-5 py-3 text-sm"
+                            hero ? "py-3.5 text-[15px]" : "py-3 text-sm"
+                        } ${fit === "stacked" ? "w-full " : ""}${
+                            fit === "compact" ? "px-4 max-[430px]:px-6" : hero ? "px-6" : "px-5"
                         }`}
                     >
-                        {status === "sending" ? "…" : cta}
+                        {status === "sending" ? (
+                            "…"
+                        ) : fit === "compact" ? (
+                            <>
+                                <span aria-hidden className="max-[430px]:hidden">
+                                    →
+                                </span>
+                                <span className="hidden max-[430px]:inline">{cta}</span>
+                            </>
+                        ) : (
+                            cta
+                        )}
                     </button>
                 </div>
             </form>
