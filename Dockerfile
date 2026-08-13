@@ -2,23 +2,35 @@
 #
 # Runs `next start` with full node_modules rather than `output: "standalone"`.
 # Standalone's file tracing has sharp-related edge cases that are not worth
-# discovering on a Next.js *beta* during launch week; the extra image size is
-# free on a box with 84 GB spare. Revisit post-launch.
+# discovering during launch week; the extra image size is free on a box with
+# 84 GB spare. Revisit post-launch.
 #
 # Native arm64 — build on the target box (or an arm64 runner). An emulated
 # amd64 -> arm64 Next build is 10-20x slower and will time out.
+#
+# ── PACKAGE MANAGER ────────────────────────────────────────────────────────
+# bun installs; NODE runs. Yarn is gone entirely — yarn.lock and .yarnrc.yml
+# are deleted and bun.lock is the only lockfile.
+#
+# The split is deliberate rather than half-done. Installing with bun is what
+# removes yarn and it is the fast part. Keeping node for `next build` and
+# `next start` changes NOTHING about the runtime that is already proven in
+# production — and scripts/deploy.sh stops and removes the old container
+# BEFORE its health check, so a runtime that fails to boot is a staging
+# outage, not a failed build. That is not a risk worth taking to save a base
+# image. Moving the runtime to bun is a separate change that wants its own
+# verification.
 
-FROM node:22-bookworm-slim AS deps
+FROM oven/bun:1-debian AS deps
 WORKDIR /app
-RUN corepack enable
-# .yarnrc.yml MUST be copied before install: it sets `nodeLinker: node-modules`,
-# and without it Yarn 4 falls back to PnP and the build fails confusingly.
-COPY package.json yarn.lock .yarnrc.yml ./
-RUN yarn install --immutable
+# bun.lock is the lockfile of record. --frozen-lockfile is the equivalent of
+# yarn's --immutable: it fails rather than silently resolving a drifted tree,
+# which is exactly how the yarn.lock/bun.lock mismatch was caught.
+COPY package.json bun.lock ./
+RUN bun install --frozen-lockfile
 
 FROM node:22-bookworm-slim AS builder
 WORKDIR /app
-RUN corepack enable
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 ARG NEXT_PUBLIC_APP_VERSION=dev
@@ -42,12 +54,13 @@ ENV NEXT_PUBLIC_APP_VERSION=$NEXT_PUBLIC_APP_VERSION \
     NEXT_PUBLIC_UMAMI_ID=$NEXT_PUBLIC_UMAMI_ID \
     UMAMI_HOST=$UMAMI_HOST \
     NEXT_TELEMETRY_DISABLED=1
-RUN yarn build
+# The binary directly, not a package script — there is no package manager in
+# this stage to run one.
+RUN ./node_modules/.bin/next build
 
 FROM node:22-bookworm-slim
 WORKDIR /app
-RUN corepack enable \
-    && apt-get update \
+RUN apt-get update \
     && apt-get install -y --no-install-recommends curl \
     && rm -rf /var/lib/apt/lists/*
 COPY --from=builder /app ./
@@ -57,4 +70,4 @@ ENV NODE_ENV=production \
     HOSTNAME=0.0.0.0 \
     NEXT_TELEMETRY_DISABLED=1
 EXPOSE 3004
-CMD ["yarn", "start"]
+CMD ["./node_modules/.bin/next", "start"]

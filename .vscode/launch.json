@@ -5,28 +5,28 @@
             "type": "node-terminal",
             "name": "Run Script: start",
             "request": "launch",
-            "command": "yarn start",
+            "command": "bun run start",
             "cwd": "${workspaceFolder}"
         },
         {
             "type": "node-terminal",
             "name": "Run Script: build",
             "request": "launch",
-            "command": "yarn build",
+            "command": "bun run build",
             "cwd": "${workspaceFolder}"
         },
         {
             "type": "node-terminal",
             "name": "Run Script: dev",
             "request": "launch",
-            "command": "yarn dev",
+            "command": "bun run dev",
             "cwd": "${workspaceFolder}"
         },
         {
             "type": "node-terminal",
             "name": "Run Script: prod",
             "request": "launch",
-            "command": "yarn prod",
+            "command": "bun run prod",
             "cwd": "${workspaceFolder}"
         }
     ]
