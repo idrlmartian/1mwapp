@@ -56,7 +56,7 @@ export default function MosPage() {
                     published.
                 </p>
                 <div className="mt-5 max-w-[460px]">
-                    <WaitlistForm source="mos" product="mos" cta="Get Early Access" />
+                    <WaitlistForm source="mos" product="mos" cta="Get Early Access" autoFocus />
                 </div>
             </Panel>
 

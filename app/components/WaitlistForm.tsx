@@ -14,6 +14,14 @@ type Props = {
     placeholder?: string;
     product?: "magy" | "mos" | "toowl";
     className?: string;
+    /**
+     * Put the cursor in this field on load. Set it on ONE form per page — the
+     * first one — or the last to mount silently wins and focus lands somewhere
+     * arbitrary down the page.
+     *
+     * Honoured on pointer devices only; see the effect for why.
+     */
+    autoFocus?: boolean;
 };
 
 const DONE_MESSAGE: Record<"done" | "already", string> = {
@@ -28,6 +36,7 @@ export default function WaitlistForm({
     placeholder = "you@company.com",
     product = "magy",
     className = "",
+    autoFocus = false,
 }: Props) {
     const [email, setEmail] = useState("");
     const [status, setStatus] = useState<Status>("idle");
@@ -55,6 +64,36 @@ export default function WaitlistForm({
         io.observe(el);
         return () => io.disconnect();
     }, [source]);
+
+    /*
+      Autofocus, done by hand rather than with the `autoFocus` attribute.
+
+      Three reasons the attribute is wrong here:
+
+        · TOUCH. React's autoFocus fires everywhere, and on a phone focusing an
+          input yanks the software keyboard up over half the screen before the
+          visitor has read a word. Gated to a fine pointer, so phones and
+          tablets are left alone.
+        · SCROLL. Focusing an element the browser considers off-screen scrolls
+          it into view. preventScroll keeps the page where the visitor put it —
+          which matters most for someone arriving on a deep link with a #hash.
+        · REDUCED MOTION is not the signal here, but a visitor who has tabbed or
+          clicked before hydration has already chosen where they are. Bailing if
+          focus has moved off <body> avoids stealing it back.
+
+      Deliberately NOT gated on "is this above the fold": the caller decides
+      which single form gets this, and the hero is always the one.
+    */
+    const input = useRef<HTMLInputElement>(null);
+    useEffect(() => {
+        if (!autoFocus) return;
+        if (!window.matchMedia("(pointer: fine)").matches) return;
+        const el = input.current;
+        if (!el) return;
+        const active = document.activeElement;
+        if (active && active !== document.body && active !== el) return;
+        el.focus({ preventScroll: true });
+    }, [autoFocus]);
 
     useEffect(() => {
         let cancelled = false;
@@ -185,6 +224,7 @@ export default function WaitlistForm({
                             Email address
                         </label>
                         <input
+                        ref={input}
                         id={`email-${source}`}
                         name="email"
                         type="email"

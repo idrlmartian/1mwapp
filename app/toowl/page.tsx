@@ -303,7 +303,7 @@ export default function ToowlPage() {
                     Toowl Pro adds terminal-native intelligence. We&apos;ll email you when it opens.
                 </p>
                 <div className="mx-auto mt-5 max-w-[470px]">
-                    <WaitlistForm source="toowl" product="toowl" size="hero" cta="Get Early Access" />
+                    <WaitlistForm source="toowl" product="toowl" size="hero" cta="Get Early Access" autoFocus />
                 </div>
                 <p className="text-fg-dim mt-6 text-[12.5px]">
                     Also from 1 Martian Way:{" "}

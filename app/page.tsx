@@ -132,7 +132,7 @@ export default function Home() {
                                     <b className="text-fg font-bold">assign work to your agents</b>. Drop
                                     your email and we&apos;ll unlock it the moment the first build is ready.
                                 </p>
-                                <WaitlistForm source="home-hero" size="composer" cta="Get Early Access" />
+                                <WaitlistForm source="home-hero" size="composer" cta="Get Early Access" autoFocus />
                             </div>
                         </section>
                     </div>

@@ -166,7 +166,7 @@ export default function AboutPage() {
                         Magy opens first. One email when it&apos;s ready.
                     </p>
                     <div className="mx-auto mt-5 max-w-[470px]">
-                        <WaitlistForm source="about" size="hero" cta="Get Early Access" />
+                        <WaitlistForm source="about" size="hero" cta="Get Early Access" autoFocus />
                     </div>
                 </section>
             </div>

@@ -192,7 +192,7 @@ export default function MagyPage() {
                                     This is where you&apos;ll{" "}
                                     <b className="text-fg font-bold">assign work to your agents</b>.
                                 </p>
-                                <WaitlistForm source="magy-hero" cta="Get Early Access" />
+                                <WaitlistForm source="magy-hero" cta="Get Early Access" autoFocus />
                             </div>
                         </section>
                     </div>
