@@ -108,17 +108,37 @@ export default function MagyPage() {
                                 the name set larger than the tagline so it wins
                                 the glance.
                             */}
-                            <h1 className="mb-1">
-                                <span className="flex flex-wrap items-center gap-2.5">
-                                    <span className="block text-[clamp(2.1rem,4.4vw,2.9rem)] font-extrabold leading-none tracking-[-0.05em]">
+                            <h1>
+                                {/*
+                                    Set as a WORDMARK, not a second heading. Caps
+                                    with open tracking reads as a name; the same
+                                    word at 2.9rem and -0.05em read as a headline
+                                    competing with the tagline under it, which is
+                                    why two large things were fighting.
+
+                                    The hairline rule running off to the right is
+                                    the device deck-label already uses on every
+                                    panel header, so this lands as part of the
+                                    system rather than a one-off. The status chip
+                                    sits at the end of that rule, which also
+                                    stops it hanging awkwardly off the wordmark's
+                                    line box.
+
+                                    Tracking adds trailing space after the final
+                                    letter; -mr keeps the rule from starting a
+                                    hair too far right.
+                                */}
+                                <span className="flex items-center gap-3">
+                                    <span className="-mr-[0.16em] text-[clamp(1.55rem,3vw,2rem)] font-extrabold uppercase leading-none tracking-[0.16em]">
                                         Magy
                                     </span>
-                                    <span className="border-red text-red bg-red-soft inline-flex items-center gap-1.5 rounded-[var(--radius-capsule)] border px-2.5 py-1 font-mono text-[9.5px] font-bold uppercase tracking-[0.14em]">
+                                    <span className="bg-line h-px flex-1" />
+                                    <span className="text-red bg-red-soft inline-flex shrink-0 items-center gap-1.5 rounded-[var(--radius-capsule)] px-2.5 py-1 font-mono text-[9.5px] font-bold uppercase tracking-[0.14em]">
                                         <i className="bg-red size-1.5 rounded-full" />
                                         Early access
                                     </span>
                                 </span>
-                                <span className="text-hero mt-3 block">
+                                <span className="text-hero mt-4 block">
                                     Infinite agents.
                                     <br />
                                     Infinite worlds.
