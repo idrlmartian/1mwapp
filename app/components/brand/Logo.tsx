@@ -33,13 +33,16 @@ const LEG_R = "M293.6 210.2 L266.8 243.9 L344.6 389.5 L388.2 389.5 Z";
 
 type LogoProps = {
     /**
-     * `mark` = figure alone in currentColor. THE DEFAULT, and the primary form:
-     * the figure is the identity and the field behind it never was.
+     * `tile` = red square + white figure. THE DEFAULT, and what ships.
      *
-     * `tile` = red square + white figure. Now only for surfaces that ignore
-     * alpha or require an edge-to-edge fill — apple-touch icons (iOS composites
-     * on black) and Android maskable icons (the launcher crops to its own
-     * shape). See the exception note in scripts/generate-brand-assets.mjs.
+     * The mark alone in red was tried and reverted: at 21px in a header the
+     * figure is three thin strokes with nothing holding them together, so it
+     * reads as a stray glyph rather than a logo. White inside red gives it a
+     * field to sit on and that is what makes it legible at chrome sizes.
+     *
+     * `mark` = figure alone in currentColor. Still correct for a surface that
+     * supplies its own ground and wants no second one — but it is the
+     * exception, not the default.
      */
     variant?: "tile" | "mark";
     /** Rendered height in px. */
@@ -52,7 +55,7 @@ type LogoProps = {
 };
 
 export function LogoGlyph({
-    variant = "mark",
+    variant = "tile",
     size = 32,
     radius = 0,
     title,
@@ -91,7 +94,7 @@ type LockupProps = LogoProps & {
 
 /** Glyph + wordmark, optionally linked. This is what the header and footer use. */
 export function Logo({
-    variant = "mark",
+    variant = "tile",
     size = 32,
     radius = 6,
     wordmark = "full",
