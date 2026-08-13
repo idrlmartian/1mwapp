@@ -68,21 +68,24 @@ export default function WaitlistForm({
     /*
       Autofocus, done by hand rather than with the `autoFocus` attribute.
 
-      Three reasons the attribute is wrong here:
+      THE PAGE MUST NOT MOVE. That is the whole constraint, and preventScroll
+      alone did not deliver it — the hero scrolled out of view on load, hiding
+      the product name and headline, which is the one thing a visitor has to see
+      first. preventScroll is honoured unevenly across engines, and it does
+      nothing about scrollable ANCESTORS: /magy's rail is overflow-y:auto, so
+      focusing inside it can scroll the rail even when the window holds still.
 
-        · TOUCH. React's autoFocus fires everywhere, and on a phone focusing an
-          input yanks the software keyboard up over half the screen before the
-          visitor has read a word. Gated to a fine pointer, so phones and
-          tablets are left alone.
-        · SCROLL. Focusing an element the browser considers off-screen scrolls
-          it into view. preventScroll keeps the page where the visitor put it —
-          which matters most for someone arriving on a deep link with a #hash.
-        · REDUCED MOTION is not the signal here, but a visitor who has tabbed or
-          clicked before hydration has already chosen where they are. Bailing if
-          focus has moved off <body> avoids stealing it back.
+      So the rule is stronger than "don't scroll": only take focus if the field
+      is ALREADY fully in the viewport. If it is off screen, there is no way to
+      focus it without moving something, and a convenience is not worth moving
+      the page for. preventScroll stays as a second line of defence.
 
-      Deliberately NOT gated on "is this above the fold": the caller decides
-      which single form gets this, and the hero is always the one.
+      The other three gates:
+        · TOUCH. The attribute fires everywhere, and on a phone focusing an
+          input yanks the keyboard over half the screen before a word is read.
+        · STOLEN FOCUS. Someone who clicked or tabbed before hydration has
+          already chosen where they are; bail rather than snatch it back.
+        · One form per page claims this — focus is singular.
     */
     const input = useRef<HTMLInputElement>(null);
     useEffect(() => {
@@ -90,8 +93,16 @@ export default function WaitlistForm({
         if (!window.matchMedia("(pointer: fine)").matches) return;
         const el = input.current;
         if (!el) return;
+
         const active = document.activeElement;
         if (active && active !== document.body && active !== el) return;
+
+        const r = el.getBoundingClientRect();
+        const viewportH = window.innerHeight || document.documentElement.clientHeight;
+        const viewportW = window.innerWidth || document.documentElement.clientWidth;
+        const fullyVisible = r.top >= 0 && r.left >= 0 && r.bottom <= viewportH && r.right <= viewportW;
+        if (!fullyVisible) return;
+
         el.focus({ preventScroll: true });
     }, [autoFocus]);
 
