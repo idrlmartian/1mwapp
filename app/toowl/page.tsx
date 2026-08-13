@@ -84,18 +84,26 @@ export default function ToowlPage() {
         <ComingSoon>
             <Panel>
                 {/*
-                    Centred, and the two halves pulled together.
+                    The GROUP is centred; the text inside it is not.
 
-                    justify-between pinned the copy to the far left and the owl
-                    to the far right, so at 1500px the hero was mostly the gap in
-                    between. justify-center with a fixed gap keeps them a
-                    deliberate distance apart at every width instead of a
-                    distance the viewport happens to produce.
+                    justify-between pinned the copy to the far left and the
+                    mascot to the far right, so at 1500px the hero was mostly the
+                    gap between them. justify-center with a fixed gap keeps the
+                    two halves a deliberate distance apart at any width.
 
-                    items-center rather than items-start so the mascot sits
-                    level with the copy instead of hanging off its top edge.
+                    text-center was tried here and reverted. It broke two things
+                    at once: the wordmark row is a flex (name, rule, chip) so it
+                    stays full-width and its name sat hard left while everything
+                    under it centred, and centred lines of different lengths
+                    gave the block a ragged left edge with nothing to read back
+                    to. Left-aligned copy inside a centred group is the shape
+                    that actually reads.
+
+                    The gap is wide at lg because the speech bubble hangs off the
+                    mascot's left and needs somewhere to live — see the note on
+                    the bubble below.
                 */}
-                <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-8 text-center">
+                <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-8 lg:gap-x-28">
                     <div className="min-w-0 max-w-[58ch] flex-1 basis-[440px]">
                         {/*
                             Same wordmark treatment as /magy, and for the same
@@ -128,7 +136,7 @@ export default function ToowlPage() {
                             <b className="text-fg">toowl</b> · pronounced /tuːl/ — like &ldquo;tool&rdquo;.
                             The owl is just here for moral support.
                         </p>
-                        <p className="text-fg-muted mx-auto max-w-[58ch] text-[14px]">
+                        <p className="text-fg-muted max-w-[58ch] text-[14px]">
                             A GPU-fast desktop terminal and a tmux-style remote client in one binary
                             — with daemon-backed workspaces and Claude on the Perch.
                         </p>
@@ -136,7 +144,7 @@ export default function ToowlPage() {
                         {/* The `$` is rendered but NOT copied — see CopyCommand. */}
                         <CopyCommand className="mt-5" command={`curl -fsSL ${TOOWL_URL}/install.sh | sh`} />
 
-                        <div className="mt-4 flex flex-wrap justify-center gap-2.5">
+                        <div className="mt-4 flex flex-wrap gap-2.5">
                             <a
                                 href={TOOWL_URL}
                                 className="bg-red hover:bg-red-hover shadow-[var(--shadow-cta)] inline-flex items-center gap-2 rounded-[var(--radius-md)] px-5 py-3 text-sm font-bold text-white transition-colors"
@@ -163,7 +171,7 @@ export default function ToowlPage() {
                         behind it for anyone who cannot see the joke land.
                     */}
                     <div className="owl-stage shrink-0">
-                        <div className="owl-bubble left-[-118px] top-[52px] max-lg:hidden" aria-hidden>
+                        <div className="owl-bubble left-[-96px] top-[26px] max-lg:hidden" aria-hidden>
                             <span>
                                 Oh so <em>toowl</em>
                             </span>
