@@ -43,6 +43,17 @@ export default function MosPage() {
     return (
         <ComingSoon>
             <Panel>
+                {/*
+                    Capped and centred as a GROUP, matching /toowl. Left-aligned
+                    inside it — see the note there for why centring the text
+                    itself was tried and reverted.
+
+                    MOS has no second column, so without a cap the hero ran the
+                    full 1560px panel: the wordmark's hairline rule stretched
+                    ~1400px with the status chip stranded at the far end, and the
+                    only thing holding the block together was the panel's border.
+                */}
+                <div className="mx-auto max-w-[68ch]">
                 {/* Wordmark, matching /magy and /toowl. All three product pages
                     led with a tagline and never named the product in the <h1>. */}
                 <h1 className="mb-3">
@@ -67,6 +78,7 @@ export default function MosPage() {
                 </p>
                 <div className="mt-5 max-w-[460px]">
                     <WaitlistForm source="mos" product="mos" cta="Get Early Access" autoFocus />
+                </div>
                 </div>
             </Panel>
 
