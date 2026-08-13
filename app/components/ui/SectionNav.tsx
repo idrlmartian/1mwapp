@@ -28,7 +28,8 @@ type Section = readonly [string, string];
 
 export default function SectionNav({ sections }: { sections: readonly Section[] }) {
     const [active, setActive] = useState<string>(sections[0]?.[0] ?? "");
-    const bar = useRef<HTMLUListElement>(null);
+    // The <nav> is the overflow-x-auto element; the <ul> inside it does not scroll.
+    const scroller = useRef<HTMLElement>(null);
 
     useEffect(() => {
         const seen = new Map<string, boolean>();
@@ -49,19 +50,38 @@ export default function SectionNav({ sections }: { sections: readonly Section[] 
         return () => io.disconnect();
     }, [sections]);
 
-    // Keep the active pill in view on narrow screens, where the bar scrolls.
+    /*
+      Keep the active pill in view on narrow screens, where the bar scrolls
+      sideways.
+
+      Done by setting scrollLeft by hand, NOT with scrollIntoView. scrollIntoView
+      scrolls every scrollable ancestor including the WINDOW, so on first paint
+      it dragged the whole page down to wherever this nav sat — hiding the hero,
+      the wordmark and the headline. With `scroll-behavior: smooth` on <html> it
+      even animated the theft.
+
+      This touches one property on one element and cannot move the page.
+    */
     useEffect(() => {
-        const el = bar.current?.querySelector<HTMLElement>(`[data-id="${active}"]`);
-        el?.scrollIntoView({ block: "nearest", inline: "nearest" });
+        const wrap = scroller.current;
+        const el = wrap?.querySelector<HTMLElement>(`[data-id="${active}"]`);
+        if (!wrap || !el) return;
+        const pad = 12;
+        const left = el.offsetLeft;
+        const right = left + el.offsetWidth;
+        if (left < wrap.scrollLeft) wrap.scrollLeft = left - pad;
+        else if (right > wrap.scrollLeft + wrap.clientWidth) {
+            wrap.scrollLeft = right - wrap.clientWidth + pad;
+        }
     }, [active]);
 
     return (
         <nav
+            ref={scroller}
             aria-label="On this page"
             className="border-line bg-canvas/85 sticky top-14 z-40 -mb-1 overflow-x-auto border-y backdrop-blur-xl"
         >
             <ul
-                ref={bar}
                 className="mx-auto flex max-w-[var(--container-page)] gap-1 px-[var(--container-pad)] py-2"
             >
                 {sections.map(([id, label]) => {
