@@ -38,7 +38,7 @@ const SECTIONS = [
 const FAQ = [
     {
         q: "Does it run locally?",
-        a: "Yes. `magy assistant` is a single agent in a REPL with no NATS, no Postgres and no Redis — it runs on your machine with zero external services. The full seven-agent runtime and the 3D world need the production path.",
+        a: "Yes. `magy assistant` is a single agent in a REPL with no NATS, no Postgres and no Redis — it runs on your machine with zero external services. The full eight-agent runtime and the 3D world need the production path.",
     },
     {
         q: "How many agents can I actually run?",
@@ -65,6 +65,10 @@ const FAQ = [
         a: "We are opening access in stages. Everyone on the early-access list is notified by email as soon as their turn comes up — no waiting on an announcement, no queue to check.",
     },
 ];
+
+const COUNT_WORD: Record<number, string> = {
+    6: "Six", 7: "Seven", 8: "Eight", 9: "Nine", 10: "Ten", 11: "Eleven", 12: "Twelve",
+};
 
 const STATUS_DOT = {
     shipping: "bg-good",
@@ -540,7 +544,10 @@ export default function MagyPage() {
                     number until it is seeded — see the note in lib/constants.ts.
                 */}
                 <Panel id="cast" label="The cast">
-                    <h2 className="text-h2 mb-1">{SHIPPING_AGENTS.length === 7 ? "Seven" : SHIPPING_AGENTS.length} to start. Then whoever you need.</h2>
+                    {/* Spelled, not a numeral — "8 to start." reads like a stat.
+                        Falls back to the digit past twelve, which is a problem
+                        we would enjoy having. */}
+                    <h2 className="text-h2 mb-1">{COUNT_WORD[SHIPPING_AGENTS.length] ?? SHIPPING_AGENTS.length} to start. Then whoever you need.</h2>
                     <p className="text-fg-muted mb-4 max-w-[66ch] text-[13.5px]">
                         The live fleet already runs a CFO, an investor-relations agent and a
                         fundraising agent alongside the engineers. You define the rest.

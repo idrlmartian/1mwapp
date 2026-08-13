@@ -48,18 +48,20 @@ export const AGENTS: Agent[] = [
       eye closed. Sits between Luna and Atlas: she checks that it works, he
       checks that it is safe, then it ships.
 
-      `pending` is NOT cosmetic and must not be removed for tidiness. The magy
-      repo's 038_seed_default_agents.sql seeds SEVEN. Until a seed migration
-      exists with a real system prompt and tool allowlist, a page that presents
-      Argus as shipping is a claim about software that does not exist — the
-      exact defect that got /martianos, /artificialintelligence, /brands and
-      /products redirected away, on the page those redirects were protecting.
+      SEEDED AND LIVE as of magy 4a0bbed9 / migration 139, applied to the
+      production `magy` database 2026-08-13. Verified before this flag came off:
+      the row exists with 16 tools and role "security", the runtime's working
+      directory is /home/ubuntu/repos/magy so its relative prompt path resolves,
+      and prompts/argus-security.md is on disk and readable by the runtime user
+      — llm_agent/mod.rs:440 hard-errors on a missing prompt file, so the row
+      alone would have produced an agent that could not be constructed.
 
-      While pending: rendered with a "soon" marker, counted out of the cast
-      headline, and listed under "Building" in STATUS.
-      To land it: seed the agent, then delete this one flag. Nothing else.
+      That verification is the point of the flag, not ceremony. It existed so
+      the page could not claim an agent the runtime did not have — the exact
+      defect that got /martianos, /artificialintelligence, /brands and /products
+      redirected away, on the page those redirects were protecting.
     */
-    { id: "argus", name: "Argus", role: "Security", token: "argus", pending: true },
+    { id: "argus", name: "Argus", role: "Security", token: "argus" },
 ];
 
 /** Agents actually in the runtime today — what the cast headline may count. */
@@ -86,6 +88,7 @@ export const ACTIVITY = [
     { time: "09:12", token: "nova", agent: "Nova", text: "walks to the library" },
     { time: "09:31", token: "nova", agent: "", text: "knowledge graph +14 facts" },
     { time: "11:02", token: "kai", agent: "Kai", text: "delegates to Zara" },
+    { time: "11:40", token: "argus", agent: "Argus", text: "cleared PR #482 — no secrets, no new advisories" },
 ] as const;
 
 /** The honesty band. Shipping a limitations list on a launch page is unusual,
@@ -94,12 +97,12 @@ export const STATUS = [
     {
         state: "shipping" as const,
         label: "Shipping",
-        text: "Agents, MagyVerse, worktree isolation with auto-PR, four-tier memory, knowledge graph, per-agent model choice with your own keys across seven providers, Telegram, cron, skills.",
+        text: "Agents including Argus the pre-merge security gate, MagyVerse, worktree isolation with auto-PR, four-tier memory, knowledge graph, per-agent model choice with your own keys across seven providers, Telegram, cron, skills.",
     },
     {
         state: "building" as const,
         label: "Building",
-        text: "Argus, the security agent, is specced and named but not yet seeded — the runtime ships seven. Marathon mode's worker loop is a skeleton: it logs progress but doesn't yet dispatch real work.",
+        text: "Marathon mode's worker loop is a skeleton — it logs progress but doesn't yet dispatch real work.",
     },
     {
         state: "planned" as const,
