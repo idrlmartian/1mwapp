@@ -660,6 +660,12 @@ export default function MagyPage() {
                             </details>
                         ))}
                     </div>
+                    {/* Scoped to this page deliberately — Footer.tsx is shared with
+                        /mos and /toowl, and this application covers Magy's embeddable
+                        player only, not either of those products. */}
+                    <p className="text-fg-dim mt-3.5 text-[12.5px]">
+                        Embeddable player: Patent Pending — Indian Patent Application No. 202621101001.
+                    </p>
                 </Panel>
 
                 <section className="border-line bg-solid shadow-[var(--shadow-deck)] rounded-[var(--radius-lg)] border px-6 py-10 text-center [background:radial-gradient(70%_120%_at_50%_0%,var(--color-red-soft),transparent_68%),var(--color-solid)] sm:py-14">
