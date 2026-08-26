@@ -18,29 +18,28 @@ import { COMPANY } from "@/app/lib/constants";
 export const metadata: Metadata = {
     title: "About",
     description:
-        "1 Martian Way Industries builds embodied multi-agent systems, robotics simulation, and the software that runs them. Founded in Mumbai.",
+        "1 Martian Way Industries builds developer tools and agent software. We make toowl, a GPU-accelerated terminal with Claude built in. Founded in Mumbai.",
     alternates: { canonical: "https://www.1martianway.com/about" },
 };
 
 const BUILDING = [
-    {
-        name: "Magy",
-        href: "/magy",
-        line: "A 3D world where AI agents do engineering work you can watch. Measured at 100,000 agents rendered at 60 fps.",
-        state: "Early access",
-    },
-    {
-        name: "MOS",
-        href: "/mos",
-        line: "Robotics simulation with a portable dynamics kernel — the same physics in a browser, on a CPU and on a GPU.",
-        state: "Private alpha",
-    },
     {
         name: "Toowl",
         href: "/toowl",
         line: "A GPU-fast terminal and a tmux-style remote client in one binary, with Claude on the Perch.",
         state: "v1.0",
     },
+    /*
+      Magy and MOS are commented out from 2026-08-26 — unpublished until the
+      patent filings are settled, so they are not named anywhere a crawler or
+      a reader can reach. Restore both entries alongside the NAV, Footer,
+      routes.ts and per-page noindex blocks.
+
+        Magy — "A 3D world where AI agents do engineering work you can watch.
+          Measured at 100,000 agents rendered at 60 fps." (Early access)
+        MOS — "Robotics simulation with a portable dynamics kernel — the same
+          physics in a browser, on a CPU and on a GPU." (Private alpha)
+    */
     /*
       Martian OS is deliberately absent. Its page states <1μs latency, 1000Hz
       sustained, 100% memory safety and zero overhead as ACHIEVED specs, while
@@ -54,7 +53,7 @@ const ERAS = [
     ["Chess robots", "Robot arms that play a physical board. The first thing we shipped."],
     ["Drones", "Autonomous racing, fleet software, and aerial survey work."],
     ["Humanoid robotics", "Prototype platforms, and the operating system to run them."],
-    ["Agent software", "Magy, MOS and Toowl — where nearly all the work goes today."],
+    ["Developer tools", "Toowl, and the agent software behind it — where nearly all the work goes today."],
 ];
 
 export default function AboutPage() {
@@ -68,9 +67,10 @@ export default function AboutPage() {
                         We build things that <em className="text-blue not-italic">do the work</em>.
                     </h1>
                     <p className="text-fg-muted max-w-[64ch] text-[14.5px]">
-                        1 Martian Way Industries is a Mumbai company building embodied multi-agent
-                        systems, robotics simulation, and the software that runs both. We are small,
-                        we ship, and we publish the numbers behind what we claim.
+                        1 Martian Way Industries is a Mumbai company building developer tools
+                        and agent software. Toowl, our GPU-accelerated terminal, is free and
+                        installs with one command. We are small, we ship, and we publish the
+                        numbers behind what we claim.
                     </p>
                 </Panel>
 

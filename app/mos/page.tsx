@@ -25,6 +25,9 @@ export const metadata: Metadata = {
     description:
         "A robotics simulation platform with a portable dynamics kernel — the same physics in a browser, on a CPU and on a GPU, with the divergence measured and published.",
     alternates: { canonical: "https://www.1martianway.com/mos" },
+    // Held back from publication until the patents are settled (2026-08-26) —
+    // same reasoning as app/magy/page.tsx.
+    robots: { index: false, follow: false },
     openGraph: {
         title: "MOS — the robotics simulator that runs everywhere",
         description: "Train a robot policy in a browser tab. No install, no NVIDIA card.",

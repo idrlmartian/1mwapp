@@ -7,8 +7,10 @@ export default function manifest(): MetadataRoute.Manifest {
     return {
         name: "1 Martian Way Industries",
         short_name: "1MW",
+        // Was Magy's tagline; toowl is the public face while Magy and MOS are
+        // held back for the patent filings (2026-08-26).
         description:
-            "Magy — the world's first 3D embodied multi-agent platform. Infinite agents. Infinite worlds. Any work.",
+            "1 Martian Way Industries — makers of toowl, a GPU-accelerated terminal with Claude built in.",
         start_url: "/",
         display: "standalone",
         background_color: "#0A0A0B",

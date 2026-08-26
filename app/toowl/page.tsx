@@ -323,11 +323,16 @@ export default function ToowlPage() {
                 <div className="mx-auto mt-5 max-w-[470px]">
                     <WaitlistForm source="toowl" product="toowl" size="hero" cta="Get Early Access" autoFocus />
                 </div>
+                {/*
+                  The "Also from 1 Martian Way: Magy · MOS" line is removed while
+                  both are unpublished (2026-08-26) — it named them in body copy
+                  on the one page we most want crawled. Restore it with the rest
+                  of the Magy/MOS blocks.
+                */}
                 <p className="text-fg-dim mt-6 text-[12.5px]">
-                    Also from 1 Martian Way:{" "}
-                    <Link href="/magy" className="text-blue hover:underline">Magy</Link>
-                    {" · "}
-                    <Link href="/mos" className="text-blue hover:underline">MOS</Link>
+                    <Link href="/about" className="text-blue hover:underline">
+                        More from 1 Martian Way
+                    </Link>
                 </p>
             </section>
         </ComingSoon>

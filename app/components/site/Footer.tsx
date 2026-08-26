@@ -15,8 +15,10 @@ import { COMPANY } from "@/app/lib/constants";
 */
 
 const PRODUCTS = [
-    { href: "/magy", label: "Magy" },
-    { href: "/mos", label: "MOS — robotics simulation" },
+    // Magy and MOS: unlisted until the patents are settled (2026-08-26).
+    // See app/lib/constants.ts NAV for the full note.
+    // { href: "/magy", label: "Magy" },
+    // { href: "/mos", label: "MOS — robotics simulation" },
     { href: "/toowl", label: "Toowl — terminal" },
     /*
       Two entries are deliberately unlisted, both unlinked sitewide and

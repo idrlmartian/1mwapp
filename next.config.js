@@ -63,7 +63,12 @@ const nextConfig = {
 
     async redirects() {
         return [
-            // "/" -> "/magy", TEMPORARY (founder's call, 2026-08-12).
+            // "/" -> "/toowl", TEMPORARY (founder's call, 2026-08-26).
+            //
+            // Was "/magy" until 2026-08-26. Magy and MOS are held back from
+            // publication until the patent position is settled, so toowl —
+            // shipped, free, installable today — is the face of the company
+            // for now. Reverting is changing these two destinations back.
             //
             // Two rules, not one, and the apex variant has to sit ABOVE the
             // apex->www catch-all below: otherwise apex "/" would take two hops
@@ -77,7 +82,7 @@ const nextConfig = {
             {
                 source: "/",
                 has: [{ type: "host", value: "1martianway.com" }],
-                destination: "https://www.1martianway.com/magy",
+                destination: "https://www.1martianway.com/toowl",
                 permanent: false,
             },
             // /idrl -> droneracingindia.com.
@@ -189,8 +194,8 @@ const nextConfig = {
                 destination: "https://www.1martianway.com/:path",
                 permanent: true,
             },
-            // The www (and any other host) case of the "/" -> "/magy" rule above.
-            { source: "/", destination: "/magy", permanent: false },
+            // The www (and any other host) case of the "/" -> "/toowl" rule above.
+            { source: "/", destination: "/toowl", permanent: false },
             /*
               /geospatial has no rule and should not get one. It used to
               redirect to /martianos, which now redirects itself, and pointing

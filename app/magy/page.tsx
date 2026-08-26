@@ -15,6 +15,15 @@ export const metadata: Metadata = {
     description:
         "AI engineers embodied in a world you build. They delegate face to face, walk to the library to learn what they don't know, and ship a pull request while you watch. Measured at 100,000 agents rendered at 60 fps.",
     alternates: { canonical: "https://www.1martianway.com/magy" },
+    /*
+      Held back from publication until the patent filings are settled
+      (2026-08-26). The page still renders — magy.1martianway.com is a separate
+      deployment and must stay reachable — but it is unlinked sitewide, out of
+      the sitemap, and tells crawlers not to list it. Deliberately noindex
+      rather than a robots.txt Disallow: see app/lib/routes.ts for why the
+      Disallow would have been the weaker of the two.
+    */
+    robots: { index: false, follow: false },
     openGraph: {
         title: "Magy — the 3D embodied multi-agent platform",
         description:

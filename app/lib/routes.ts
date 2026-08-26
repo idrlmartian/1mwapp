@@ -11,11 +11,23 @@ export const SITE_URL = "https://www.1martianway.com";
 export type Route = { path: string; changeFrequency: "daily" | "weekly" | "monthly" | "yearly" };
 
 export const ROUTES: Route[] = [
-    // "/" is deliberately absent: it 307s to /magy (see next.config.js), and a
+    // "/" is deliberately absent: it 307s to /toowl (see next.config.js), and a
     // sitemap that lists a redirecting URL is a Search Console warning. Put it
     // back in the same change that removes the redirect.
-    { path: "/magy", changeFrequency: "daily" },
-    { path: "/mos", changeFrequency: "weekly" },
+    /*
+      "/magy" and "/mos" are out of the sitemap from 2026-08-26: neither is to
+      be published while the patent filings are open.
+
+      They are NOT added to robots.ts Disallow, and that is deliberate. A
+      Disallow stops the crawl, not the indexing — a URL that is linked from
+      anywhere else can still be listed, and because the crawler is forbidden
+      to fetch the page it can never see the noindex that would have removed
+      it. Dropping them from the sitemap, unlinking them sitewide, and letting
+      Googlebot fetch a page whose metadata says `index: false` is what
+      actually keeps them out of the index.
+    */
+    // { path: "/magy", changeFrequency: "daily" },
+    // { path: "/mos", changeFrequency: "weekly" },
     { path: "/toowl", changeFrequency: "weekly" },
     // "/martianos" is absent: it now 307s away (see next.config.js) because its
     // stated specs are unverified, and a sitemap entry for a redirecting URL is
