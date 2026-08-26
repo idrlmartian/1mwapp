@@ -113,9 +113,16 @@ export default function Footer() {
                             <LogoGlyph size={21} radius={64} />
                             1 Martian Way
                         </Link>
+                        {/*
+                          Matches /about. The previous line described the two
+                          products we are not currently publishing -- "embodied
+                          multi-agent systems, robotics simulation" is Magy and
+                          MOS -- on every page of a site whose only listed
+                          product is toowl.
+                        */}
                         <p className="text-fg-muted mt-3 max-w-[34ch] text-[13px]">
-                            We build embodied multi-agent systems, robotics simulation, and the
-                            software that runs them.
+                            We build developer tools and agent software. Toowl, our
+                            GPU-accelerated terminal, is free and installs with one command.
                         </p>
                         <div className="mt-4 flex gap-2">
                             {SOCIALS.map((s) => (

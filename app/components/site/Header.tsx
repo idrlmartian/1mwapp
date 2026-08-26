@@ -6,7 +6,7 @@ import { useState } from "react";
 import { LogoGlyph } from "@/app/components/brand/Logo";
 import ThemeSwitch from "@/app/components/ui/ThemeSwitch";
 import { NAV } from "@/app/lib/constants";
-import EarlyAccessCta from "@/app/components/site/EarlyAccessCta";
+import { navCtaClick } from "@/app/lib/analytics";
 
 /*
   The deck's chrome bar. 56px, sticky, glass.
@@ -61,7 +61,21 @@ export default function Header() {
                     <div className="hidden sm:block">
                         <ThemeSwitch />
                     </div>
-                    <EarlyAccessCta />
+                    {/*
+                      Points at the install, not a waitlist. It used to link to
+                      "/#early-access" -- an anchor that exists on no page you
+                      can reach, since "/" redirects to /toowl -- and then
+                      briefly opened a Toowl Pro dialog. Toowl is free and
+                      shipped, so the one action worth putting in the nav is
+                      getting it.
+                    */}
+                    <Link
+                        href="/toowl#install"
+                        onClick={() => navCtaClick(pathname)}
+                        className="bg-red hover:bg-red-hover shadow-[var(--shadow-cta)] inline-flex items-center rounded-[9px] px-3.5 py-2.5 text-[12.5px] font-bold text-white transition-colors"
+                    >
+                        Get toowl
+                    </Link>
                     <button
                         type="button"
                         onClick={() => setOpen((v) => !v)}

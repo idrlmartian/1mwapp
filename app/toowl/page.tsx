@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import WaitlistForm from "@/app/components/WaitlistForm";
 import { ComingSoon, Metrics, Panel } from "@/app/components/ui/Panel";
 import { Bullets, Eyebrow, Receipts, Showcase, Visual } from "@/app/components/ui/Showcase";
 import ToowlPerch from "@/app/components/ui/ToowlPerch";
@@ -330,7 +329,7 @@ export default async function ToowlPage() {
                 </Panel>
             </div>
 
-            <Panel label="Install your way">
+            <Panel label="Install your way" id="install">
                 <p className="text-fg-muted mb-4 text-[13.5px]">
                     Two paths, same outcome. Pick the one your environment already loves.
                 </p>
@@ -356,28 +355,17 @@ export default async function ToowlPage() {
                 </p>
             </Panel>
 
-            <section className="border-line bg-solid shadow-[var(--shadow-deck)] rounded-[var(--radius-lg)] border px-6 py-10 text-center [background:radial-gradient(70%_120%_at_50%_0%,var(--color-red-soft),transparent_68%),var(--color-solid)]">
-                <h2 className="text-[clamp(1.3rem,3vw,2rem)] font-extrabold tracking-[-0.03em]">
-                    Get Early Access
-                </h2>
-                <p className="text-fg-muted mx-auto mt-2.5 max-w-[46ch] text-sm">
-                    Toowl Pro adds terminal-native intelligence. We&apos;ll email you when it opens.
-                </p>
-                <div className="mx-auto mt-5 max-w-[470px]">
-                    <WaitlistForm source="toowl" product="toowl" size="hero" cta="Get Early Access" autoFocus />
-                </div>
-                {/*
-                  The "Also from 1 Martian Way: Magy · MOS" line is removed while
-                  both are unpublished (2026-08-26) — it named them in body copy
-                  on the one page we most want crawled. Restore it with the rest
-                  of the Magy/MOS blocks.
-                */}
-                <p className="text-fg-dim mt-6 text-[12.5px]">
-                    <Link href="/about" className="text-blue hover:underline">
-                        More from 1 Martian Way
-                    </Link>
-                </p>
-            </section>
+            {/*
+              The "Get Early Access" block is gone (2026-08-26). Toowl is free
+              and installs with one command; ending the page by asking for an
+              email to join a list for something else undercut that. The page
+              now closes on the install, which is the action we actually want.
+            */}
+            <p className="text-fg-dim mt-2 text-center text-[12.5px]">
+                <Link href="/about" className="text-blue hover:underline">
+                    More from 1 Martian Way
+                </Link>
+            </p>
         </ComingSoon>
     );
 }

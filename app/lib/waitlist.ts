@@ -21,10 +21,6 @@ export type SignupSource =
     | "magy-final"
     | "mos"
     | "toowl"
-    // The header CTA, which opens a dialog from any page. Distinct from
-    // "toowl" so a signup from the nav is not indistinguishable from one made
-    // at the bottom of the toowl page after reading it.
-    | "header"
     | "idrl"
     | "about"
     | "footer"

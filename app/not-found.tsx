@@ -1,5 +1,4 @@
 import Link from "next/link";
-import WaitlistForm from "@/app/components/WaitlistForm";
 
 /* A 404 that converts beats a dead end. */
 export default function NotFound() {
@@ -13,9 +12,20 @@ export default function NotFound() {
                 The page moved, or never existed. While you&apos;re here — toowl is a
                 GPU-accelerated terminal with Claude built in, and it is free today.
             </p>
-            <div className="mx-auto mt-6 w-full max-w-[430px]">
-                <WaitlistForm source="404" product="toowl" cta="Get Early Access" />
-            </div>
+            {/*
+              A "Get Early Access" form here contradicted the sentence above it
+              -- toowl is free today, so the useful next step is installing it,
+              not joining a list for something else. Removed alongside the same
+              block on /toowl and /about (2026-08-26).
+            */}
+            <p className="mt-6">
+                <Link
+                    href="/toowl#install"
+                    className="bg-red hover:bg-red-hover shadow-[var(--shadow-cta)] inline-flex items-center rounded-[9px] px-4 py-2.5 text-[13px] font-bold text-white transition-colors"
+                >
+                    Get toowl
+                </Link>
+            </p>
             <p className="text-fg-dim mt-6 text-[13px]">
                 <Link href="/" className="text-blue hover:underline">Home</Link>
                 {" · "}
