@@ -15,8 +15,12 @@ import { AGENTS } from "@/app/lib/constants";
 
   ── HONESTY, and this is the part to read before editing the copy ──
   The graph below is SEEDED AND SYNTHETIC. It is shaped like a real Cortex — a
-  sphere of entities, PageRank-weighted radii, per-agent lenses re-centring the
-  weights — but it is not anyone's data.
+  sphere of entities whose radii and weighting shift with who is looking — but
+  it is not anyone's data.
+
+  Keep it described that way. This repo is PUBLIC and indexed; naming the
+  ranking and re-centring mechanisms here publishes them, and they are not ours
+  to publish until the filings settle. See ip/12-disclosure-ledger.md.
 
   So the section copy must not claim it is. Do NOT write "rendered from a real
   Cortex export" until `NODES` is actually fed by one. The honest phrasing lives
@@ -45,10 +49,10 @@ const TYPES = [
 ] as const;
 
 const NAMES = [
-    "magy-parse", "Cortex", "worktree lease", "BGE-M3", "MagyVerse", "navmesh",
-    "PR #482", "PageRank", "hyperedge", "agent lens", "Postgres", "NATS",
-    "scene.json", "embodiment", "Telegram", "cron", "skills", "TaskScope",
-    "BM25", "episode", "dedup", "community", "briefing", "router",
+    "changelog", "Cortex", "standup", "embedding", "MagyVerse", "office",
+    "PR #128", "backlog", "thread", "handoff", "Postgres", "NATS",
+    "roadmap", "embodiment", "Telegram", "cron", "skills", "sprint",
+    "search", "episode", "digest", "community", "briefing", "inbox",
 ];
 
 type Node = {
@@ -262,7 +266,7 @@ export default function CortexGraph() {
                 >
                     <b className="block text-[12px]">{NODES[hover.i].name}</b>
                     <span className="text-fg-dim font-mono text-[10px]">
-                        {NODES[hover.i].type} · pagerank {weight(NODES[hover.i]).toFixed(2)}
+                        {NODES[hover.i].type} · weight {weight(NODES[hover.i]).toFixed(2)}
                     </span>
                 </div>
             )}

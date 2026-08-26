@@ -55,11 +55,11 @@ const FAQ = [
     },
     {
         q: "Which models does it use — and do I control that?",
-        a: "You control it completely, per agent. Bring your own API keys or your Claude subscription, and assign whichever model you want to whichever agent: the strongest one for your CTO, something cheap for routine work. Seven providers are supported — Anthropic, OpenAI, Gemini, Bedrock, Ollama, Kimi and MiniMax. Set an agent to `auto` instead and a cost-aware router walks a ladder from the strongest model down, with circuit breakers and per-agent budgets. Keys live in your own config, never in our database.",
+        a: "You control it completely, per agent. Bring your own API keys or your Claude subscription, and assign whichever model you want to whichever agent: the strongest one for your CTO, something cheap for routine work. Seven providers are supported — Anthropic, OpenAI, Gemini, Bedrock, Ollama, Kimi and MiniMax. Set an agent to `auto` instead and Magy picks for you, inside the per-agent budget you set, and routes around a provider that is slow or rate-limited. Keys live in your own config, never in our database.",
     },
     {
         q: "Does my code leave my machine?",
-        a: "Your prompts and the code context go to whichever LLM provider you configure, the same as any AI coding tool. Magy adds a per-conversation TaskScope that hard-limits which repositories an agent may touch, and every task runs in its own git worktree.",
+        a: "Your prompts and the code context go to whichever LLM provider you configure, the same as any AI coding tool. Magy hard-limits which repositories an agent may touch, per conversation, and every task runs in its own git worktree.",
     },
     {
         q: "Is it open source?",
@@ -377,7 +377,7 @@ export default function MagyPage() {
                                 },
                                 {
                                     title: "Isolated while it runs",
-                                    body: "One git worktree per task, with file leases, so two agents can never write the same path.",
+                                    body: "One git worktree per task, so two agents can never write over each other.",
                                 },
                                 {
                                     title: "Reviewed before it lands",
@@ -410,7 +410,7 @@ export default function MagyPage() {
                             <p className="text-fg-muted text-[13.5px]">
                                 MagyVerse is the world your agents are embodied in. The one that ships
                                 is a {WORLD.dims} open-plan office, a {WORLD.outdoor} lawn outside,
-                                and a library through the corridor. Agents walk it on a real navmesh. They sit down and type —
+                                and a library through the corridor. Agents walk it properly — around the furniture, never through it. They sit down and type —
                                 and what they are typing renders on the monitor in front of them.
                                 When one needs another, it walks over, and a dashed arc is drawn
                                 between them for as long as the delegation is open.
@@ -519,9 +519,9 @@ export default function MagyPage() {
                         </Eyebrow>
                         <h2 className="text-h2">Every agent sees a different shape of the same memory.</h2>
                         <p className="text-fg-muted mt-2.5 max-w-[47ch] text-[14px]">
-                            Cortex is one bitemporal knowledge graph. What changes per agent is the
-                            lens — a preference vector that re-runs PageRank from where that agent
-                            actually looks.
+                            Cortex is one knowledge graph with a sense of time. What changes per
+                            agent is the lens: the same facts, re-weighted around what that agent
+                            actually works on.
                         </p>
                         <Bullets
                             items={[
@@ -540,8 +540,9 @@ export default function MagyPage() {
                             ]}
                         />
                         <Receipts>
-                            The mechanism is shipping — episodes, entities, hyperedges and nightly
-                            PageRank. The graph shown is illustrative, not an export of real data.
+                            The mechanism is shipping — episodes, entities and relationships that
+                            span a whole meeting. The graph shown is illustrative, not an export of
+                            real data.
                         </Receipts>
                     </Showcase>
                 </Panel>
