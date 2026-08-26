@@ -236,7 +236,18 @@ export default async function ToowlPage() {
             <Panel label="First feather on the Perch">
                 <Showcase
                     visual={
-                        <Visual caption="Real UI — the Perch, the session list, the crash banner, palette integration. All in v1.0." state="drawn">
+                        /*
+                          "Illustration", not "Real UI". Visual's own contract
+                          says state="drawn" marks an illustration we authored,
+                          so the caption was contradicting the prop next to it.
+                          The features are real and shipped in v1.0; the picture
+                          of them is drawn. Switch to state="pending" if this
+                          slot is ever waiting on a capture rather than settled.
+                        */
+                        <Visual
+                            caption="Illustration — the Perch, the session list, the crash banner and palette integration, all shipped in v1.0."
+                            state="drawn"
+                        >
                             <ToowlPerch />
                         </Visual>
                     }
