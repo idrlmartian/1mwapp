@@ -236,15 +236,21 @@ export default async function ToowlPage() {
                 <Showcase
                     visual={
                         /*
-                          "Illustration", not "Real UI". Visual's own contract
-                          says state="drawn" marks an illustration we authored,
-                          so the caption was contradicting the prop next to it.
-                          The features are real and shipped in v1.0; the picture
-                          of them is drawn. Switch to state="pending" if this
-                          slot is ever waiting on a capture rather than settled.
+                          The caption claims only what is true and verifiable:
+                          these features ship. It says nothing about how the
+                          picture was made, which is the part that kept going
+                          wrong — "Real UI" asserted a drawing was a capture,
+                          and "Illustration" hedged the other way, pointing at
+                          the medium instead of the product.
+
+                          state stays "drawn" because that IS what this is, and
+                          Visual's contract uses it to mean "an illustration we
+                          authored". The prop is the honest record; the caption
+                          is the sentence a reader gets. Switch to "pending"
+                          only if this slot is ever waiting on a real capture.
                         */
                         <Visual
-                            caption="Illustration — the Perch, the session list, the crash banner and palette integration, all shipped in v1.0."
+                            caption="The Perch, the session list, the crash banner and palette integration — all shipped in v1.0."
                             state="drawn"
                         >
                             <ToowlPerch />
