@@ -5,6 +5,7 @@ import { Bullets, Eyebrow, Receipts, Showcase, Visual } from "@/app/components/u
 import ToowlPerch from "@/app/components/ui/ToowlPerch";
 import ToowlOwl from "@/app/components/ui/ToowlOwl";
 import CopyCommand from "@/app/components/ui/CopyCommand";
+import { TOOWL_URL } from "@/app/lib/constants";
 
 /*
   Content mirrored from the live site at toowl.karmasteels.com so the two pages
@@ -39,7 +40,6 @@ export const metadata: Metadata = {
     },
 };
 
-const TOOWL_URL = "https://toowl.dev";
 
 const STATS = [
     { value: "<80ms", label: "cold start" },

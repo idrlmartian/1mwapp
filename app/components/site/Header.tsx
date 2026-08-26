@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { LogoGlyph } from "@/app/components/brand/Logo";
 import ThemeSwitch from "@/app/components/ui/ThemeSwitch";
-import { NAV } from "@/app/lib/constants";
+import { NAV, TOOWL_URL } from "@/app/lib/constants";
 import { navCtaClick } from "@/app/lib/analytics";
 
 /*
@@ -62,20 +62,18 @@ export default function Header() {
                         <ThemeSwitch />
                     </div>
                     {/*
-                      Points at the install, not a waitlist. It used to link to
-                      "/#early-access" -- an anchor that exists on no page you
-                      can reach, since "/" redirects to /toowl -- and then
-                      briefly opened a Toowl Pro dialog. Toowl is free and
-                      shipped, so the one action worth putting in the nav is
-                      getting it.
+                      Goes to toowl.dev, not to this site's /toowl page. That
+                      page is a summary; the product site is where the install
+                      command, the docs and the releases actually are. A plain
+                      <a>, since next/link is for internal routes.
                     */}
-                    <Link
-                        href="/toowl#install"
+                    <a
+                        href={TOOWL_URL}
                         onClick={() => navCtaClick(pathname)}
                         className="bg-red hover:bg-red-hover shadow-[var(--shadow-cta)] inline-flex items-center rounded-[9px] px-3.5 py-2.5 text-[12.5px] font-bold text-white transition-colors"
                     >
                         Get toowl
-                    </Link>
+                    </a>
                     <button
                         type="button"
                         onClick={() => setOpen((v) => !v)}

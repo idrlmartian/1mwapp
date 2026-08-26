@@ -126,6 +126,14 @@ export const NAV = [
     { href: "/about", label: "Company" },
 ] as const;
 
+/*
+  Where "Get toowl" goes. toowl.dev is the product's own site and the only
+  place the install command, the docs and the releases actually live; this
+  site's /toowl page is a summary of it. Lived as a private const inside
+  app/toowl/page.tsx until the header and the 404 needed it too.
+*/
+export const TOOWL_URL = "https://toowl.dev";
+
 export const COMPANY = {
     legal: "1 Martian Way Industries Pvt. Ltd.",
     email: "sales@1martianway.com",

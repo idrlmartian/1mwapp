@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { TOOWL_URL } from "@/app/lib/constants";
 
 /* A 404 that converts beats a dead end. */
 export default function NotFound() {
@@ -19,12 +20,12 @@ export default function NotFound() {
               block on /toowl and /about (2026-08-26).
             */}
             <p className="mt-6">
-                <Link
-                    href="/toowl#install"
+                <a
+                    href={TOOWL_URL}
                     className="bg-red hover:bg-red-hover shadow-[var(--shadow-cta)] inline-flex items-center rounded-[9px] px-4 py-2.5 text-[13px] font-bold text-white transition-colors"
                 >
                     Get toowl
-                </Link>
+                </a>
             </p>
             <p className="text-fg-dim mt-6 text-[13px]">
                 <Link href="/" className="text-blue hover:underline">Home</Link>

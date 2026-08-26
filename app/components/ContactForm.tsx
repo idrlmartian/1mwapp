@@ -14,12 +14,21 @@ import { useEffect, useRef, useState } from "react";
   inbox list view, and it is deep-linkable: /contact?topic=licensing.
 */
 
+/*
+  Magy and MOS are not offered here while they are unpublished (2026-08-26) --
+  the dropdown defaulted to "Magy — early access", so the first thing anyone
+  saw on the contact form was the product we are deliberately not talking
+  about. Restore both lines with the rest of the Magy/MOS blocks.
+
+  The server's own TOPICS set in app/api/contact/route.ts deliberately still
+  accepts them: it is a validation allowlist, and an unknown topic falls back
+  to "other", so leaving it permissive costs nothing and keeps any existing
+  /contact?topic=... link working.
+*/
 const TOPICS = [
-    { value: "magy", label: "Magy — early access" },
+    { value: "toowl", label: "Toowl" },
     { value: "press", label: "Press & media" },
     { value: "licensing", label: "Licensing & partnerships" },
-    { value: "mos", label: "MOS — robotics simulation" },
-    { value: "toowl", label: "Toowl" },
     { value: "idrl", label: "IDRL" },
     { value: "other", label: "Something else" },
 ] as const;
@@ -29,7 +38,7 @@ type Status = "idle" | "sending" | "sent" | "error";
 export default function ContactForm() {
     const [status, setStatus] = useState<Status>("idle");
     const [error, setError] = useState("");
-    const [topic, setTopic] = useState<string>("magy");
+    const [topic, setTopic] = useState<string>("toowl");
     const token = useRef("");
 
     useEffect(() => {
