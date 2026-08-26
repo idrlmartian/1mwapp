@@ -45,16 +45,16 @@ const TOOWL_URL = "https://toowl.dev";
 const STATS = [
     { value: "<80ms", label: "cold start" },
     { value: "~80MB", label: "idle memory" },
-    { value: "120fps", label: "smooth-glide cursor" },
+    { value: "60fps", label: "smooth-glide cursor" },
     { value: "1 binary", label: "GUI + TUI" },
-    { value: "29", label: "focused crates" },
-    { value: "17", label: "built-in themes" },
+    { value: "36", label: "focused crates" },
+    { value: "16", label: "built-in themes" },
 ] as const;
 
 const BREAKTHROUGHS = [
     [
         "GPU-fast, idle-quiet",
-        "A wgpu renderer that draws only when something changes — <80ms cold start, ~80MB at rest, and a cursor that glides at your display's refresh rate but costs nothing when you're reading.",
+        "A wgpu renderer that draws only when something changes — an <80ms cold-start target, ~80MB at rest, and a cursor that glides while it moves but costs nothing when you're reading.",
     ],
     [
         "Daemon-backed workspaces",
