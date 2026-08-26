@@ -115,8 +115,8 @@ export const NAV = [
     /*
       Magy and MOS are commented out, not deleted (2026-08-26): both stay
       unpublished until the patent filings are settled, and the pages
-      themselves keep rendering so magy.1martianway.com and
-      mos.1martianway.com are untouched. Restoring them is uncommenting
+      themselves keep rendering so the products' own separate deployments
+      are untouched. Restoring them is uncommenting
       these two lines — and the matching blocks in routes.ts, Footer.tsx,
       about/page.tsx, and the noindex in each page's own metadata.
     */

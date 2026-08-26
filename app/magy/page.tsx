@@ -17,8 +17,8 @@ export const metadata: Metadata = {
     alternates: { canonical: "https://www.1martianway.com/magy" },
     /*
       Held back from publication until the patent filings are settled
-      (2026-08-26). The page still renders — magy.1martianway.com is a separate
-      deployment and must stay reachable — but it is unlinked sitewide, out of
+      (2026-08-26). The page still renders — the product has its own separate
+      deployment which must stay reachable — but it is unlinked sitewide, out of
       the sitemap, and tells crawlers not to list it. Deliberately noindex
       rather than a robots.txt Disallow: see app/lib/routes.ts for why the
       Disallow would have been the weaker of the two.
