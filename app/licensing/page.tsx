@@ -29,13 +29,13 @@ export const metadata: Metadata = {
     alternates: { canonical: "https://www.1martianway.com/licensing" },
     title: "Licensing & partnerships",
     description:
-        "License 1 Martian Way's technology, distribute our products, or build with us. Talk to us about what you have in mind.",
+        "License 1 Martian Way's robotics, humanoid and AI software technology, distribute our products, or build with us. Talk to us about what you have in mind.",
 };
 
 const OPPORTUNITIES = [
     {
         name: "Technology licensing",
-        line: "Use our drone systems, autonomy stack and developer tooling inside your own products.",
+        line: "Use our robotics and humanoid platforms, Martian OS, and the AI software around them inside your own products.",
     },
     {
         name: "Distribution partnerships",
