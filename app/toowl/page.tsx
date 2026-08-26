@@ -46,7 +46,7 @@ const STATS = [
     { value: "~80MB", label: "idle memory" },
     { value: "60fps", label: "smooth-glide cursor" },
     { value: "1 binary", label: "GUI + TUI" },
-    { value: "36", label: "focused crates" },
+    { value: "37", label: "focused crates" },
     { value: "16", label: "built-in themes" },
 ] as const;
 
@@ -273,7 +273,7 @@ export default async function ToowlPage() {
                     </p>
                     <Bullets items={FEATHER.map(([title, body]) => ({ title, body }))} />
                     <Receipts>
-                        Built on toowl&apos;s first-party <code className="font-mono text-[12px]">toowl-plugin-claude</code>.
+                        Built on toowl&apos;s first-party <code className="font-mono text-[12px]">toowl-plugin-agent</code>.
                         Shipped, tested, in this binary — bring your own{" "}
                         <code className="font-mono text-[12px]">claude</code> binary and the Feather handles the rest.
                     </Receipts>
