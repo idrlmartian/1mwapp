@@ -8,6 +8,31 @@
 
 export const SITE_URL = "https://www.1martianway.com";
 
+/*
+  Pages held back from publication while the patent filings are open.
+
+  These 404. That is stronger than the previous posture — unlinked, out of the
+  sitemap, `robots: { index: false }` — and the upgrade is deliberate, made
+  2026-08-26 alongside the cutover of www to this app.
+
+  Why 404 rather than noindex. Noindex keeps a page OUT OF SEARCH; it does not
+  make it non-public. India (s.29, s.13) and the EPO (Art. 54(2)) ask whether
+  matter was "made available to the public", not whether anyone fetched it — a
+  URL answering 200 to an anonymous GET is generally available even if no
+  search engine ever lists it, and there is no grace period for
+  self-publication in either. The whole patent hold rests on that distinction,
+  so the pages it protects should not be the exception to it. See
+  ip/12-disclosure-ledger.md §1B.
+
+  The pages are kept, not deleted, because they are the real thing and will be
+  published once the filings are in. Reverting is emptying this array.
+
+  If you remove an entry, also restore: its ROUTES entry below, its NAV entry in
+  app/lib/constants.ts, its Footer entry, and any redirect in next.config.js
+  that was re-pointed away from it.
+*/
+export const HELD_BACK = ["/magy", "/mos"] as const;
+
 export type Route = { path: string; changeFrequency: "daily" | "weekly" | "monthly" | "yearly" };
 
 export const ROUTES: Route[] = [
@@ -43,6 +68,11 @@ export const ROUTES: Route[] = [
     // correction and "Level 4 full sentience"; /brands contradicted /about,
     // which was written to replace it, and carried four unsourced IDRL figures.
     // Restore each entry in the same change that removes its redirect.
+    // /about is linked from NAV as "Company" and from four redirects
+    // (/brands, /products, /martianos, /artificialintelligence). It was
+    // missing here, which is precisely the drift this registry exists to
+    // prevent — a linked, indexable page absent from the sitemap.
+    { path: "/about", changeFrequency: "monthly" },
     { path: "/press", changeFrequency: "monthly" },
     { path: "/licensing", changeFrequency: "monthly" },
     { path: "/contact", changeFrequency: "monthly" },

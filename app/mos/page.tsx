@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import Link from "next/link";
 import WaitlistForm from "@/app/components/WaitlistForm";
 import { ComingSoon, Metrics, Panel, Quote } from "@/app/components/ui/Panel";
@@ -43,6 +44,10 @@ const VERIFIED = [
 ] as const;
 
 export default function MosPage() {
+    // Held back while the patent filings are open — see HELD_BACK in
+    // app/lib/routes.ts. 404 rather than noindex, for the reason recorded there.
+    notFound();
+
     return (
         <ComingSoon>
             <Panel>

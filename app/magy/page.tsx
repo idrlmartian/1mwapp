@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import Link from "next/link";
 import WaitlistForm from "@/app/components/WaitlistForm";
 import StructuredData from "@/app/components/StructuredData";
@@ -86,6 +87,11 @@ const STATUS_DOT = {
 } as const;
 
 export default function MagyPage() {
+    // Held back while the patent filings are open — see HELD_BACK in
+    // app/lib/routes.ts for why this 404s rather than merely carrying noindex.
+    // Everything below is intact and ships the moment the array is emptied.
+    notFound();
+
     return (
         <>
             <StructuredData type="SoftwareApplication" />

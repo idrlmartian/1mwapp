@@ -116,9 +116,18 @@ const nextConfig = {
               307, and the page file is untouched, so restoring it is deleting
               these two rules once the claims are either true or reframed as
               design targets.
+
+              Destination changed from /magy to /about on 2026-08-26: /magy now
+              404s while the patent filings are open (see HELD_BACK in
+              app/lib/routes.ts), and a redirect into a 404 is worse than no
+              redirect — it turns a suppressed page into a broken one. Not "/",
+              because "/" itself 307s to /toowl and the cutover runbook allows
+              no chain longer than one hop. /about is where /brands and
+              /products already land, so this keeps one destination for
+              "the page that used to say this".
             */
-            { source: "/martianos", destination: "/magy", permanent: false },
-            { source: "/martianos/:path*", destination: "/magy", permanent: false },
+            { source: "/martianos", destination: "/about", permanent: false },
+            { source: "/martianos/:path*", destination: "/about", permanent: false },
             /*
               /artificialintelligence -> /magy, TEMPORARY.
 
@@ -135,11 +144,16 @@ const nextConfig = {
               PerplexityBot, so every day this renders it is being copied into
               model training and answer engines, where a redirect cannot reach it.
 
-              /magy is the destination because it is the honest version of the
-              same subject — AI agents, with the numbers measured.
+              /magy was the destination because it is the honest version of the
+              same subject — AI agents, with the numbers measured. It now 404s
+              while the patent filings are open (HELD_BACK in
+              app/lib/routes.ts), so this lands on /about, one hop, alongside
+              /brands and /products. Point it back at /magy in the same change
+              that empties HELD_BACK — the honest-version reasoning still
+              holds, it just has nowhere to land today.
             */
-            { source: "/artificialintelligence", destination: "/magy", permanent: false },
-            { source: "/artificialintelligence/:path*", destination: "/magy", permanent: false },
+            { source: "/artificialintelligence", destination: "/about", permanent: false },
+            { source: "/artificialintelligence/:path*", destination: "/about", permanent: false },
             /*
               /brands -> /about, TEMPORARY.
 
