@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { signupError, signupSubmit, signupSuccess, signupView } from "@/app/lib/analytics";
 import type { SignupSource } from "@/app/lib/waitlist";
 
@@ -41,9 +41,16 @@ export default function WaitlistForm({
     const [email, setEmail] = useState("");
     const [status, setStatus] = useState<Status>("idle");
     const [error, setError] = useState<string | null>(null);
-    // Issued server-side; the endpoint verifies an HMAC over it and rejects
+    // Issued server-side; the endpoint verifies an HMAC over it and flags
     // anything submitted in under 2s (bot) or older than 24h (stale page).
+    //
+    // `tokenAt` is when WE received it, deliberately not the timestamp baked
+    // into the token. Our receive time is always LATER than the server's issue
+    // time, so an age computed from it is an under-estimate — which is the safe
+    // direction for the 2s floor, and it cannot be thrown off by a visitor
+    // whose system clock is wrong.
     const token = useRef("");
+    const tokenAt = useRef(0);
 
     // Fires once, when the form actually enters the viewport — the funnel's
     // denominator. Counting renders instead would inflate it on every page that
@@ -156,18 +163,74 @@ export default function WaitlistForm({
         setFit(fit === "full" ? "compact" : "stacked");
     }, [email, fit]);
 
+    /*
+      Mirrors MIN_FILL_MS / MAX_FILL_MS in app/lib/waitlist.ts. Duplicated on
+      purpose: the server decides, but the client is the only place that can
+      guarantee it never posts a token the server is certain to flag.
+    */
+    const MIN_FILL_MS = 2000;
+    const MAX_FILL_MS = 24 * 60 * 60 * 1000;
+
+    const fetchToken = useCallback(async () => {
+        const r = await fetch("/api/waitlist/token", { cache: "no-store" });
+        const d = await r.json();
+        if (typeof d?.t === "string" && d.t.includes(".")) {
+            token.current = d.t;
+            tokenAt.current = Date.now();
+        }
+    }, []);
+
+    /*
+      Fetch on mount, and RETRY. The previous version had a bare
+      `.catch(() => {})`: one flaky request and the form spent the rest of its
+      life posting an empty token, which the server then treated as a bot.
+      Three tries over ~3.5s covers a transient blip without the visitor ever
+      knowing there was one.
+    */
     useEffect(() => {
         let cancelled = false;
-        fetch("/api/waitlist/token")
-            .then((r) => r.json())
-            .then((d) => {
-                if (!cancelled) token.current = d.t ?? "";
-            })
-            .catch(() => {});
+        (async () => {
+            for (let attempt = 0; attempt < 3 && !cancelled; attempt++) {
+                try {
+                    await fetchToken();
+                    if (token.current) return;
+                } catch {
+                    /* fall through to the retry */
+                }
+                await new Promise((r) => setTimeout(r, 500 * 2 ** attempt));
+            }
+        })();
         return () => {
             cancelled = true;
         };
-    }, []);
+    }, [fetchToken]);
+
+    /*
+      Last line of defence, run at submit. Someone who lands and types fast can
+      beat the mount fetch; a tab left open overnight carries a token past
+      MAX_FILL_MS. Either way, get a good one before posting.
+
+      The wait is the unobvious part: a token fetched *just now* is younger than
+      the 2s floor, so posting it immediately would be flagged for being too
+      fast. Sitting out the remainder costs at most two seconds, and only on the
+      rare path where the mount fetch did not land.
+    */
+    const ensureToken = useCallback(async () => {
+        const stale = Date.now() - tokenAt.current > MAX_FILL_MS;
+        if (!token.current || stale) {
+            try {
+                await fetchToken();
+            } catch {
+                /* post anyway — the server now persists and flags rather than
+                   dropping, so a missing token costs the confirmation email,
+                   never the signup itself */
+            }
+        }
+        const age = Date.now() - tokenAt.current;
+        if (token.current && age < MIN_FILL_MS) {
+            await new Promise((r) => setTimeout(r, MIN_FILL_MS - age));
+        }
+    }, [fetchToken]);
 
     async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
@@ -178,6 +241,11 @@ export default function WaitlistForm({
 
         const form = e.currentTarget;
         const params = new URLSearchParams(window.location.search);
+        // Read before the await: React pools nothing here, but `form.elements`
+        // is only safe to touch while the element is still mounted.
+        const honeypot = (form.elements.namedItem("company") as HTMLInputElement)?.value ?? "";
+
+        await ensureToken();
 
         try {
             const res = await fetch("/api/waitlist", {
@@ -188,7 +256,7 @@ export default function WaitlistForm({
                     source,
                     product,
                     t: token.current,
-                    company: (form.elements.namedItem("company") as HTMLInputElement)?.value ?? "",
+                    company: honeypot,
                     path: window.location.pathname,
                     referrer: document.referrer || null,
                     utm_source: params.get("utm_source"),

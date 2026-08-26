@@ -110,7 +110,9 @@ async function dailyCapReached(): Promise<boolean> {
 async function suppressReason(sig: {
     mxOk: boolean | null;
     disposable: boolean;
+    formTokenOk: boolean;
 }): Promise<string | null> {
+    if (!sig.formTokenOk) return "bad_form_token";
     if (sig.mxOk === false) return "mx_missing";
     if (sig.disposable) return "disposable_domain";
     if (breakerOpen()) return "burst_breaker";
@@ -159,10 +161,27 @@ export async function POST(req: Request) {
         return ok({ status: "subscribed" });
     }
 
-    if (!verifyFormToken(body.t)) {
-        await logEvent("rejected", "", { reason: "bad_form_token", ip_hash: ipHash });
-        return ok({ status: "subscribed" });
-    }
+    /*
+      A failed form token is a SIGNAL, not a verdict.
+
+      This used to `return ok({ status: "subscribed" })` — a 200 telling the
+      visitor they were on the list, having stored nothing at all. That is the
+      one outcome the rest of this route is built to make impossible: the
+      Postgres -> NDJSON -> email-of-last-resort chain below exists so that a
+      signup is never lost, and an early return jumped clean over all of it.
+
+      The honeypot above keeps its silent drop, because a filled hidden field
+      has no innocent explanation. A missing or stale token has several: the
+      issuing fetch had not resolved when they hit Enter, it failed outright,
+      the tab sat open past MAX_FILL_MS, or an autofill beat MIN_FILL_MS. Those
+      are people, and people get kept.
+
+      So it is carried down as a flag instead — persist either way, and let it
+      suppress the confirmation email exactly the way mx_ok and is_disposable
+      already do. A suppressed email is recoverable from the row; a dropped
+      signup is not recoverable from anything.
+    */
+    const formTokenOk = verifyFormToken(body.t);
 
     const burst = rateLimit(`w:m:${ipHash}`, { capacity: 3, refillPerSec: 3 / 60 });
     const hourly = rateLimit(`w:h:${ipHash}`, { capacity: 10, refillPerSec: 10 / 3600 });
@@ -183,6 +202,12 @@ export async function POST(req: Request) {
     // Flag, never reject: transient DNS would otherwise silently drop real
     // signups during exactly the spike this was built for.
     const mxOk = await checkMx(v.domain);
+
+    // Recorded against a real email_norm rather than the "" the old rejection
+    // path logged, so a flagged row can actually be found and mailed by hand.
+    if (!formTokenOk) {
+        await logEvent("suspicious", v.norm, { reason: "bad_form_token", ip_hash: ipHash });
+    }
 
     const str = (k: string) =>
         typeof body[k] === "string" ? (body[k] as string).slice(0, 500) : null;
@@ -287,7 +312,7 @@ export async function POST(req: Request) {
         // The gate runs inside the fire-and-forget path, after the response has
         // gone out, so the daily-cap query costs the visitor nothing.
         void (async () => {
-            const withheld = await suppressReason({ mxOk, disposable: v.disposable });
+            const withheld = await suppressReason({ mxOk, disposable: v.disposable, formTokenOk });
             if (withheld) {
                 // Logged rather than silent: a suppressed confirmation is
                 // indistinguishable from a delivery failure by looking at the
