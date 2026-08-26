@@ -163,10 +163,22 @@ export default function AboutPage() {
                         Get Early Access
                     </h2>
                     <p className="text-fg-muted mx-auto mt-2.5 max-w-[46ch] text-sm">
-                        Magy opens first. One email when it&apos;s ready.
+                        Toowl is free today. Pro adds terminal-native intelligence —
+                        one email when it opens.
                     </p>
                     <div className="mx-auto mt-5 max-w-[470px]">
-                        <WaitlistForm source="about" size="hero" cta="Get Early Access" autoFocus />
+                        {/*
+                          product is explicit. WaitlistForm defaults to "magy",
+                          so every signup taken here was being attributed to a
+                          product we are not currently publishing.
+                        */}
+                        <WaitlistForm
+                            source="about"
+                            product="toowl"
+                            size="hero"
+                            cta="Get Early Access"
+                            autoFocus
+                        />
                     </div>
                 </section>
             </div>

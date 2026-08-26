@@ -86,7 +86,39 @@ const GLOSSARY = [
     ["Hoot", "banner-style notifications from feathers — planned"],
 ] as const;
 
-export default function ToowlPage() {
+/*
+  The shipped toowl version, read from toowl.dev rather than typed here.
+
+  This badge said "v1.0 shipped" for eleven minor releases, because nothing
+  connected it to a release -- it could only ever be corrected by someone
+  noticing. toowl.dev/version.json is generated from [workspace.package].version
+  in the toowl repo's Cargo.toml, and that repo's deploy refuses to publish a
+  build whose HTML does not carry that version, so this inherits a guard rather
+  than becoming a second thing to remember.
+
+  Revalidated hourly, so a release shows up here without redeploying this site
+  -- which matters because this repo has no CI/CD and ships by hand.
+
+  Null on any failure, and the badge then reads just "shipped". A stale
+  hardcoded number is worse than no number: it states something false with
+  total confidence, which is the exact failure being fixed.
+*/
+async function shippedVersion(): Promise<string | null> {
+    try {
+        const res = await fetch("https://toowl.dev/version.json", {
+            next: { revalidate: 3600 },
+        });
+        if (!res.ok) return null;
+        const data: unknown = await res.json();
+        const v = (data as { version?: unknown } | null)?.version;
+        return typeof v === "string" && /^\d+\.\d+\.\d+$/.test(v) ? v : null;
+    } catch {
+        return null;
+    }
+}
+
+export default async function ToowlPage() {
+    const version = await shippedVersion();
     return (
         <ComingSoon>
             <Panel>
@@ -121,7 +153,7 @@ export default function ToowlPage() {
                             Caps with open tracking reads as a NAME rather than a
                             second headline, so it sits above the tagline without
                             competing. The hairline rule is deck-label's device.
-                            Status chip is green, not red — v1.0 has shipped,
+                            Status chip is green, not red — v1 has shipped,
                             where Magy is still early access.
                         */}
                         <h1 className="mb-3">
@@ -132,7 +164,7 @@ export default function ToowlPage() {
                                 <span className="bg-line h-px flex-1" />
                                 <span className="text-good inline-flex shrink-0 items-center gap-1.5 rounded-[var(--radius-capsule)] bg-[color-mix(in_srgb,var(--color-good)_14%,transparent)] px-2.5 py-1 font-mono text-[10.5px] font-bold uppercase tracking-[0.14em]">
                                     <i className="bg-good size-1.5 rounded-full" />
-                                    v1.0 shipped
+                                    {version ? `v${version} shipped` : "shipped"}
                                 </span>
                             </span>
                             <span className="text-hero mt-4 block">

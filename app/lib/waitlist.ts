@@ -21,6 +21,10 @@ export type SignupSource =
     | "magy-final"
     | "mos"
     | "toowl"
+    // The header CTA, which opens a dialog from any page. Distinct from
+    // "toowl" so a signup from the nav is not indistinguishable from one made
+    // at the bottom of the toowl page after reading it.
+    | "header"
     | "idrl"
     | "about"
     | "footer"
@@ -180,6 +184,14 @@ export function originAllowed(headers: Headers): boolean {
         return (
             host === "www.1martianway.com" ||
             host === "1martianway.com" ||
+            // The staging vhost this repo actually deploys to. It was missing,
+            // so every signup made from the staging site was rejected 403
+            // bad_origin -- and the form reports that as the generic "That
+            // didn't go through", which reads like a server fault rather than
+            // a hostname that was never on the list. `1mw.karmasteels.com`
+            // below is the name it used to answer to; kept because it costs
+            // nothing and removing it can only break something.
+            host === "1mw.1martianway.com" ||
             host === "1mw.karmasteels.com" ||
             host === "localhost" ||
             host === "127.0.0.1"

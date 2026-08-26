@@ -14,7 +14,7 @@ export default function NotFound() {
                 GPU-accelerated terminal with Claude built in, and it is free today.
             </p>
             <div className="mx-auto mt-6 w-full max-w-[430px]">
-                <WaitlistForm source="404" cta="Get Early Access" />
+                <WaitlistForm source="404" product="toowl" cta="Get Early Access" />
             </div>
             <p className="text-fg-dim mt-6 text-[13px]">
                 <Link href="/" className="text-blue hover:underline">Home</Link>
