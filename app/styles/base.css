@@ -41,9 +41,11 @@
   --c-dim: #636b7a;
   --c-blue: #2563eb;
   --c-blue-soft: rgb(37 99 235 / 0.10);
-  --c-red: #cf2020;
-  --c-red-hover: #b01a1a;
-  --c-red-soft: rgb(207 32 32 / 0.075);
+  /* Signal (348deg) at the lightness where white text on it still clears AA:
+     5.39 vs the 5.41 it replaces. See SIGNAL_FILL in app/lib/brand.ts. */
+  --c-red: #d6002b;
+  --c-red-hover: #b80025;
+  --c-red-soft: rgb(255 0 51 / 0.075);
   /*
     Red used as TEXT, separate from red used as a FILL.
 
@@ -54,7 +56,7 @@
     separate token. In light the brand red already passes, so it is the same
     value there and only dark diverges.
   */
-  --c-red-ink: #cf2020;
+  --c-red-ink: #d6002b;
   /* Darkened from #0f9d58 (3.51 on white) to clear AA as TEXT — it labels the
      "Shipping" state and the toowl "v1.0 shipped" chip, both of which are read. */
   --c-good: #0a7d46;
@@ -187,10 +189,10 @@
     --c-dim: #7b8496;
     --c-blue: #6ea8ff;
     --c-blue-soft: rgb(110 168 255 / 0.16);
-    --c-red: #d22222;
-    --c-red-hover: #e63229;
-    --c-red-soft: rgb(210 34 34 / 0.18);
-    --c-red-ink: #f04a3f;
+    --c-red: #d6002b;
+    --c-red-hover: #eb002f;
+    --c-red-soft: rgb(255 0 51 / 0.18);
+    --c-red-ink: #ff335c;
     --c-good: #3dd68c;
     --c-warn: #f5a524;
     --c-warm: #fab387;
@@ -234,10 +236,10 @@
   --c-dim: #7b8496;
   --c-blue: #6ea8ff;
   --c-blue-soft: rgb(110 168 255 / 0.16);
-  --c-red: #d22222;
-  --c-red-hover: #e63229;
-  --c-red-soft: rgb(210 34 34 / 0.18);
-  --c-red-ink: #f04a3f;
+  --c-red: #d6002b;
+  --c-red-hover: #eb002f;
+  --c-red-soft: rgb(255 0 51 / 0.18);
+  --c-red-ink: #ff335c;
   --c-good: #3dd68c;
   --c-warn: #f5a524;
   --c-warm: #fab387;

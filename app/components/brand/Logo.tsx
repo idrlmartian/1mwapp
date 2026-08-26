@@ -1,13 +1,15 @@
 import Link from "next/link";
+import { BRAND_RED as BRAND_FILL, CIRCLE, LEG_L, LEG_R, SCALE, markTransform } from "@/app/lib/brand";
 
 /**
  * The 1 Martian Way mark — a standing figure: a circle head above two splayed
  * legs, forming an A-frame.
  *
  * Geometry is measured, not eyeballed: scripts/measure-logo.mjs derives it from
- * the founder's raster and verifies at 0.126% XOR mismatch. The same numbers
- * generate every raster in scripts/generate-brand-assets.mjs — if the mark ever
- * changes, change it there and re-run, never by hand-editing paths here.
+ * the founder's raster and verifies at 0.126% XOR mismatch. It now lives in
+ * app/lib/brand.ts, which this file and scripts/generate-brand-assets.mjs both
+ * import — previously each kept its own hand-synced copy, and a comment asking
+ * people not to edit one of them was the only thing holding them together.
  *
  * THE SYMBOL IS THE BRAND. The white figure — a head above two splayed legs,
  * opening upward and outward — is the mark, and it stands for unlimited growth.
@@ -25,11 +27,8 @@ import Link from "next/link";
  *   - Never recolour the figure to an agent colour. Agent colours are data.
  */
 
-export const BRAND_RED = "#D22222";
-
-const CIRCLE = { cx: 256, cy: 165, r: 43.2 };
-const LEG_L = "M218.4 210.2 L245.2 243.9 L167.4 389.5 L123.8 389.5 Z";
-const LEG_R = "M293.6 210.2 L266.8 243.9 L344.6 389.5 L388.2 389.5 Z";
+/** Re-exported so existing importers keep working; the value is Signal now. */
+export const BRAND_RED = BRAND_FILL;
 
 type LogoProps = {
     /**
@@ -76,7 +75,20 @@ export function LogoGlyph({
             {variant === "tile" && (
                 <rect width="512" height="512" rx={radius || undefined} fill={BRAND_RED} />
             )}
-            <g fill={variant === "tile" ? "#FFFFFF" : "currentColor"}>
+            {/*
+                Scaled about the AREA centroid, not the bounding-box centre.
+                The figure is bottom-heavy — two large legs against one small
+                head — so those two points sit 11 units apart, and only the
+                centroid one looks centred once a surface crops to a circle.
+
+                `tile` takes the avatar scale because it is the form that ends
+                up small and cropped; `mark` sits on someone else's ground and
+                stays as drawn.
+            */}
+            <g
+                fill={variant === "tile" ? "#FFFFFF" : "currentColor"}
+                transform={markTransform(variant === "tile" ? SCALE.avatar : SCALE.full)}
+            >
                 <circle cx={CIRCLE.cx} cy={CIRCLE.cy} r={CIRCLE.r} />
                 <path d={LEG_L} />
                 <path d={LEG_R} />

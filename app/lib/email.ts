@@ -1,6 +1,10 @@
 import path from "node:path";
 import { SESv2Client, SendEmailCommand } from "@aws-sdk/client-sesv2";
 import MailComposer from "nodemailer/lib/mail-composer";
+// Email clients do not resolve CSS custom properties, so the brand fill has to
+// be a literal hex in the markup — but it is interpolated from the one source
+// rather than typed out, which is how it drifted to its own copy before.
+import { SIGNAL_FILL } from "@/app/lib/brand";
 
 /*
   Transport: Amazon SES v2, ap-south-1 (same region as the box).
@@ -153,7 +157,7 @@ function shell(bodyHtml: string, preheader: string) {
   <tr><td align="center" style="padding:32px 12px;">
     <table role="presentation" class="container" width="600" cellpadding="0" cellspacing="0" border="0" style="width:600px;max-width:600px;background:#FFFFFF;border-radius:14px;overflow:hidden;">
       <tr>
-        <td align="center" bgcolor="#D22222" style="background-color:#D22222;padding:28px 24px;">
+        <td align="center" bgcolor="${SIGNAL_FILL}" style="background-color:${SIGNAL_FILL};padding:28px 24px;">
           <img src="cid:${CID}" width="96" height="96" alt="1 Martian Way"
                style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic;border-radius:16px;" />
         </td>
@@ -182,7 +186,7 @@ export function confirmationEmail(opts: { verifyUrl: string; unsubscribeUrl: str
        Infinite agents. Infinite worlds. Any work. We'll email you the moment the first build is ready — and nothing else.
      </p>
      <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
-       <td bgcolor="#D22222" style="background-color:#D22222;border-radius:8px;">
+       <td bgcolor="${SIGNAL_FILL}" style="background-color:${SIGNAL_FILL};border-radius:8px;">
          <a href="${opts.verifyUrl}" style="display:inline-block;padding:13px 26px;font-size:15px;font-weight:600;color:#FFFFFF;text-decoration:none;">Confirm you're in &rarr;</a>
        </td>
      </tr></table>
