@@ -275,6 +275,22 @@
   color: transparent;
 }
 .owl-bubble em { font-style: italic; font-weight: 900; }
+/*
+  The bubble is decorative and sits 96px to the LEFT of the owl, so on a phone
+  it hangs off the screen edge — it rendered clipped at x=-22 on a 390px
+  viewport. The markup already asks for this: the element carries
+  `max-lg:hidden`. That class never did anything, because `.owl-bubble` is an
+  UNLAYERED rule and Tailwind v4 puts its utilities in `@layer utilities` —
+  unlayered CSS beats any layered rule regardless of source order or
+  specificity, so `display: inline-flex` above always won.
+
+  Hiding it from an unlayered rule is what actually applies. The same trap is
+  waiting for any Tailwind utility aimed at the other hand-written classes in
+  this file that are not declared with `@utility`.
+*/
+@media (width < 64rem) {
+  .owl-bubble { display: none; }
+}
 /* Tail: two triangles, the outer one the border colour, the inner the fill. */
 .owl-bubble::before,
 .owl-bubble::after { content: ""; position: absolute; width: 0; height: 0; top: 50%; }

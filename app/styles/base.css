@@ -313,6 +313,23 @@
   }
 
   img, svg, video, canvas { max-width: 100%; height: auto; }
+
+  /*
+    Grid and flex items carry an implicit `min-width: auto`, which means a track
+    is never allowed to be narrower than its widest child's min-content size.
+    On a 390px phone that made the page grid solve to a 491.5px column and the
+    whole document scroll sideways by 131px — the layout was correct at every
+    breakpoint, the tracks just refused to shrink.
+
+    Clearing the automatic minimum on the items — rather than pinning
+    `grid-template-columns` — is what keeps the responsive templates intact:
+    `lg:grid-cols-[1.15fr_0.85fr]` and friends still apply exactly as written,
+    they simply become able to shrink. Anything that genuinely cannot fit (a
+    code line, a wide table) keeps its own `overflow-x: auto` and scrolls
+    inside its own box instead of dragging the page with it.
+  */
+  main .grid > *,
+  main .flex > * { min-width: 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
