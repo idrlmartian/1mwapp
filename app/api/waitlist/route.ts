@@ -11,7 +11,7 @@ import {
     hashIp,
     originAllowed,
     validateEmail,
-    verifyFormToken,
+    classifyFormToken,
 } from "@/app/lib/waitlist";
 
 export const runtime = "nodejs";
@@ -159,8 +159,17 @@ export async function POST(req: Request) {
         return ok({ status: "subscribed" });
     }
 
-    if (!verifyFormToken(body.t)) {
-        await logEvent("rejected", "", { reason: "bad_form_token", ip_hash: ipHash });
+    // Same response in every rejected case — a bot must learn nothing. The
+    // verdict is recorded so OUR failures are distinguishable from theirs:
+    // `absent` means our own client posted no token, which is a bug on our
+    // side and a real person lost, not a bot turned away.
+    const tokenVerdict = classifyFormToken(body.t);
+    if (tokenVerdict !== "ok") {
+        await logEvent("rejected", "", {
+            reason: "bad_form_token",
+            token_verdict: tokenVerdict,
+            ip_hash: ipHash,
+        });
         return ok({ status: "subscribed" });
     }
 

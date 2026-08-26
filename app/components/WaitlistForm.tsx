@@ -156,22 +156,77 @@ export default function WaitlistForm({
         setFit(fit === "full" ? "compact" : "stacked");
     }, [email, fit]);
 
+    /*
+      Fetch the anti-bot token, and KEEP TRYING.
+
+      This used to be a single un-retried fetch whose failure was swallowed,
+      leaving `token.current` as "". The form then POSTed that empty string,
+      the endpoint rejected it as `bad_form_token` — and, because a bad token
+      is answered with `{status:"subscribed"}` so a bot learns nothing, the
+      visitor was shown SUCCESS while nothing was stored. Silent, total data
+      loss for that signup, invisible from the UI and from the success metric.
+      `waitlist_signups` held 0 rows on 2026-08-26 with only rejections in
+      `waitlist_events`.
+
+      Retry rather than fetch-on-submit, which is the tempting fix and is
+      wrong: `verifyFormToken` rejects anything younger than MIN_FILL_MS
+      (2s), so a token minted at submit time would fail EVERY signup instead
+      of some. The token has to be issued when the form mounts and simply be
+      reliable — hence retries here, and `tokenReady` gating submit below.
+    */
+    const [tokenReady, setTokenReady] = useState(false);
     useEffect(() => {
         let cancelled = false;
-        fetch("/api/waitlist/token")
-            .then((r) => r.json())
-            .then((d) => {
-                if (!cancelled) token.current = d.t ?? "";
-            })
-            .catch(() => {});
+        let attempt = 0;
+        let timer: ReturnType<typeof setTimeout> | undefined;
+
+        const load = () => {
+            fetch("/api/waitlist/token")
+                .then((r) => (r.ok ? r.json() : Promise.reject(new Error(String(r.status)))))
+                .then((d: { t?: string }) => {
+                    if (cancelled) return;
+                    if (d?.t) {
+                        token.current = d.t;
+                        setTokenReady(true);
+                    } else {
+                        throw new Error("no token in response");
+                    }
+                })
+                .catch(() => {
+                    if (cancelled || attempt >= 4) {
+                        if (!cancelled) {
+                            // Ambient failure: not the user's action, so no toast.
+                            console.warn("[waitlist] could not obtain a form token; submission is blocked rather than silently dropped");
+                        }
+                        return;
+                    }
+                    timer = setTimeout(load, 400 * 2 ** attempt++);
+                });
+        };
+        load();
+
         return () => {
             cancelled = true;
+            if (timer) clearTimeout(timer);
         };
     }, []);
 
     async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
         if (status === "sending") return;
+        if (!tokenReady || !token.current) {
+            /*
+              Refuse rather than POST an empty token. The endpoint would
+              answer a bad token with a fake success (deliberately — see the
+              effect above), so submitting here would show the visitor a
+              confirmation for a signup that was never stored. An honest
+              error they can retry is strictly better than a silent loss.
+            */
+            setStatus("error");
+            signupError(source, "no_form_token");
+            setError("That didn't go through. Try again in a moment?");
+            return;
+        }
         setStatus("sending");
         setError(null);
         signupSubmit(source);
@@ -316,7 +371,9 @@ export default function WaitlistForm({
                         wants. */}
                     <button
                         type="submit"
-                        disabled={status === "sending"}
+                        // Also gated on the form token: without it the POST
+                        // would be answered with a fake success and dropped.
+                        disabled={status === "sending" || !tokenReady}
                         aria-label={cta}
                         title={cta}
                         className={`bg-red hover:bg-red-hover shadow-[var(--shadow-cta)] shrink-0 rounded-[var(--radius-md)] font-bold text-white transition-colors disabled:opacity-60 max-[430px]:w-full ${

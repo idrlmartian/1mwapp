@@ -157,18 +157,41 @@ export function issueFormToken(now = Date.now()): string {
     return `${ts}.${mac}`;
 }
 
-export function verifyFormToken(token: unknown, now = Date.now()): boolean {
-    if (typeof token !== "string" || !token.includes(".")) return false;
+/*
+  Why this returns a REASON and not just a boolean.
+
+  A rejected token is answered with a fake success, so a bot never learns it
+  failed. That is right for bots and it means our own failures are equally
+  invisible: on 2026-08-26 `waitlist_signups` held 0 rows and the only two
+  entries in `waitlist_events` were `bad_form_token`, with no way to tell a
+  forged token from our own client posting an empty one — which is exactly
+  what it had been doing whenever the token fetch failed.
+
+  The RESPONSE stays identical in every rejected case. Only the logged detail
+  differentiates, so the next person can read the events table and tell
+  "we are dropping real people" from "bots are being turned away".
+*/
+export type FormTokenVerdict = "ok" | "absent" | "malformed" | "forged" | "too_fast" | "stale";
+
+export function classifyFormToken(token: unknown, now = Date.now()): FormTokenVerdict {
+    if (typeof token !== "string" || token === "") return "absent";
+    if (!token.includes(".")) return "malformed";
     const [ts, mac] = token.split(".");
     const expected = createHmac("sha256", formSecret()).update(ts).digest("hex").slice(0, 24);
     const a = Buffer.from(mac ?? "", "utf8");
     const b = Buffer.from(expected, "utf8");
-    if (a.length !== b.length || !timingSafeEqual(a, b)) return false;
+    if (a.length !== b.length || !timingSafeEqual(a, b)) return "forged";
 
     const issued = Number(ts);
-    if (!Number.isFinite(issued)) return false;
+    if (!Number.isFinite(issued)) return "malformed";
     const age = now - issued;
-    return age >= MIN_FILL_MS && age <= MAX_FILL_MS;
+    if (age < MIN_FILL_MS) return "too_fast";
+    if (age > MAX_FILL_MS) return "stale";
+    return "ok";
+}
+
+export function verifyFormToken(token: unknown, now = Date.now()): boolean {
+    return classifyFormToken(token, now) === "ok";
 }
 
 /** Only same-site submissions. Not a security boundary — it kills the lazy 90%. */
