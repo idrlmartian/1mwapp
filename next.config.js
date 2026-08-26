@@ -41,6 +41,34 @@ const nextConfig = {
                 source: "/:path*",
                 headers: [
                     { key: "Cache-Control", value: "public, max-age=0, must-revalidate" },
+                    /*
+                      HSTS. Added 2026-08-26, with the cutover of www off Vercel.
+
+                      Vercel was sending this for us (max-age=63072000), and
+                      nothing here replaced it — so the moment DNS moved, every
+                      NEW visitor silently lost HSTS while existing ones stayed
+                      pinned by their cached two-year policy. That is the worst
+                      shape for this bug: invisible from any browser that had
+                      been to the site before, including ours.
+
+                      Same max-age as Vercel sent, so the policy does not
+                      shorten for anyone mid-flight. includeSubDomains is
+                      deliberate and has teeth — it covers 1mw., magy., aria.,
+                      mos. and every other subdomain, all of which are already
+                      HTTPS-only behind kamal-proxy.
+
+                      No `preload` directive: that is a one-way door (removal
+                      from the preload list takes months and a browser release
+                      train) and it is not ours to take on behalf of every
+                      subdomain. Add it deliberately, or not at all.
+                    */
+                    {
+                        key: "Strict-Transport-Security",
+                        value: "max-age=63072000; includeSubDomains",
+                    },
+                    // Defence in depth, and cheap. Neither was being sent.
+                    { key: "X-Content-Type-Options", value: "nosniff" },
+                    { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
                 ],
             },
             {
