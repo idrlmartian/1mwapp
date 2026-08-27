@@ -29,6 +29,8 @@
   --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-display: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  /* The wordmark only. Never body copy — see layout.tsx for why. */
+  --font-wordmark: var(--font-wordmark-face), var(--font-jakarta), sans-serif;
 
   --text-hero: clamp(1.4375rem, 2.7vw, 2rem);
   --text-hero--line-height: 1.06;

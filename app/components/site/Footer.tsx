@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { LogoGlyph } from "@/app/components/brand/Logo";
+import { Logo } from "@/app/components/brand/Logo";
 import { COMPANY } from "@/app/lib/constants";
 
 /*
@@ -109,10 +109,7 @@ export default function Footer() {
             <div className="mx-auto max-w-[var(--container-page)] px-[var(--container-pad)] pb-8 pt-12">
                 <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-[1.6fr_repeat(3,1fr)]">
                     <div>
-                        <Link href="/" className="flex items-center gap-2.5 text-[14.5px] font-extrabold tracking-[-0.015em]">
-                            <LogoGlyph size={21} radius={64} />
-                            1 Martian Way
-                        </Link>
+                        <Logo size={26} radius={8} />
                         {/*
                           Matches /about. The previous line described the two
                           products we are not currently publishing -- "embodied

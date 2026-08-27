@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { GeistMono } from "geist/font/mono";
-import { Plus_Jakarta_Sans } from "next/font/google";
+import { Plus_Jakarta_Sans, Zen_Kaku_Gothic_New } from "next/font/google";
 import MainLayout from "./components/MainLayout";
 import StructuredData from "./components/StructuredData";
 import "./globals.css";
@@ -14,6 +14,18 @@ const jakarta = Plus_Jakarta_Sans({
     subsets: ["latin"],
     variable: "--font-jakarta",
     weight: ["400", "500", "600", "700", "800"],
+    display: "swap",
+});
+
+// Zen Kaku Gothic New carries the WORDMARK and nothing else. It is a Japanese
+// foundry face, which is what earns the connection to the 八 mark without
+// announcing it. Loading only weight 700 keeps this to one small file, and
+// scoping it to the wordmark means the CJK metrics (a 1.448em line box against
+// a 0.700em cap height) never leak into body copy.
+const zenKaku = Zen_Kaku_Gothic_New({
+    subsets: ["latin"],
+    variable: "--font-wordmark-face",
+    weight: ["700"],
     display: "swap",
 });
 
@@ -104,7 +116,7 @@ export default function RootLayout({
     return (
         <html
             lang="en"
-            className={`${jakarta.variable} ${GeistMono.variable}`}
+            className={`${jakarta.variable} ${zenKaku.variable} ${GeistMono.variable}`}
             suppressHydrationWarning
         >
             <body className="bg-canvas text-fg min-h-screen antialiased">

@@ -1,30 +1,31 @@
 import Link from "next/link";
-import { IDENTITY, markPaths, SIGNAL_FILL } from "@/app/lib/brand";
+import { IDENTITY, LOCKUP, VIEW, containedMark, SIGNAL_FILL } from "@/app/lib/brand";
 
 /**
- * The 1 Martian Way mark — a standing figure: a circle head above two splayed
- * legs, forming an A-frame.
+ * The 1 Martian Way mark — 八, two unequal strokes that widen as they descend
+ * and never meet.
  *
- * Geometry is measured, not eyeballed: scripts/measure-logo.mjs derives it from
- * the founder's raster and verifies at 0.126% XOR mismatch. It now lives in
- * app/lib/brand.ts, which this file and scripts/generate-brand-assets.mjs both
- * import — previously each kept its own hand-synced copy, and a comment asking
- * people not to edit one of them was the only thing holding them together.
+ * 八 does not mean eight. In 八百万の神 it means COUNTLESS; in 八方 it means
+ * EVERYWHERE. The strokes diverge from a gap of 11 units to roughly 103 and
+ * terminate without enclosing anything, because a ring would close the one
+ * thing the character exists to say. Geometry and rationale: app/lib/brand.ts.
  *
- * THE SYMBOL IS THE BRAND. The white figure — a head above two splayed legs,
- * opening upward and outward — is the mark, and it stands for unlimited growth.
- * The red square behind it is a background, not part of the identity: it can be
- * any colour the surface calls for, and the mark can sit on no background at all.
- *
- * So `variant="mark"` is the primary form and inherits currentColor; `tile` is
- * the convenience wrapper for places that need a self-contained app icon.
+ * THE MARK IS KIN ON SUMI — gold on ink-black. Not white on gold. A previous
+ * version of this file filled the tile's *background* with `IDENTITY.mark` and
+ * drew the figure white, which inverted the identity; it also dropped
+ * `markPaths()` (authored in a 200-unit space) into a 512 viewBox, so the mark
+ * rendered at 38% scale anchored to the top-left corner. Both are why every
+ * field here is derived from brand.ts rather than written out by hand.
  *
  * Rules:
- *   - Never distort the figure's proportions, and never rotate it — the upward
- *     opening is the whole point.
- *   - Clear space is 0.25x the width on every side.
- *   - Minimum 20px for `tile`, 16px for `mark`.
- *   - Never recolour the figure to an agent colour. Agent colours are data.
+ *   - Never equalise the strokes — the asymmetry is what stops it reading as a
+ *     ribbon. Never rotate it; the widening reads as growth only while it
+ *     descends. Never enclose it, and never add a head.
+ *   - Containment is by REACH, not bounding box: `containedMark` scales so the
+ *     farthest point sits at 74% of the crop radius, so a circular avatar
+ *     cannot clip the long right stroke.
+ *   - Minimum 12px. One cut at every size — a flat-terminal variant was
+ *     measured and dropped (identical ink at 12px, blunted character).
  */
 
 /** @deprecated UI fill. The MARK is IDENTITY.mark (Kin); this is the CTA red. */
@@ -32,21 +33,19 @@ export const BRAND_RED = SIGNAL_FILL;
 
 type LogoProps = {
     /**
-     * `tile` = red square + white figure. THE DEFAULT, and what ships.
+     * `tile` = sumi square + kin mark. THE DEFAULT, and what ships.
      *
-     * The mark alone in red was tried and reverted: at 21px in a header the
-     * figure is three thin strokes with nothing holding them together, so it
-     * reads as a stray glyph rather than a logo. White inside red gives it a
-     * field to sit on and that is what makes it legible at chrome sizes.
+     * The mark alone needs a ground at chrome sizes: at 21px in a header two
+     * tapering strokes with nothing behind them read as a stray glyph rather
+     * than a logo. The tile gives them a field.
      *
-     * `mark` = figure alone in currentColor. Still correct for a surface that
-     * supplies its own ground and wants no second one — but it is the
-     * exception, not the default.
+     * `mark` = strokes alone in currentColor, for a surface that already
+     * supplies its own ground and wants no second one.
      */
     variant?: "tile" | "mark";
     /** Rendered height in px. */
     size?: number;
-    /** Corner radius on the tile, in tile-space units (0-256). */
+    /** Corner radius, in view-box units (0-100). */
     radius?: number;
     /** Accessible name. Omit to mark the SVG decorative. */
     title?: string;
@@ -63,7 +62,7 @@ export function LogoGlyph({
     const labelled = Boolean(title);
     return (
         <svg
-            viewBox="0 0 512 512"
+            viewBox={`0 0 ${VIEW} ${VIEW}`}
             width={size}
             height={size}
             className={className}
@@ -73,16 +72,19 @@ export function LogoGlyph({
             focusable="false"
         >
             {variant === "tile" && (
-                <rect width="512" height="512" rx={radius || undefined} fill={IDENTITY.mark} />
+                <rect
+                    width={VIEW}
+                    height={VIEW}
+                    rx={radius || undefined}
+                    fill={IDENTITY.ground}
+                />
             )}
-            {/*
-                One cut at every size. A flat-terminal variant was measured and
-                dropped — it carried no more ink at 12px and blunted the taper
-                that carries the whole idea. See app/lib/brand.ts.
-            */}
             <g
-                fill={variant === "tile" ? "#FFFFFF" : "currentColor"}
-                dangerouslySetInnerHTML={{ __html: markPaths() }}
+                dangerouslySetInnerHTML={{
+                    __html: containedMark(
+                        variant === "tile" ? IDENTITY.mark : "currentColor",
+                    ),
+                }}
             />
         </svg>
     );
@@ -95,16 +97,19 @@ type LockupProps = LogoProps & {
     href?: string | null;
 };
 
-/** Glyph + wordmark, optionally linked. This is what the header and footer use. */
+/**
+ * Glyph + wordmark. The three numbers below are the lockup and they scale
+ * together — see LOCKUP in app/lib/brand.ts for why the type is lifted.
+ */
 export function Logo({
     variant = "tile",
     size = 32,
-    radius = 6,
+    radius = 24,
     wordmark = "full",
     href = "/",
     className,
 }: LockupProps) {
-    const label = wordmark === "short" ? "1MW" : "1 Martian Way";
+    const label = wordmark === "short" ? "1MW" : "1 MARTIAN WAY";
 
     const inner = (
         <>
@@ -116,8 +121,14 @@ export function Logo({
             />
             {wordmark !== "none" && (
                 <span
-                    className="font-display font-semibold tracking-tight text-fg"
-                    style={{ fontSize: size * 0.55 }}
+                    className="font-wordmark whitespace-nowrap"
+                    style={{
+                        fontSize: size * LOCKUP.typeRatio,
+                        fontWeight: LOCKUP.weight,
+                        letterSpacing: LOCKUP.tracking,
+                        lineHeight: 1,
+                        transform: `translateY(${LOCKUP.baselineLift})`,
+                    }}
                 >
                     {label}
                 </span>
@@ -125,11 +136,21 @@ export function Logo({
         </>
     );
 
-    const cls = `inline-flex items-center gap-2.5 ${className ?? ""}`;
+    const cls = `inline-flex items-center ${className ?? ""}`;
+    const style = { gap: size * LOCKUP.gapRatio };
 
-    if (href === null) return <span className={cls}>{inner}</span>;
+    if (href === null)
+        return (
+            <span className={cls} style={style}>
+                {inner}
+            </span>
+        );
     return (
-        <Link href={href} className={`${cls} transition-opacity hover:opacity-80`}>
+        <Link
+            href={href}
+            className={`${cls} transition-opacity hover:opacity-80`}
+            style={style}
+        >
             {inner}
         </Link>
     );
