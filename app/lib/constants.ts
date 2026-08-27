@@ -202,3 +202,47 @@ export const OG_IMAGE = {
     height: 630,
     alt: "toowl by 1 Martian Way — Terminal You Will Love. A GPU-fast terminal and a tmux-style remote client in one binary.",
 } as const;
+
+/*
+  THE COMPANY HUB'S PRODUCT ROW — app/page.tsx.
+
+  Held back the same way NAV, Footer, routes.ts and about/page.tsx are, and for
+  the same reason: Magy and MOS stay unpublished until the patent filings are
+  settled, so they are not named anywhere a crawler or a reader can reach. The
+  entries below are commented, not deleted, so restoring them on filing day is
+  uncommenting in five places rather than rewriting five files.
+
+  `accent` is the product's ONE colour. It appears exactly twice per row — the
+  identifying dot and that product's own link — and nowhere else on the page.
+  That single restraint is most of what will make five different product
+  surfaces read as one company.
+*/
+export type HomeProduct = {
+    name: string;
+    href: string;
+    line: string;
+    state: string;
+    cta: string;
+    accent: string;
+};
+
+export const HOME_PRODUCTS: readonly HomeProduct[] = [
+    {
+        name: "toowl",
+        href: "/toowl",
+        line: "A GPU-fast desktop terminal and a tmux-style remote client in one binary, with Claude on the Perch.",
+        state: "Free \u00b7 shipped",
+        cta: "Get toowl",
+        accent: "#B98A3F",
+    },
+    // { name: "magy,", href: "/magy", line: "\u2026", state: "Early access", cta: "Get early access", accent: "#D2622A" },
+    // { name: "MOS",   href: "/mos",  line: "\u2026", state: "Private alpha", cta: "Request access", accent: "#5B7A8C" },
+];
+
+/** The arc, told straight — kept in step with the same list on /about. */
+export const HOME_ERAS: readonly (readonly [string, string])[] = [
+    ["Chess robots", "Robot arms that play a physical board. The first thing we shipped."],
+    ["Drones", "Autonomous racing, fleet software, and aerial survey work."],
+    ["Humanoid robotics", "Prototype platforms, and the operating system to run them."],
+    ["Developer tools", "toowl, and the agent software behind it \u2014 where nearly all the work goes today."],
+];
