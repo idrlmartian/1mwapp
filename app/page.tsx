@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import WaitlistForm from "@/app/components/WaitlistForm";
 import StructuredData from "@/app/components/StructuredData";
 import VideoBackdrop from "@/app/components/ui/VideoBackdrop";
-import { ACTIVITY, AGENTS, METRICS, STATUS } from "@/app/lib/constants";
+import { ACTIVITY, AGENTS, METRICS, OG_IMAGE, STATUS } from "@/app/lib/constants";
 
 export const metadata: Metadata = {
     title: "Magy — Infinite agents. Infinite worlds. Any work.",
@@ -14,6 +14,7 @@ export const metadata: Metadata = {
         description:
             "The world's first 3D embodied multi-agent platform. Build the world, hire the team, watch the work happen.",
         url: "https://www.1martianway.com/",
+        images: [OG_IMAGE],
     },
 };
 

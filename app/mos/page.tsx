@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import WaitlistForm from "@/app/components/WaitlistForm";
 import { ComingSoon, Metrics, Panel, Quote } from "@/app/components/ui/Panel";
+import { OG_IMAGE } from "@/app/lib/constants";
 
 /*
   ACCURACY NOTES — MOS's own committed landing copy contains claims we must not
@@ -33,6 +34,7 @@ export const metadata: Metadata = {
         title: "MOS — the robotics simulator that runs everywhere",
         description: "Train a robot policy in a browser tab. No install, no NVIDIA card.",
         url: "https://www.1martianway.com/mos",
+        images: [OG_IMAGE],
     },
 };
 
