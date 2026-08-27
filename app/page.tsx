@@ -58,7 +58,7 @@ export default function HomePage() {
                 <div className="mt-7 flex flex-wrap gap-2.5">
                     <Link
                         href="/toowl"
-                        className="bg-red hover:bg-red-hover shadow-[var(--shadow-cta)] inline-flex items-center gap-2 rounded-[var(--radius-md)] px-5 py-3 text-sm font-bold text-white transition-colors"
+                        className="bg-red hover:bg-red-hover shadow-[var(--shadow-cta)] inline-flex items-center gap-2 rounded-[var(--radius-md)] px-5 py-3 text-sm font-bold text-on-red transition-colors"
                     >
                         Get toowl &mdash; free
                     </Link>
@@ -77,7 +77,7 @@ export default function HomePage() {
                 colour, and it appears twice: the identifying dot, and that
                 product's own link. Nothing else on the row is coloured.
             */}
-            <section aria-labelledby="products-h" className="mb-12">
+            <section id="products" aria-labelledby="products-h" className="mb-12 scroll-mt-20">
                 <h2 id="products-h" className="sr-only">
                     What we make
                 </h2>

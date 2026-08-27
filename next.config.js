@@ -15,7 +15,18 @@
   sit 130 lines apart in this file, and "delete these two entries" is exactly
   the instruction that gets half-followed.
 */
-const HOMEPAGE_IS_HUB = false;
+/*
+  TRUE as of 2026-08-27, so "/" serves app/page.tsx — the company hub the site
+  mockup draws — instead of 307ing to /toowl.
+
+  This does NOT relax the patent hold and must not be read as doing so. The hub
+  renders whatever HOME_PRODUCTS contains, Magy and MOS are still commented out
+  of it, and /magy and /mos still 404 via HELD_BACK. What flips is which page
+  answers at "/", not what any page says.
+
+  Set it back to false to restore the redirect; that is the whole revert.
+*/
+const HOMEPAGE_IS_HUB = true;
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {

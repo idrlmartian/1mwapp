@@ -63,7 +63,7 @@ export default function TermsPage() {
                 <h2>Contact</h2>
                 <p>
                     {COMPANY.legal} —{" "}
-                    <a href={`mailto:${COMPANY.email}`} className="text-blue hover:underline">{COMPANY.email}</a>
+                    <a href={`mailto:${COMPANY.email}`} className="text-red hover:underline">{COMPANY.email}</a>
                 </p>
             </div>
         </article>

@@ -78,6 +78,7 @@ export const ROUTES: Route[] = [
     // (/brands, /products, /martianos, /artificialintelligence). It was
     // missing here, which is precisely the drift this registry exists to
     // prevent — a linked, indexable page absent from the sitemap.
+    { path: "/early-access", changeFrequency: "monthly" },
     { path: "/about", changeFrequency: "monthly" },
     { path: "/press", changeFrequency: "monthly" },
     { path: "/licensing", changeFrequency: "monthly" },

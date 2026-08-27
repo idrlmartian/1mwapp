@@ -53,7 +53,7 @@ export default function LicensingPage() {
             <Panel>
                 <p className="deck-label mb-3">Licensing</p>
                 <h1 className="text-hero mb-4 max-w-[20ch]">
-                    Licensing &amp; <em className="text-blue not-italic">partnerships</em>.
+                    Licensing &amp; <em className="font-semibold not-italic">partnerships</em>.
                 </h1>
                 <p className="text-fg-muted max-w-[64ch] text-[14.5px]">
                     We license what we build, and we work with people who want to take it
@@ -97,7 +97,7 @@ export default function LicensingPage() {
                         <p className="deck-label mb-2">Contact</p>
                         <a
                             href={`mailto:${COMPANY.email}`}
-                            className="text-blue inline-block text-[13.5px] hover:underline"
+                            className="text-red inline-block text-[13.5px] hover:underline"
                         >
                             {COMPANY.email}
                         </a>
@@ -107,7 +107,7 @@ export default function LicensingPage() {
 
                 <Link
                     href="/contact"
-                    className="bg-red hover:bg-red-hover shadow-[var(--shadow-cta)] mt-6 inline-flex items-center gap-2 rounded-[9px] px-4 py-2.5 text-[13px] font-bold text-white transition-colors"
+                    className="bg-red hover:bg-red-hover shadow-[var(--shadow-cta)] mt-6 inline-flex items-center gap-2 rounded-[9px] px-4 py-2.5 text-[13px] font-bold text-on-red transition-colors"
                 >
                     Contact us <span aria-hidden="true">→</span>
                 </Link>

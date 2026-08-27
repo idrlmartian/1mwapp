@@ -29,7 +29,7 @@ export default function Error({ error, reset }: { error: Error & { digest?: stri
                 <button
                     type="button"
                     onClick={reset}
-                    className="bg-red hover:bg-red-hover shadow-[var(--shadow-cta)] rounded-[var(--radius-md)] px-5 py-3 text-sm font-bold text-white transition-colors"
+                    className="bg-red hover:bg-red-hover shadow-[var(--shadow-cta)] rounded-[var(--radius-md)] px-5 py-3 text-sm font-bold text-on-red transition-colors"
                 >
                     Try again
                 </button>

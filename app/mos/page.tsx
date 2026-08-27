@@ -78,7 +78,7 @@ export default function MosPage() {
                         </span>
                     </span>
                     <span className="text-hero mt-4 block max-w-[18ch]">
-                        The robotics simulator that <em className="text-blue not-italic">runs everywhere</em>.
+                        The robotics simulator that <em className="font-semibold not-italic">runs everywhere</em>.
                     </span>
                 </h1>
                 <p className="text-fg-muted max-w-[62ch] text-[14px]">
@@ -175,7 +175,7 @@ export default function MosPage() {
                 </div>
                 <p className="text-fg-dim mt-6 text-[12.5px]">
                     Built by 1 Martian Way, alongside{" "}
-                    <Link href="/magy" className="text-blue hover:underline">Magy</Link>.
+                    <Link href="/magy" className="text-red hover:underline">Magy</Link>.
                     {/* Martian OS unlinked: its stated specs are unverified. */}
                 </p>
             </section>

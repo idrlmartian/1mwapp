@@ -227,7 +227,7 @@ export default function MartianOS() {
                                     <ul className="space-y-1">
                                         {section.specs.map((spec, i) => (
                                             <li key={i} className="flex items-center gap-2 text-xs text-white/80">
-                                                <span className="w-1 h-1 bg-blue-soft rounded-full"></span>
+                                                <span className="w-1 h-1 bg-red-soft rounded-full"></span>
                                                 {spec}
                                             </li>
                                         ))}

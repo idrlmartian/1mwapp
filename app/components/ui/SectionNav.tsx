@@ -10,7 +10,7 @@ import { useEffect, useRef, useState } from "react";
     · it knows where you are. There was no active state at all, so on a page
       this long the nav told you what existed but never where you were in it.
     · the active pill is the SAME treatment as the header's current-page link —
-      bg-blue-soft, blue text, a 38% inset ring, sitting in a bg-sunk track.
+      bg-red-soft, blue text, a 38% inset ring, sitting in a bg-sunk track.
       Two navs on one screen disagreeing about what "you are here" looks like is
       a thing readers notice without being able to say why.
 
@@ -94,7 +94,7 @@ export default function SectionNav({ sections }: { sections: readonly Section[] 
                                 aria-current={on ? "true" : undefined}
                                 className={`block whitespace-nowrap rounded-[var(--radius-capsule)] px-2.5 py-1.5 font-mono text-[10.5px] font-semibold uppercase tracking-[0.13em] transition-colors ${
                                     on
-                                        ? "bg-blue-soft text-blue font-bold shadow-[inset_0_0_0_1px_color-mix(in_oklab,var(--color-blue)_38%,transparent)]"
+                                        ? "bg-red-soft text-red font-bold shadow-[inset_0_0_0_1px_color-mix(in_oklab,var(--color-blue)_38%,transparent)]"
                                         : "text-fg-muted hover:text-fg hover:bg-sunk"
                                 }`}
                             >

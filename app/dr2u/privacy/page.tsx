@@ -266,7 +266,7 @@ export default function Privacy() {
                             <div className="pt-4">
                                 <Link
                                     href="/contact"
-                                    className="inline-flex items-center rounded-full bg-blue-soft px-4 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-blue-soft focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+                                    className="inline-flex items-center rounded-full bg-red-soft px-4 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-red-soft focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
                                 >
                                     Contact Us
                                     <ArrowRightIcon className="ml-2 h-4 w-4" />

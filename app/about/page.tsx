@@ -63,7 +63,7 @@ export default function AboutPage() {
                 <Panel>
                     <p className="deck-label mb-3">About</p>
                     <h1 className="text-hero mb-4 max-w-[20ch]">
-                        We build things that <em className="text-blue not-italic">do the work</em>.
+                        We build things that <em className="font-semibold not-italic">do the work</em>.
                     </h1>
                     <p className="text-fg-muted max-w-[64ch] text-[14.5px]">
                         1 Martian Way Industries is a Mumbai company building developer tools
@@ -108,7 +108,7 @@ export default function AboutPage() {
                         <ol className="grid gap-2.5">
                             {ERAS.map(([era, what], i) => (
                                 <li key={era} className="border-line flex gap-3.5 border-t pt-2.5">
-                                    <span className="text-blue mt-0.5 shrink-0 font-mono text-[11px] font-bold">
+                                    <span className="text-red mt-0.5 shrink-0 font-mono text-[11px] font-bold">
                                         0{i + 1}
                                     </span>
                                     <span>
@@ -119,7 +119,7 @@ export default function AboutPage() {
                             ))}
                         </ol>
                         <p className="text-fg-dim mt-4 text-[13px]">
-                            The <Link href="/press" className="text-blue hover:underline">press page</Link>{" "}
+                            The <Link href="/press" className="text-red hover:underline">press page</Link>{" "}
                             covers most of it — CBS News, India Today, DD Sports and others.
                         </p>
                     </Panel>
@@ -135,7 +135,7 @@ export default function AboutPage() {
                                 href="https://droneracingindia.com"
                                 target="_blank"
                                 rel="noopener"
-                                className="text-blue mt-3 inline-block text-[13.5px] font-semibold hover:underline"
+                                className="text-red mt-3 inline-block text-[13.5px] font-semibold hover:underline"
                             >
                                 droneracingindia.com ↗
                             </a>
@@ -149,7 +149,7 @@ export default function AboutPage() {
                             </address>
                             <a
                                 href={`mailto:${COMPANY.email}`}
-                                className="text-blue mt-3 inline-block text-[13.5px] hover:underline"
+                                className="text-red mt-3 inline-block text-[13.5px] hover:underline"
                             >
                                 {COMPANY.email}
                             </a>

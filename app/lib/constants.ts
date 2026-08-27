@@ -111,21 +111,6 @@ export const STATUS = [
     },
 ];
 
-export const NAV = [
-    /*
-      Magy and MOS are commented out, not deleted (2026-08-26): both stay
-      unpublished until the patent filings are settled, and the pages
-      themselves keep rendering so the products' own separate deployments
-      are untouched. Restoring them is uncommenting
-      these two lines — and the matching blocks in routes.ts, Footer.tsx,
-      about/page.tsx, and the noindex in each page's own metadata.
-    */
-    // { href: "/magy", label: "Magy" },
-    // { href: "/mos", label: "MOS" },
-    { href: "/toowl", label: "toowl" },
-    { href: "/about", label: "Company" },
-] as const;
-
 /*
   Where "Get toowl" goes. toowl.dev is the product's own site and the only
   place the install command, the docs and the releases actually live; this
@@ -133,6 +118,51 @@ export const NAV = [
   app/toowl/page.tsx until the header and the 404 needed it too.
 */
 export const TOOWL_URL = "https://toowl.dev";
+
+export const NAV = [
+    /*
+      The mockup's bar reads Products · Company · Docs · Pricing. Three of the
+      four are here; the fourth is commented rather than pointed somewhere
+      plausible, which is the same convention Magy and MOS are held under
+      below — a nav entry is a promise that a page exists.
+
+      Magy and MOS are commented out, not deleted (2026-08-26): both stay
+      unpublished until the patent filings are settled, and the pages
+      themselves keep rendering so the products' own separate deployments
+      are untouched. Restoring them is uncommenting these two lines — and the
+      matching blocks in routes.ts, Footer.tsx, about/page.tsx, and the
+      noindex in each page's own metadata.
+    */
+    /*
+      The hub's product list, not /products — that path has 307'd to /about
+      since before the hub existed, so a nav entry pointing at it would put
+      "Products" and "Company" on the same page. The family lives at "/" now.
+    */
+    { href: "/#products", label: "Products" },
+    { href: "/about", label: "Company" },
+    /*
+      Docs is the one external entry. toowl.dev/docs is the only documentation
+      that exists today, and it is real — better a link that leaves the site
+      than a heading over an empty page. It becomes /docs when the shared docs
+      surface lands (plan Phase 1).
+    */
+    { href: `${TOOWL_URL}/docs`, label: "Docs" },
+    // { href: "/pricing", label: "Pricing" },  // no page yet — plan Phase 1
+    // { href: "/magy", label: "Magy" },
+    // { href: "/mos", label: "MOS" },
+] as const;
+
+/*
+  Where "Sign in" and "Create account" go.
+
+  1MW ID — the OIDC hub every product signs into — is Phase 1 and does not
+  exist yet, so both point at the early-access door, which does. That is
+  deliberate rather than a placeholder: the audit found the waitlist holding
+  zero rows for the simple reason that no reachable page carried a form, and a
+  header CTA that leads nowhere is how that happened. When id.1martianway.com
+  is up, this constant changes and nothing else does.
+*/
+export const ACCOUNT_HREF = "/early-access";
 
 export const COMPANY = {
     legal: "1 Martian Way Industries Pvt. Ltd.",

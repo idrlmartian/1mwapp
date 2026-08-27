@@ -152,7 +152,7 @@ export default function Footer() {
                         </address>
                         <a
                             href={`mailto:${COMPANY.email}`}
-                            className="text-blue mt-3 inline-block text-[13.5px] hover:underline"
+                            className="text-red mt-3 inline-block text-[13.5px] hover:underline"
                         >
                             {COMPANY.email}
                         </a>

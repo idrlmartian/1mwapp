@@ -109,7 +109,7 @@ export function Logo({
     href = "/",
     className,
 }: LockupProps) {
-    const label = wordmark === "short" ? "1MW" : "1 MARTIAN WAY";
+    const label = wordmark === "short" ? LOCKUP.labelShort : LOCKUP.label;
 
     const inner = (
         <>

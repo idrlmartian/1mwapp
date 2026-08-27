@@ -231,13 +231,34 @@ export const LOCKUP = {
     markBox: 78,
     fontSize: 38,
     gap: 30,
+    /*
+      Zero, because the face changed. The note above measures Zen Kaku Gothic
+      New, a Japanese face whose 1.448em line box drops the caps by 0.086em.
+      The wordmark is IBM Plex Sans now — the same family the product already
+      ships — and a Latin face centres its own caps, so the lift that corrected
+      Zen Kaku would now push the type ABOVE the mark's ink centre.
+    */
     baselineLift: "0em",
     /** font-size as a fraction of the mark box. */
     typeRatio: 38 / 78,
     /** gap as a fraction of the mark box. */
     gapRatio: 30 / 78,
-    tracking: "0.02em",
-    weight: 700,
+    /*
+      TITLE CASE, not caps, and tracked in rather than out.
+
+      All-caps "1 MARTIAN WAY" at 0.02em was the Zen Kaku treatment: a display
+      lockup, read once on a title card. In a 56px header it is read every
+      page, next to lowercase nav links, and caps there read as a shout — the
+      company's name should sit at the same volume as "Products".
+
+      Title case also lets the name keep its shape: "1 Martian Way" has two
+      ascenders and a descender-free baseline, and the eye recognises that
+      silhouette faster than a caps rectangle.
+    */
+    tracking: "-0.01em",
+    weight: 600,
+    label: "1 Martian Way",
+    labelShort: "1MW",
 } as const;
 
 /** Mark centred on its field and scaled by reach, so a circle never clips it. */

@@ -163,7 +163,7 @@ export default function MagyPage() {
                                     <br />
                                     Infinite worlds.
                                     <br />
-                                    <em className="text-blue not-italic">Any work.</em>
+                                    <em className="font-semibold not-italic">Any work.</em>
                                 </span>
                             </h1>
                             <p className="text-fg-muted mt-3 text-[13.5px]">
@@ -257,9 +257,9 @@ export default function MagyPage() {
                         <pre className="border-line bg-sunk text-fg-muted overflow-x-auto rounded-[var(--radius-md)] border p-3 font-mono text-[11px] leading-[1.85]">
                             <code>
                                 {`$ magy delegate --to zara "extract the parser"\n`}
-                                <span className="text-blue">zara</span> worktree{" "}
+                                <span className="text-red">zara</span> worktree{" "}
                                 <span className="text-good">acquired</span> · feat/parser-extract{"\n"}
-                                <span className="text-blue">luna</span> review{" "}
+                                <span className="text-red">luna</span> review{" "}
                                 <span className="text-good">approved</span> → PR #482 opened
                             </code>
                         </pre>
@@ -333,7 +333,7 @@ export default function MagyPage() {
                                     "Luna reviewing, and a pull request opening",
                                 ].map((beat, i) => (
                                     <li key={beat} className="border-line flex gap-3 border-t pt-2 text-[13px]">
-                                        <span className="text-blue mt-px shrink-0 font-mono text-[11px] font-bold">
+                                        <span className="text-red mt-px shrink-0 font-mono text-[11px] font-bold">
                                             0{i + 1}
                                         </span>
                                         <span className="text-fg-muted">{beat}</span>
@@ -654,7 +654,7 @@ export default function MagyPage() {
                     <p className="text-fg-dim mt-4 text-[12.5px]">
                         Magy is a commercial product, not open source. Licensing terms are being
                         finalised —{" "}
-                        <a href="mailto:licensing@1martianway.com" className="text-blue hover:underline">
+                        <a href="mailto:licensing@1martianway.com" className="text-red hover:underline">
                             licensing@1martianway.com
                         </a>{" "}
                         if you need specifics.
@@ -697,9 +697,9 @@ export default function MagyPage() {
                     </div>
                     <p className="text-fg-dim mt-6 text-[12.5px]">
                         Also from 1 Martian Way:{" "}
-                        <Link href="/mos" className="text-blue hover:underline">MOS</Link>
+                        <Link href="/mos" className="text-red hover:underline">MOS</Link>
                         {" · "}
-                        <Link href="/toowl" className="text-blue hover:underline">toowl</Link>
+                        <Link href="/toowl" className="text-red hover:underline">toowl</Link>
                         {/* Martian OS unlinked: its stated specs are unverified. */}
                     </p>
                 </section>
