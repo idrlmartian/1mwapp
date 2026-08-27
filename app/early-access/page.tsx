@@ -38,20 +38,22 @@ export default function EarlyAccessPage() {
         <div className="mx-auto grid max-w-[var(--container-page)] px-[var(--container-pad)] py-3.5">
             <section className="mx-auto w-full max-w-[27rem] pt-16 pb-24 sm:pt-24">
                 {/*
-                    Bare, like the header and the footer. A tile was tried here
-                    on the argument that this page is about the company rather
-                    than a product, so the mark is the subject and deserves its
-                    own ground — but "the icon consistent everywhere" was the
-                    brief, and a sumi square on a paper page reads as a black
-                    box with a logo trapped in it. The tile is for an app icon
-                    and a favicon, where there IS no page ground.
+                    THE TILE, and this is the one page on the site that gets it.
+
+                    "One lockup everywhere" is a rule about CHROME — the header
+                    and the footer, where the mark is a label on a page about
+                    something else and a sumi square would read as a black box
+                    with a logo trapped in it. Here the mark is not labelling
+                    the page, it IS the page: nothing else above the fold is
+                    branded, and a bare pair of strokes floating over paper at
+                    this size reads as a stray glyph rather than a company.
+                    Same reason a favicon and an app icon keep the tile.
+
+                    Kin on Sumi is also the identity as the manual states it —
+                    gold on ink-black — and this is the only surface with room
+                    to show it that way.
                 */}
-                <LogoGlyph
-                    variant="mark"
-                    size={44}
-                    className="mb-6"
-                    title="1 Martian Way"
-                />
+                <LogoGlyph size={40} radius={11} className="mb-6" title="1 Martian Way" />
 
                 <h1 className="font-display text-[clamp(1.75rem,4vw,2.25rem)] leading-[1.1] font-light tracking-[-0.025em] text-balance">
                     One account for{" "}
