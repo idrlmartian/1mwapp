@@ -1,52 +1,59 @@
-#!/usr/bin/env node
+#!/usr/bin/env bun
 //
 // Generates every brand raster + SVG from ONE source of geometry.
 //
-// The geometry below was measured from the founder's raster by
-// scripts/measure-logo.mjs and verified at 0.126% XOR mismatch against the
-// source mask. Do not hand-edit these numbers — re-run the measure script.
+// Geometry, palette and scales all come from app/lib/brand.ts, which
+// app/components/brand/Logo.tsx imports too. They used to be separate hand-kept
+// copies in both files; they are not any more.
 //
 // THE SYMBOL IS THE BRAND — the white figure, which stands for unlimited
-// growth. The red field behind it is a background and may be any colour; the
-// mark also ships standalone (1mw-mark.svg, currentColor) for surfaces that
-// need no field at all.
+// growth. The field behind it is a background and may be any colour in the
+// palette; the mark also ships standalone (1mw-mark.svg, currentColor) for
+// surfaces that need no field at all.
 //
-// Three optical sizes, because one file cannot serve all of them:
-//   tile     — the mark as drawn. Site logo, OG images, email.
-//   compact  — mark scaled 1.30x. At 16px the as-drawn legs thin to ~1px and
-//              the head merges into them; compact keeps it legible as a favicon.
-//   maskable — mark scaled 0.78x. Android masks app icons to a circle/squircle
-//              and crops ~10% per edge, which would clip the as-drawn legs.
+// Three optical sizes, because one file cannot serve all of them. Each is now
+// SOLVED rather than chosen by eye — see CONTAINMENT in app/lib/brand.ts:
+//   full     — the mark as drawn. Site logo, OG images.
+//   avatar   — reaches 77% of the crop radius. Favicons and every circular
+//              avatar. Replaces a hand-picked 1.30 whose outer leg corners
+//              landed at 93% of the radius and read as touching the edge.
+//   maskable — reaches 72%, comfortably inside Android's 80% safe circle.
+//              Replaces a hand-picked 0.78 that reached only 57%, wasting a
+//              fifth of the icon's linear extent.
 //
-// Usage: node scripts/generate-brand-assets.mjs
+// Every scale is applied about the mark's AREA centroid rather than its
+// bounding-box centre. The figure is bottom-heavy, so those differ by 11 units
+// and only one of them looks centred.
+//
+// Usage: bun scripts/generate-brand-assets.mjs
+//        (bun, not node — this imports a .ts module)
 
 import sharp from "sharp";
 import { writeFileSync, mkdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
+import {
+    BRAND_RED,
+    CIRCLE,
+    LEG_L,
+    LEG_R,
+    SCALE,
+    maxReach,
+    markTransform,
+    CROP,
+} from "../app/lib/brand.ts";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 
-export const BRAND_RED = "#D22222";
+export { BRAND_RED };
 
-// Canonical geometry, 512 viewBox.
-const CIRCLE = { cx: 256, cy: 165, r: 43.2 };
-const LEG_L = "M218.4 210.2 L245.2 243.9 L167.4 389.5 L123.8 389.5 Z";
-const LEG_R = "M293.6 210.2 L266.8 243.9 L344.6 389.5 L388.2 389.5 Z";
-
-// Mark bounding box in the 512 space, used as the scale origin.
-const MARK_CENTER = { x: 256, y: 255.7 };
-
-const markGroup = (scale = 1, fill = "#FFFFFF") => {
-    const transform =
-        scale === 1
-            ? ""
-            : ` transform="translate(${(MARK_CENTER.x * (1 - scale)).toFixed(2)} ${(MARK_CENTER.y * (1 - scale)).toFixed(2)}) scale(${scale})"`;
-    return `<g fill="${fill}"${transform}><circle cx="${CIRCLE.cx}" cy="${CIRCLE.cy}" r="${CIRCLE.r}"/><path d="${LEG_L}"/><path d="${LEG_R}"/></g>`;
-};
+const markGroup = (scale = SCALE.full, fill = "#FFFFFF") =>
+    `<g fill="${fill}" transform="${markTransform(scale)}">` +
+    `<circle cx="${CIRCLE.cx}" cy="${CIRCLE.cy}" r="${CIRCLE.r}"/>` +
+    `<path d="${LEG_L}"/><path d="${LEG_R}"/></g>`;
 
 /** Red square + white mark. */
-export const tileSvg = (scale = 1, radius = 0) =>
+export const tileSvg = (scale = SCALE.full, radius = 0) =>
     `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">` +
     `<rect width="512" height="512"${radius ? ` rx="${radius}"` : ""} fill="${BRAND_RED}"/>` +
     markGroup(scale) +
@@ -63,7 +70,7 @@ export const tileSvg = (scale = 1, radius = 0) =>
  * Kept for surfaces that supply their own ground and want no second one.
  * Takes the same optical scale as tileSvg.
  */
-export const markSvg = (fill = "currentColor", scale = 1) =>
+export const markSvg = (fill = "currentColor", scale = SCALE.full) =>
     `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">` +
     markGroup(scale, fill) +
     `</svg>`;
@@ -94,7 +101,7 @@ writeFileSync(out("public/assets/img/1mw-logo.svg"), tileSvg());
   the bare figure is three thin strokes with no field to hold them together.
 */
 const FAVICON_RADIUS = 96; // 18.75% of 512 — ~3px at 16px, visible but not a pill
-writeFileSync(out("app/icon.svg"), tileSvg(1.3, FAVICON_RADIUS));
+writeFileSync(out("app/icon.svg"), tileSvg(SCALE.avatar, FAVICON_RADIUS));
 
 // ── rasters ─────────────────────────────────────────────────────────────────
 const png = (svg, size, path, bg) => {
@@ -107,12 +114,12 @@ const png = (svg, size, path, bg) => {
 // ignores alpha and composites on black, Android masks to its own shape, and
 // email clients are a lottery — all three want an opaque tile.
 await Promise.all([
-    png(tileSvg(1.3), 180, "app/apple-icon.png", BRAND_RED),
-    png(tileSvg(1.3), 192, "public/icons/icon-192.png", BRAND_RED),
-    png(tileSvg(1.3), 512, "public/icons/icon-512.png", BRAND_RED),
-    png(tileSvg(0.78), 512, "public/icons/icon-512-maskable.png", BRAND_RED),
+    png(tileSvg(SCALE.avatar), 180, "app/apple-icon.png", BRAND_RED),
+    png(tileSvg(SCALE.avatar), 192, "public/icons/icon-192.png", BRAND_RED),
+    png(tileSvg(SCALE.avatar), 512, "public/icons/icon-512.png", BRAND_RED),
+    png(tileSvg(SCALE.maskable), 512, "public/icons/icon-512-maskable.png", BRAND_RED),
     // Email CID logo: 240px source displayed at 120px for retina.
-    png(tileSvg(1.15), 240, "public/assets/img/1mw-mark-240.png", BRAND_RED),
+    png(tileSvg(SCALE.avatar), 240, "public/assets/img/1mw-mark-240.png", BRAND_RED),
     png(tileSvg(), 512, "public/assets/img/1mw-mark-512.png", BRAND_RED),
 ]);
 
@@ -127,7 +134,7 @@ await Promise.all([
 const icoSizes = [16, 32, 48];
 const icoPngs = await Promise.all(
     icoSizes.map((s) =>
-        sharp(Buffer.from(tileSvg(1.3, FAVICON_RADIUS)), { density: 400 })
+        sharp(Buffer.from(tileSvg(SCALE.avatar, FAVICON_RADIUS)), { density: 400 })
             .resize(s, s)
             .png({ compressionLevel: 9 })
             .toBuffer()
@@ -153,7 +160,13 @@ const entries = icoSizes.map((s, i) => {
 });
 writeFileSync(out("public/favicon.ico"), Buffer.concat([header, ...entries, ...icoPngs]));
 
-console.log(`brand red   ${BRAND_RED}`);
+console.log(`brand fill  ${BRAND_RED}  (Signal)`);
+for (const [name, k] of Object.entries(SCALE)) {
+    const r = maxReach(k);
+    console.log(
+        `scale ${name.padEnd(8)} k=${k.toFixed(4)}  reach ${r.toFixed(1)}/${CROP} = ${((r / CROP) * 100).toFixed(1)}%`
+    );
+}
 console.log("wrote:");
 for (const p of [
     "public/assets/img/1mw-logo.svg (overwritten — swaps Header x2 + Footer)",
@@ -173,7 +186,7 @@ const ogSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630"
   <rect width="1200" height="630" fill="#0A0A0B"/>
   <rect x="0" y="0" width="1200" height="4" fill="${BRAND_RED}"/>
   <g transform="translate(84 84)">
-    <g transform="scale(0.27)"><rect width="512" height="512" rx="32" fill="${BRAND_RED}"/>${markGroup(1.15)}</g>
+    <g transform="scale(0.27)"><rect width="512" height="512" rx="32" fill="${BRAND_RED}"/>${markGroup(SCALE.avatar)}</g>
   </g>
   <text x="238" y="176" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="30" font-weight="600" fill="#FFFFFF" letter-spacing="-0.5">1 Martian Way</text>
   <text x="238" y="212" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="19" font-weight="500" fill="#7C7C88" letter-spacing="2.5">MAGY · EARLY ACCESS</text>
