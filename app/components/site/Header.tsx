@@ -95,19 +95,26 @@ export default function Header() {
                         filled one beside it — the only signal-coloured thing in
                         the bar, on every route.
                     */}
-                    <Link
+                    {/*
+                        Plain anchors, not next/link. These cross to another
+                        origin (id.1martianway.com), and next/link prefetches
+                        and client-routes — neither of which works across
+                        origins, and the prefetch would fire a pointless
+                        cross-origin request on hover for every visitor.
+                    */}
+                    <a
                         href={ACCOUNT_HREF}
                         className="text-fg-muted hover:text-fg hidden text-[13.5px] transition-colors sm:block"
                     >
                         Sign in
-                    </Link>
-                    <Link
+                    </a>
+                    <a
                         href={ACCOUNT_HREF}
                         onClick={() => navCtaClick(pathname)}
                         className="bg-red hover:bg-red-hover text-on-red shadow-[var(--shadow-cta)] inline-flex items-center rounded-[7px] px-3.5 py-2 text-[13px] font-medium transition-colors"
                     >
                         Create account
-                    </Link>
+                    </a>
                     <button
                         type="button"
                         onClick={() => setOpen((v) => !v)}
@@ -140,13 +147,13 @@ export default function Header() {
                                 {item.label}
                             </Link>
                         ))}
-                        <Link
+                        <a
                             href={ACCOUNT_HREF}
                             onClick={() => setOpen(false)}
                             className="text-fg-muted rounded-[var(--radius-md)] px-3 py-2.5 text-sm"
                         >
                             Sign in
-                        </Link>
+                        </a>
                     </nav>
                     <div className="mt-3 sm:hidden">
                         <ThemeSwitch />

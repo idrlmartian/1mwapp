@@ -153,16 +153,24 @@ export const NAV = [
 ] as const;
 
 /*
+  1MW ID — the account every product signs into. Live since 2026-08-28.
+
+  An env var rather than a literal, because the origin differs by environment
+  and because a hardcoded host is what makes a future move a code change. It is
+  NOT NEXT_PUBLIC_: these are server-rendered links and a server-side proxy
+  target, so nothing needs it in the browser bundle.
+*/
+export const ID_ORIGIN = process.env.ID_ORIGIN ?? "https://id.1martianway.com";
+
+/*
   Where "Sign in" and "Create account" go.
 
-  1MW ID — the OIDC hub every product signs into — is Phase 1 and does not
-  exist yet, so both point at the early-access door, which does. That is
-  deliberate rather than a placeholder: the audit found the waitlist holding
-  zero rows for the simple reason that no reachable page carried a form, and a
-  header CTA that leads nowhere is how that happened. When id.1martianway.com
-  is up, this constant changes and nothing else does.
+  Both land on the same screen, and that is the design rather than laziness: it
+  offers Google and a sign-in link, and neither cares whether you have been
+  there before. Asking someone to know which of the two they are is a question
+  the software can answer for itself.
 */
-export const ACCOUNT_HREF = "/early-access";
+export const ACCOUNT_HREF = `${ID_ORIGIN}/signin`;
 
 export const COMPANY = {
     legal: "1 Martian Way Industries Pvt. Ltd.",
