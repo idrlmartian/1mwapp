@@ -168,3 +168,37 @@ export const COMPANY = {
         "India",
     ],
 } as const;
+
+/*
+  The Open Graph card, referenced explicitly.
+
+  `app/opengraph-image.png` is a Next file convention, and it injects `og:image`
+  into a segment's OWN metadata. A page that exports its own `openGraph` object
+  replaces the inherited one wholesale — so every page that customises its og
+  text silently loses the image, while every page that leaves og text alone
+  keeps it. Nothing warns about this; the tag is simply absent.
+
+  Measured against production on 2026-08-27: /about, /press, /licensing and
+  /contact all carried og:image. /toowl carried none — and /toowl is the page
+  the apex 307s to, so the site's primary share card was a bare text card with
+  `twitter:card: summary_large_image` promising an image that was never sent.
+
+  Any page that declares `openGraph` must therefore pass `images: [OG_IMAGE]`.
+  (The alternative is dropping a per-route `opengraph-image.png` into each
+  segment, which duplicates a 33 KB asset to say the same thing.)
+
+  The path is deliberately unfingerprinted. The file convention's own URL
+  carries a content hash that changes every time the card is regenerated, and it
+  cannot be referenced from here without importing the asset. This path is
+  stable and serves the same bytes.
+
+  The artwork is toowl's, because toowl is what the site publishes. If /magy or
+  /mos come back with their own cards, give those segments their own
+  opengraph-image file rather than widening this.
+*/
+export const OG_IMAGE = {
+    url: "/opengraph-image.png",
+    width: 1200,
+    height: 630,
+    alt: "toowl by 1 Martian Way — Terminal You Will Love. A GPU-fast terminal and a tmux-style remote client in one binary.",
+} as const;

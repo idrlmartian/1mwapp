@@ -5,7 +5,7 @@ import { Bullets, Eyebrow, Receipts, Showcase, Visual } from "@/app/components/u
 import ToowlPerch from "@/app/components/ui/ToowlPerch";
 import ToowlOwl from "@/app/components/ui/ToowlOwl";
 import CopyCommand from "@/app/components/ui/CopyCommand";
-import { TOOWL_URL } from "@/app/lib/constants";
+import { OG_IMAGE, TOOWL_URL } from "@/app/lib/constants";
 
 /*
   Content mirrored from the live site at toowl.karmasteels.com so the two pages
@@ -37,6 +37,7 @@ export const metadata: Metadata = {
         description:
             "A GPU-fast desktop terminal and a tmux-style remote client in one binary, with Claude on the Perch.",
         url: "https://www.1martianway.com/toowl",
+        images: [OG_IMAGE],
     },
 };
 

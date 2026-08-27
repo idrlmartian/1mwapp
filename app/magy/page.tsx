@@ -9,7 +9,7 @@ import { Bullets, CaptureSlot, Eyebrow, Receipts, Showcase, Visual } from "@/app
 import MagyWorkspace from "@/app/components/ui/MagyWorkspace";
 import CortexGraph from "@/app/components/ui/CortexGraph";
 import SectionNav from "@/app/components/ui/SectionNav";
-import { ACTIVITY, AGENTS, MAGY_YOUTUBE_ID, METRICS, SHIPPING_AGENTS, STATUS, WORLD } from "@/app/lib/constants";
+import { ACTIVITY, AGENTS, MAGY_YOUTUBE_ID, METRICS, OG_IMAGE, SHIPPING_AGENTS, STATUS, WORLD } from "@/app/lib/constants";
 
 export const metadata: Metadata = {
     title: "Magy — the 3D embodied multi-agent platform",
@@ -30,6 +30,7 @@ export const metadata: Metadata = {
         description:
             "Infinite agents. Infinite worlds. Any work. Measured at 100,000 agents rendered at 60 fps.",
         url: "https://www.1martianway.com/magy",
+        images: [OG_IMAGE],
     },
 };
 
