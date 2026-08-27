@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { BRAND_RED as BRAND_FILL, CIRCLE, LEG_L, LEG_R, SCALE, markTransform } from "@/app/lib/brand";
+import { IDENTITY, markPaths, cutFor, SIGNAL_FILL } from "@/app/lib/brand";
 
 /**
  * The 1 Martian Way mark — a standing figure: a circle head above two splayed
@@ -27,8 +27,8 @@ import { BRAND_RED as BRAND_FILL, CIRCLE, LEG_L, LEG_R, SCALE, markTransform } f
  *   - Never recolour the figure to an agent colour. Agent colours are data.
  */
 
-/** Re-exported so existing importers keep working; the value is Signal now. */
-export const BRAND_RED = BRAND_FILL;
+/** @deprecated UI fill. The MARK is IDENTITY.mark (Kin); this is the CTA red. */
+export const BRAND_RED = SIGNAL_FILL;
 
 type LogoProps = {
     /**
@@ -73,26 +73,18 @@ export function LogoGlyph({
             focusable="false"
         >
             {variant === "tile" && (
-                <rect width="512" height="512" rx={radius || undefined} fill={BRAND_RED} />
+                <rect width="512" height="512" rx={radius || undefined} fill={IDENTITY.mark} />
             )}
             {/*
-                Scaled about the AREA centroid, not the bounding-box centre.
-                The figure is bottom-heavy — two large legs against one small
-                head — so those two points sit 11 units apart, and only the
-                centroid one looks centred once a surface crops to a circle.
-
-                `tile` takes the avatar scale because it is the form that ends
-                up small and cropped; `mark` sits on someone else's ground and
-                stays as drawn.
+                Two cuts off one skeleton — swept terminals above 40px, flat
+                below. A tapering stroke loses its tip first, so the display
+                cut dissolves at favicon sizes while the UI cut holds.
+                See app/lib/brand.ts for why the strokes are unequal.
             */}
             <g
                 fill={variant === "tile" ? "#FFFFFF" : "currentColor"}
-                transform={markTransform(variant === "tile" ? SCALE.avatar : SCALE.full)}
-            >
-                <circle cx={CIRCLE.cx} cy={CIRCLE.cy} r={CIRCLE.r} />
-                <path d={LEG_L} />
-                <path d={LEG_R} />
-            </g>
+                dangerouslySetInnerHTML={{ __html: markPaths(cutFor(size)) }}
+            />
         </svg>
     );
 }
