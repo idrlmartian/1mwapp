@@ -38,13 +38,20 @@ export default function EarlyAccessPage() {
         <div className="mx-auto grid max-w-[var(--container-page)] px-[var(--container-pad)] py-3.5">
             <section className="mx-auto w-full max-w-[27rem] pt-16 pb-24 sm:pt-24">
                 {/*
-                    The tile variant here, not the bare mark the header wears.
-                    This is the one page on the site that is ABOUT the company
-                    rather than a product, and the mark gets its own ground for
-                    the same reason it does on an app icon — it is the subject,
-                    not the chrome.
+                    Bare, like the header and the footer. A tile was tried here
+                    on the argument that this page is about the company rather
+                    than a product, so the mark is the subject and deserves its
+                    own ground — but "the icon consistent everywhere" was the
+                    brief, and a sumi square on a paper page reads as a black
+                    box with a logo trapped in it. The tile is for an app icon
+                    and a favicon, where there IS no page ground.
                 */}
-                <LogoGlyph size={40} radius={11} className="mb-6" title="1 Martian Way" />
+                <LogoGlyph
+                    variant="mark"
+                    size={44}
+                    className="mb-6"
+                    title="1 Martian Way"
+                />
 
                 <h1 className="font-display text-[clamp(1.75rem,4vw,2.25rem)] leading-[1.1] font-light tracking-[-0.025em] text-balance">
                     One account for{" "}

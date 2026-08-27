@@ -14,12 +14,21 @@ import { COMPANY } from "@/app/lib/constants";
   legal line, per Companies Act 2013 s.12(3)(c).
 */
 
-const PRODUCTS = [
+const PRODUCTS: { href: string; label: string; external?: boolean }[] = [
     // Magy and MOS: unlisted until the patents are settled (2026-08-26).
     // See app/lib/constants.ts NAV for the full note.
     // { href: "/magy", label: "Magy" },
     // { href: "/mos", label: "MOS — robotics simulation" },
     { href: "/toowl", label: "toowl — terminal" },
+    /*
+      IDRL moved up from the Company column when it joined the hub's product
+      family. It was filed under Company back when this site listed exactly one
+      product and a second name in that column looked like padding; it is a
+      product, it is live, and having it appear as a product on "/" and as a
+      company link down here is the kind of small disagreement that makes a
+      site feel edited by two people.
+    */
+    { href: "https://droneracingindia.com", label: "IDRL — drone racing ↗", external: true },
     /*
       Two entries are deliberately unlisted, both unlinked sitewide and
       noindex'd, both restorable by putting the line back:
@@ -37,7 +46,6 @@ const COMPANY_LINKS: { href: string; label: string; external?: boolean }[] = [
     { href: "/about", label: "About" },
     { href: "/press", label: "Press & media" },
     { href: "/licensing", label: "Licensing & partnerships" },
-    { href: "https://droneracingindia.com", label: "IDRL ↗", external: true },
     { href: "/contact", label: "Contact" },
 ];
 
@@ -109,7 +117,15 @@ export default function Footer() {
             <div className="mx-auto max-w-[var(--container-page)] px-[var(--container-pad)] pb-8 pt-12">
                 <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-[1.6fr_repeat(3,1fr)]">
                     <div>
-                        <Logo size={26} radius={8} />
+                        {/*
+                            The bare mark, the same as the header's. The sumi
+                            tile is for an app icon or a dark ground where the
+                            mark needs a field of its own; sitting on the
+                            footer's own ground it reads as a black box with a
+                            logo trapped in it. One lockup everywhere was the
+                            brief.
+                        */}
+                        <Logo variant="mark" size={20} />
                         {/*
                           Matches /about. The previous line described the two
                           products we are not currently publishing -- "embodied
