@@ -122,7 +122,7 @@ export const NAV = [
     */
     // { href: "/magy", label: "Magy" },
     // { href: "/mos", label: "MOS" },
-    { href: "/toowl", label: "Toowl" },
+    { href: "/toowl", label: "toowl" },
     { href: "/about", label: "Company" },
 ] as const;
 

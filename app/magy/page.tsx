@@ -699,7 +699,7 @@ export default function MagyPage() {
                         Also from 1 Martian Way:{" "}
                         <Link href="/mos" className="text-blue hover:underline">MOS</Link>
                         {" · "}
-                        <Link href="/toowl" className="text-blue hover:underline">Toowl</Link>
+                        <Link href="/toowl" className="text-blue hover:underline">toowl</Link>
                         {/* Martian OS unlinked: its stated specs are unverified. */}
                     </p>
                 </section>

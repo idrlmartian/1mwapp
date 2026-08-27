@@ -26,7 +26,7 @@ export default function PrivacyPage() {
 
             <div className="mt-8 space-y-6 text-[14px] leading-relaxed [&_h2]:mt-9 [&_h2]:text-[1.05rem] [&_h2]:font-bold [&_p]:text-[var(--color-fg-muted)] [&_li]:text-[var(--color-fg-muted)]">
                 <p>
-                    {COMPANY.legal} (&ldquo;we&rdquo;) builds Magy, MOS, Toowl and related software.
+                    {COMPANY.legal} (&ldquo;we&rdquo;) builds Magy, MOS, toowl and related software.
                     This page describes what we collect from this website and why.
                 </p>
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 /*
   The contact form, restored.
@@ -26,7 +26,7 @@ import { useEffect, useRef, useState } from "react";
   /contact?topic=... link working.
 */
 const TOPICS = [
-    { value: "toowl", label: "Toowl" },
+    { value: "toowl", label: "toowl" },
     { value: "press", label: "Press & media" },
     { value: "licensing", label: "Licensing & partnerships" },
     { value: "idrl", label: "IDRL" },
@@ -39,28 +39,102 @@ export default function ContactForm() {
     const [status, setStatus] = useState<Status>("idle");
     const [error, setError] = useState("");
     const [topic, setTopic] = useState<string>("toowl");
+    /*
+      The anti-bot token, fetched with retries and gating submit.
+
+      This was the same single un-retried fetch with a swallowed error that
+      WaitlistForm carried until 1a3e116: one blip left `token.current` as "",
+      the endpoint answered the empty token with `{message:"Sent"}` so a bot
+      would learn nothing, and the sender was shown success.
+
+      It matters MORE here than it did there. A dropped waitlist signup still
+      had Postgres, then an NDJSON file on the host volume, then an
+      email-of-last-resort behind it. A dropped contact message has none of
+      that: no row, no file, no mail. It is simply gone, and the only person
+      who knows it existed has been told it arrived.
+
+      Verified against production on 2026-08-27 — POSTing an empty token
+      returned 200 {"message":"Sent"} and delivered nothing.
+    */
     const token = useRef("");
+    const tokenAt = useRef(0);
+    const cancelled = useRef(false);
+    const [tokenReady, setTokenReady] = useState(false);
+    const MAX_FILL_MS = 24 * 60 * 60 * 1000; // mirrors app/lib/waitlist.ts
+    const REFRESH_AFTER_MS = 60 * 60 * 1000;
+
+    const refreshToken = useCallback(() => {
+        let attempt = 0;
+        const load = () => {
+            fetch("/api/waitlist/token")
+                .then((r) => (r.ok ? r.json() : Promise.reject(new Error(String(r.status)))))
+                .then((d: { t?: string }) => {
+                    if (cancelled.current) return;
+                    if (d?.t) {
+                        token.current = d.t;
+                        tokenAt.current = Date.now();
+                        setTokenReady(true);
+                    } else {
+                        throw new Error("no token in response");
+                    }
+                })
+                .catch(() => {
+                    if (cancelled.current || attempt >= 4) {
+                        if (!cancelled.current) {
+                            console.warn("[contact] could not obtain a form token; submission is blocked rather than silently dropped");
+                        }
+                        return;
+                    }
+                    setTimeout(load, 400 * 2 ** attempt++);
+                });
+        };
+        load();
+    }, []);
 
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
         const t = params.get("topic");
         if (t && TOPICS.some((x) => x.value === t)) setTopic(t);
 
-        let cancelled = false;
-        fetch("/api/waitlist/token")
-            .then((r) => r.json())
-            .then((d) => {
-                if (!cancelled) token.current = d.t ?? "";
-            })
-            .catch(() => {});
-        return () => {
-            cancelled = true;
+        cancelled.current = false;
+        refreshToken();
+
+        // A token also expires. Re-issue EARLY — while the visitor is reading —
+        // so it has aged past MIN_FILL_MS by the time they press Send.
+        const onVisible = () => {
+            if (document.visibilityState !== "visible") return;
+            if (Date.now() - tokenAt.current < REFRESH_AFTER_MS) return;
+            refreshToken();
         };
-    }, []);
+        document.addEventListener("visibilitychange", onVisible);
+
+        return () => {
+            cancelled.current = true;
+            document.removeEventListener("visibilitychange", onVisible);
+        };
+    }, [refreshToken]);
 
     async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
         if (status === "sending") return;
+
+        /*
+          Refuse rather than POST a token the endpoint will reject. It answers
+          a bad token with a fake success, so submitting here would tell the
+          sender their message arrived when nothing was sent and nothing was
+          kept. An honest error they can retry is the only recoverable outcome.
+        */
+        const staleToken = Date.now() - tokenAt.current > MAX_FILL_MS;
+        if (!tokenReady || !token.current || staleToken) {
+            setStatus("error");
+            setError("That didn't send. Try again in a moment?");
+            if (staleToken) {
+                setTokenReady(false);
+                refreshToken();
+            }
+            return;
+        }
+
         setStatus("sending");
         setError("");
 
@@ -159,7 +233,9 @@ export default function ContactForm() {
             <div className="flex flex-wrap items-center gap-3">
                 <button
                     type="submit"
-                    disabled={status === "sending"}
+                    // Also gated on the form token: without it the POST is
+                    // answered with a fake success and the message is lost.
+                    disabled={status === "sending" || !tokenReady}
                     className="bg-red hover:bg-red-hover shadow-[var(--shadow-cta)] rounded-[var(--radius-md)] px-6 py-3 text-sm font-bold text-white transition-colors disabled:opacity-60"
                 >
                     {status === "sending" ? "Sending…" : "Send message"}

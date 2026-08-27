@@ -19,7 +19,7 @@ const PRODUCTS = [
     // See app/lib/constants.ts NAV for the full note.
     // { href: "/magy", label: "Magy" },
     // { href: "/mos", label: "MOS — robotics simulation" },
-    { href: "/toowl", label: "Toowl — terminal" },
+    { href: "/toowl", label: "toowl — terminal" },
     /*
       Two entries are deliberately unlisted, both unlinked sitewide and
       noindex'd, both restorable by putting the line back:
@@ -121,7 +121,7 @@ export default function Footer() {
                           product is toowl.
                         */}
                         <p className="text-fg-muted mt-3 max-w-[34ch] text-[13px]">
-                            We build developer tools and agent software. Toowl, our
+                            We build developer tools and agent software. toowl, our
                             GPU-accelerated terminal, is free and installs with one command.
                         </p>
                         <div className="mt-4 flex gap-2">

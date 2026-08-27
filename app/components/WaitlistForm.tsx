@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { signupError, signupSubmit, signupSuccess, signupView } from "@/app/lib/analytics";
 import type { SignupSource } from "@/app/lib/waitlist";
 
@@ -174,57 +174,104 @@ export default function WaitlistForm({
       of some. The token has to be issued when the form mounts and simply be
       reliable — hence retries here, and `tokenReady` gating submit below.
     */
-    const [tokenReady, setTokenReady] = useState(false);
-    useEffect(() => {
-        let cancelled = false;
-        let attempt = 0;
-        let timer: ReturnType<typeof setTimeout> | undefined;
+    /*
+      A token also goes bad by getting OLD, which retries alone do not cover.
 
+      `classifyFormToken` returns `stale` past MAX_FILL_MS (24h), and a stale
+      token is answered exactly like a forged one — a fake success with nothing
+      stored. So a tab left open overnight had `tokenReady === true` and a
+      non-empty token, sailed past the guard below, and lost the signup in the
+      same silent way the empty token used to.
+
+      Refreshing on `visibilitychange` is what fixes it, and the timing is the
+      point: the token is re-issued while the visitor is looking at the page, so
+      by the time they have typed an address it has aged past MIN_FILL_MS on its
+      own. That is why this is not the fetch-on-submit the note above rejects —
+      it re-issues EARLY, not at the moment of use.
+    */
+    const MAX_FILL_MS = 24 * 60 * 60 * 1000; // mirrors app/lib/waitlist.ts
+    // Refresh well before the 24h cliff rather than at it, so a tab focused for
+    // a long stretch is covered too, not only one that was hidden and returned.
+    const REFRESH_AFTER_MS = 60 * 60 * 1000;
+
+    const tokenAt = useRef(0);
+    const [tokenReady, setTokenReady] = useState(false);
+    const cancelled = useRef(false);
+
+    const refreshToken = useCallback(() => {
+        let attempt = 0;
         const load = () => {
             fetch("/api/waitlist/token")
                 .then((r) => (r.ok ? r.json() : Promise.reject(new Error(String(r.status)))))
                 .then((d: { t?: string }) => {
-                    if (cancelled) return;
+                    if (cancelled.current) return;
                     if (d?.t) {
                         token.current = d.t;
+                        tokenAt.current = Date.now();
                         setTokenReady(true);
                     } else {
                         throw new Error("no token in response");
                     }
                 })
                 .catch(() => {
-                    if (cancelled || attempt >= 4) {
-                        if (!cancelled) {
+                    if (cancelled.current || attempt >= 4) {
+                        if (!cancelled.current) {
                             // Ambient failure: not the user's action, so no toast.
                             console.warn("[waitlist] could not obtain a form token; submission is blocked rather than silently dropped");
                         }
                         return;
                     }
-                    timer = setTimeout(load, 400 * 2 ** attempt++);
+                    setTimeout(load, 400 * 2 ** attempt++);
                 });
         };
         load();
+    }, []);
+
+    useEffect(() => {
+        cancelled.current = false;
+        refreshToken();
+
+        const onVisible = () => {
+            if (document.visibilityState !== "visible") return;
+            if (Date.now() - tokenAt.current < REFRESH_AFTER_MS) return;
+            refreshToken();
+        };
+        document.addEventListener("visibilitychange", onVisible);
 
         return () => {
-            cancelled = true;
-            if (timer) clearTimeout(timer);
+            cancelled.current = true;
+            document.removeEventListener("visibilitychange", onVisible);
         };
-    }, []);
+    }, [refreshToken]);
 
     async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
         if (status === "sending") return;
-        if (!tokenReady || !token.current) {
-            /*
-              Refuse rather than POST an empty token. The endpoint would
-              answer a bad token with a fake success (deliberately — see the
-              effect above), so submitting here would show the visitor a
-              confirmation for a signup that was never stored. An honest
-              error they can retry is strictly better than a silent loss.
-            */
+        /*
+          Refuse rather than POST a token the endpoint will reject. It answers
+          a bad token with a fake success (deliberately — see the effect
+          above), so submitting here would show the visitor a confirmation for
+          a signup that was never stored. An honest error they can retry is
+          strictly better than a silent loss.
+
+          The age check is the backstop to the visibility refresh: if the
+          refresh never ran — no visibility change, and the tab focused past
+          the 24h cliff — the token is `stale` server-side and would be lost
+          just as silently. Blocking sends them round the retry path instead,
+          which re-mounts nothing but does give the refresh a chance to fire.
+        */
+        const staleToken = Date.now() - tokenAt.current > MAX_FILL_MS;
+        if (!tokenReady || !token.current || staleToken) {
             setStatus("error");
-            signupError(source, "no_form_token");
+            signupError(source, staleToken ? "stale_form_token" : "no_form_token");
             setError("That didn't go through. Try again in a moment?");
+            if (staleToken) {
+                // Kick off a fresh one now. Human reaction time to "try again"
+                // comfortably exceeds MIN_FILL_MS, so the retry lands on a
+                // token that is both valid and old enough.
+                setTokenReady(false);
+                refreshToken();
+            }
             return;
         }
         setStatus("sending");
