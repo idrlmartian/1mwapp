@@ -32,32 +32,20 @@ import sharp from "sharp";
 import { writeFileSync, mkdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
-import {
-    BRAND_RED,
-    CIRCLE,
-    LEG_L,
-    LEG_R,
-    SCALE,
-    maxReach,
-    markTransform,
-    CROP,
-} from "../app/lib/brand.ts";
+import { IDENTITY, KIN, SUMI, markPaths, cutFor, markSvg, tileSvg, VIEW } from "../app/lib/brand.ts";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 
+const BRAND_RED = IDENTITY.mark;   // the MARK colour is Kin now
 export { BRAND_RED };
 
-const markGroup = (scale = SCALE.full, fill = "#FFFFFF") =>
-    `<g fill="${fill}" transform="${markTransform(scale)}">` +
-    `<circle cx="${CIRCLE.cx}" cy="${CIRCLE.cy}" r="${CIRCLE.r}"/>` +
-    `<path d="${LEG_L}"/><path d="${LEG_R}"/></g>`;
+const markGroup = (cut = "display", fill = "#FFFFFF") => `<g fill="${fill}">${markPaths(cut)}</g>`;
 
 /** Red square + white mark. */
-export const tileSvg = (scale = SCALE.full, radius = 0) =>
-    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">` +
-    `<rect width="512" height="512"${radius ? ` rx="${radius}"` : ""} fill="${BRAND_RED}"/>` +
-    markGroup(scale) +
-    `</svg>`;
+// Delegates to brand.ts so the reach-based containment is applied in ONE place.
+// Hardcoding a scale here is what put a leg against the avatar border before.
+const tile = (cut = "ui", radius = 0, ground = SUMI) =>
+    tileSvg({ fill: KIN, ground, cut, radius });
 
 /**
  * Mark alone on transparency, inheriting colour from the caller.
@@ -70,22 +58,22 @@ export const tileSvg = (scale = SCALE.full, radius = 0) =>
  * Kept for surfaces that supply their own ground and want no second one.
  * Takes the same optical scale as tileSvg.
  */
-export const markSvg = (fill = "currentColor", scale = SCALE.full) =>
-    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">` +
-    markGroup(scale, fill) +
+const markOnly = (fill = "currentColor", cut = "display") =>
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">` +
+    markGroup(cut, fill) +
     `</svg>`;
 
 const out = (p) => join(ROOT, p);
 mkdirSync(out("public/icons"), { recursive: true });
 
 // ── SVGs ────────────────────────────────────────────────────────────────────
-writeFileSync(out("public/assets/img/1mw-mark.svg"), markSvg("currentColor"));
-writeFileSync(out("public/assets/img/1mw-mark-white.svg"), markSvg("#FFFFFF"));
-writeFileSync(out("public/assets/img/1mw-mark-red.svg"), markSvg(BRAND_RED));
+writeFileSync(out("public/assets/img/1mw-mark.svg"), markOnly("currentColor"));
+writeFileSync(out("public/assets/img/1mw-mark-white.svg"), markOnly("#FFFFFF"));
+writeFileSync(out("public/assets/img/1mw-mark-red.svg"), markOnly(KIN));
 // Overwriting 1mw-logo.svg swaps the logo in all three existing call sites
 // (Header x2, Footer x1) with no component edits, and deletes ~4KB of SMIL
 // animation loops and two Gaussian blur filters that ran forever on every page.
-writeFileSync(out("public/assets/img/1mw-logo.svg"), tileSvg());
+writeFileSync(out("public/assets/img/1mw-logo.svg"), tile("display", 0));
 /*
   THE FAVICON IS THE ONE ROUNDED SURFACE.
 
@@ -101,7 +89,7 @@ writeFileSync(out("public/assets/img/1mw-logo.svg"), tileSvg());
   the bare figure is three thin strokes with no field to hold them together.
 */
 const FAVICON_RADIUS = 96; // 18.75% of 512 — ~3px at 16px, visible but not a pill
-writeFileSync(out("app/icon.svg"), tileSvg(SCALE.avatar, FAVICON_RADIUS));
+writeFileSync(out("app/icon.svg"), tile("ui", 38));
 
 // ── rasters ─────────────────────────────────────────────────────────────────
 const png = (svg, size, path, bg) => {
@@ -114,13 +102,13 @@ const png = (svg, size, path, bg) => {
 // ignores alpha and composites on black, Android masks to its own shape, and
 // email clients are a lottery — all three want an opaque tile.
 await Promise.all([
-    png(tileSvg(SCALE.avatar), 180, "app/apple-icon.png", BRAND_RED),
-    png(tileSvg(SCALE.avatar), 192, "public/icons/icon-192.png", BRAND_RED),
-    png(tileSvg(SCALE.avatar), 512, "public/icons/icon-512.png", BRAND_RED),
-    png(tileSvg(SCALE.maskable), 512, "public/icons/icon-512-maskable.png", BRAND_RED),
+    png(tile("ui", 0), 180, "app/apple-icon.png", BRAND_RED),
+    png(tile("ui", 0), 192, "public/icons/icon-192.png", BRAND_RED),
+    png(tile("ui", 0), 512, "public/icons/icon-512.png", BRAND_RED),
+    png(tile("ui", 0), 512, "public/icons/icon-512-maskable.png", BRAND_RED),
     // Email CID logo: 240px source displayed at 120px for retina.
-    png(tileSvg(SCALE.avatar), 240, "public/assets/img/1mw-mark-240.png", BRAND_RED),
-    png(tileSvg(), 512, "public/assets/img/1mw-mark-512.png", BRAND_RED),
+    png(tile("ui", 0), 240, "public/assets/img/1mw-mark-240.png", BRAND_RED),
+    png(tile("display", 0), 512, "public/assets/img/1mw-mark-512.png", BRAND_RED),
 ]);
 
 // ── favicon.ico (16/32/48) ──────────────────────────────────────────────────
@@ -134,7 +122,7 @@ await Promise.all([
 const icoSizes = [16, 32, 48];
 const icoPngs = await Promise.all(
     icoSizes.map((s) =>
-        sharp(Buffer.from(tileSvg(SCALE.avatar, FAVICON_RADIUS)), { density: 400 })
+        sharp(Buffer.from(tile("ui", 38)), { density: 400 })
             .resize(s, s)
             .png({ compressionLevel: 9 })
             .toBuffer()
@@ -160,13 +148,8 @@ const entries = icoSizes.map((s, i) => {
 });
 writeFileSync(out("public/favicon.ico"), Buffer.concat([header, ...entries, ...icoPngs]));
 
-console.log(`brand fill  ${BRAND_RED}  (Signal)`);
-for (const [name, k] of Object.entries(SCALE)) {
-    const r = maxReach(k);
-    console.log(
-        `scale ${name.padEnd(8)} k=${k.toFixed(4)}  reach ${r.toFixed(1)}/${CROP} = ${((r / CROP) * 100).toFixed(1)}%`
-    );
-}
+console.log(`mark fill   ${BRAND_RED}  (Kin, on Sumi ${SUMI})`);
+console.log(`cuts        display (swept) + ui (flat), threshold 40px`);
 console.log("wrote:");
 for (const p of [
     "public/assets/img/1mw-logo.svg (overwritten — swaps Header x2 + Footer)",
@@ -186,7 +169,7 @@ const ogSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630"
   <rect width="1200" height="630" fill="#0A0A0B"/>
   <rect x="0" y="0" width="1200" height="4" fill="${BRAND_RED}"/>
   <g transform="translate(84 84)">
-    <g transform="scale(0.27)"><rect width="512" height="512" rx="32" fill="${BRAND_RED}"/>${markGroup(SCALE.avatar)}</g>
+    <g transform="scale(0.27)"><rect width="512" height="512" rx="32" fill="${BRAND_RED}"/>${markGroup("display", KIN)}</g>
   </g>
   <text x="238" y="176" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="30" font-weight="600" fill="#FFFFFF" letter-spacing="-0.5">1 Martian Way</text>
   <text x="238" y="212" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="19" font-weight="500" fill="#7C7C88" letter-spacing="2.5">TOOWL &#183; FREE &#183; MACOS + LINUX</text>
