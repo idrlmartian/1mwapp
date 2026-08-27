@@ -20,7 +20,7 @@ import { OG_IMAGE, TOOWL_URL } from "@/app/lib/constants";
       than a 404. The toowl.dev apex still has no A/CNAME record, so the
       command here does not work yet — see deploy-website.yml's LAUNCH GATE in
       the toowl repo for the four steps that make it resolve.
-    · Toowl WILL be open source (decision 2026-08-13); the toowl-pro repo stays
+    · toowl WILL be open source (decision 2026-08-13); the toowl-pro repo stays
       private. Until the repo is actually flipped public, this page must not
       link to it or call it open — a 404'd repo link is exactly the kind of
       unverifiable claim the site's strategy depends on avoiding. Add the CTA
@@ -28,12 +28,12 @@ import { OG_IMAGE, TOOWL_URL } from "@/app/lib/constants";
 */
 
 export const metadata: Metadata = {
-    title: "Toowl — Terminal You Will Love",
+    title: "toowl — Terminal You Will Love",
     description:
         "A GPU-fast desktop terminal and a tmux-style remote client in one binary — with daemon-backed workspaces and Claude on the Perch.",
     alternates: { canonical: "https://www.1martianway.com/toowl" },
     openGraph: {
-        title: "Toowl — Terminal You Will Love",
+        title: "toowl — Terminal You Will Love",
         description:
             "A GPU-fast desktop terminal and a tmux-style remote client in one binary, with Claude on the Perch.",
         url: "https://www.1martianway.com/toowl",
@@ -76,7 +76,7 @@ const FEATHER = [
     ["Palette-integrated", "Cmd-Shift-P opens Claude commands alongside terminal actions. One muscle memory, two superpowers."],
 ] as const;
 
-/** The vocabulary is the brand — it is what makes Toowl memorable. */
+/** The vocabulary is the brand — it is what makes toowl memorable. */
 const GLOSSARY = [
     ["the Perch", "the left sidebar surface where feathers render their views"],
     ["Feather", "an extension — what other tools call a plugin"],
@@ -363,7 +363,7 @@ export default async function ToowlPage() {
             </Panel>
 
             {/*
-              The "Get Early Access" block is gone (2026-08-26). Toowl is free
+              The "Get Early Access" block is gone (2026-08-26). toowl is free
               and installs with one command; ending the page by asking for an
               email to join a list for something else undercut that. The page
               now closes on the install, which is the action we actually want.

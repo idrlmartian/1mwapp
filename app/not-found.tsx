@@ -31,7 +31,7 @@ export default function NotFound() {
                 <Link href="/" className="text-blue hover:underline">Home</Link>
                 {" · "}
                 {/* Magy: unpublished until the patents are settled (2026-08-26). */}
-                <Link href="/toowl" className="text-blue hover:underline">Toowl</Link>
+                <Link href="/toowl" className="text-blue hover:underline">toowl</Link>
                 {" · "}
                 <Link href="/contact" className="text-blue hover:underline">Contact</Link>
             </p>

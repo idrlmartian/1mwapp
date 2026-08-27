@@ -23,7 +23,7 @@ export const metadata: Metadata = {
 
 const BUILDING = [
     {
-        name: "Toowl",
+        name: "toowl",
         href: "/toowl",
         line: "A GPU-fast terminal and a tmux-style remote client in one binary, with Claude on the Perch.",
         state: "v1.0",
@@ -52,7 +52,7 @@ const ERAS = [
     ["Chess robots", "Robot arms that play a physical board. The first thing we shipped."],
     ["Drones", "Autonomous racing, fleet software, and aerial survey work."],
     ["Humanoid robotics", "Prototype platforms, and the operating system to run them."],
-    ["Developer tools", "Toowl, and the agent software behind it — where nearly all the work goes today."],
+    ["Developer tools", "toowl, and the agent software behind it — where nearly all the work goes today."],
 ];
 
 export default function AboutPage() {
@@ -67,7 +67,7 @@ export default function AboutPage() {
                     </h1>
                     <p className="text-fg-muted max-w-[64ch] text-[14.5px]">
                         1 Martian Way Industries is a Mumbai company building developer tools
-                        and agent software. Toowl, our GPU-accelerated terminal, is free and
+                        and agent software. toowl, our GPU-accelerated terminal, is free and
                         installs with one command. We are small, we ship, and we publish the
                         numbers behind what we claim.
                     </p>

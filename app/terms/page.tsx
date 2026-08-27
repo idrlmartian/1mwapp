@@ -35,7 +35,7 @@ export default function TermsPage() {
 
                 <h2>Product licensing</h2>
                 <p>
-                    Magy, MOS and Toowl are commercial products. Licensing terms for each are
+                    Magy, MOS and toowl are commercial products. Licensing terms for each are
                     being finalised and will be published alongside their pricing; where a licence
                     has been issued it takes precedence over anything on this page. For specific
                     terms, write to licensing@1martianway.com.
@@ -43,7 +43,7 @@ export default function TermsPage() {
 
                 <h2>Trademarks and content</h2>
                 <p>
-                    The 1 Martian Way name and mark, and the Magy, MOS and Toowl names, belong to
+                    The 1 Martian Way name and mark, and the Magy, MOS and toowl names, belong to
                     us. The text and design of this site are ours. Please do not reproduce them
                     commercially without asking.
                 </p>

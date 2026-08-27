@@ -16,7 +16,7 @@ import { COMPANY } from "@/app/lib/constants";
 export const metadata: Metadata = {
     title: "Contact",
     description:
-        "Talk to 1 Martian Way about Magy, MOS, Toowl, licensing or press. Email is our preferred channel and we reply within one business day.",
+        "Talk to 1 Martian Way about Magy, MOS, toowl, licensing or press. Email is our preferred channel and we reply within one business day.",
     alternates: { canonical: "https://www.1martianway.com/contact" },
 };
 
