@@ -176,14 +176,77 @@ function shell(bodyHtml: string, preheader: string) {
 </body></html>`;
 }
 
-export function confirmationEmail(opts: { verifyUrl: string; unsubscribeUrl: string }) {
+/*
+  Copy per product, rather than one product's words baked into a shared
+  function.
+
+  The previous version was Magy-only — "early access", "we'll email you the
+  moment the first build is ready" — and stayed that way after the 2026-08-26
+  cutover made /magy a 404 and toowl the only public product. Anyone who had
+  signed up would have been sent a promise about a product they could no longer
+  reach. Hardcoding toowl in its place would re-rot the same way the moment the
+  held-back products come back, so the copy is keyed instead.
+
+  toowl needs genuinely different words, not a find-and-replace: it is FREE AND
+  SHIPPED, so there is nothing to wait for. Promising to mail someone "when the
+  first build is ready" about software they can install in one command reads as
+  a mistake. The ask is release notes, and the CTA is the install — the same
+  reasoning that removed the toowl waitlist block from /toowl in 6f9247a.
+*/
+type ProductKey = "toowl" | "magy" | "mos";
+
+const PRODUCT_COPY: Record<ProductKey, {
+    subject: string;
+    preheader: string;
+    lead: string;      // HTML — may carry <strong>
+    leadText: string;  // the same sentence, for the text/plain part
+    promise: string;
+}> = {
+    toowl: {
+        subject: "You're on the toowl list",
+        preheader: "Release notes for toowl, and nothing else.",
+        lead: "Thanks for signing up for <strong>toowl</strong> — a GPU-fast terminal and a tmux-style remote client in one binary, with Claude on the Perch.",
+        leadText:
+            "Thanks for signing up for toowl — a GPU-fast terminal and a tmux-style\nremote client in one binary, with Claude on the Perch.",
+        promise:
+            "It is free and shipped, so there is nothing to wait for: install it with <code style=\"font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:14px;\">curl -fsSL toowl.dev/install.sh | sh</code>. We'll email you when a new version lands — and nothing else.",
+    },
+    magy: {
+        subject: "You're on the Magy early-access list",
+        preheader: "You're on the Magy early-access list.",
+        lead: "Thanks for signing up for early access to <strong>Magy</strong> — the 3D embodied multi-agent platform.",
+        leadText:
+            "Thanks for signing up for early access to Magy — the 3D embodied\nmulti-agent platform.",
+        promise:
+            "Infinite agents. Infinite worlds. Any work. We'll email you the moment the first build is ready — and nothing else.",
+    },
+    mos: {
+        subject: "You're on the MOS early-access list",
+        preheader: "You're on the MOS early-access list.",
+        lead: "Thanks for signing up for early access to <strong>MOS</strong> — the robotics simulator with a mathematically guaranteed zero sim-to-sim gap.",
+        leadText:
+            "Thanks for signing up for early access to MOS — the robotics simulator\nwith a mathematically guaranteed zero sim-to-sim gap.",
+        promise: "We'll email you the moment the first build is ready — and nothing else.",
+    },
+};
+
+/** Unknown or absent product falls back to the one that is actually public. */
+const copyFor = (product?: string) =>
+    PRODUCT_COPY[(product ?? "") as ProductKey] ?? PRODUCT_COPY.toowl;
+
+export function confirmationEmail(opts: {
+    verifyUrl: string;
+    unsubscribeUrl: string;
+    product?: string;
+}) {
+    const c = copyFor(opts.product);
     const html = shell(
         `<h1 style="margin:0 0 18px;font-size:26px;line-height:1.25;letter-spacing:-0.5px;color:#18181B;">You're on the list.</h1>
      <p style="margin:0 0 16px;font-size:16px;line-height:1.65;color:#3F3F46;">
-       Thanks for signing up for early access to <strong>Magy</strong> — the world's first 3D embodied multi-agent platform.
+       ${c.lead}
      </p>
      <p style="margin:0 0 26px;font-size:16px;line-height:1.65;color:#3F3F46;">
-       Infinite agents. Infinite worlds. Any work. We'll email you the moment the first build is ready — and nothing else.
+       ${c.promise}
      </p>
      <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
        <td bgcolor="${SIGNAL_FILL}" style="background-color:${SIGNAL_FILL};border-radius:8px;">
@@ -193,15 +256,14 @@ export function confirmationEmail(opts: { verifyUrl: string; unsubscribeUrl: str
      <p style="margin:24px 0 0;font-size:13px;line-height:1.6;color:#71717A;">
        Confirming is optional but helps us keep the list clean — unconfirmed addresses don't receive updates.
      </p>`,
-        "You're on the Magy early-access list."
+        c.preheader
     );
 
     const text = `You're on the list.
 
-Thanks for signing up for early access to Magy — the world's first 3D embodied
-multi-agent platform. Infinite agents. Infinite worlds. Any work.
+${c.leadText}
 
-We'll email you the moment the first build is ready, and nothing else.
+${c.promise.replace(/<[^>]+>/g, "")}
 
 Confirm you're in: ${opts.verifyUrl}
 
@@ -210,11 +272,16 @@ Unsubscribe: ${opts.unsubscribeUrl}
 1 Martian Way Industries Pvt. Ltd.
 502 Satya Sadan, Bhimani Street, Matunga East, Mumbai 400 019, India`;
 
-    return { subject: "You're on the Magy early-access list", html, text };
+    return { subject: c.subject, html, text };
 }
 
-export async function sendConfirmation(to: string, verifyUrl: string, unsubscribeUrl: string) {
-    const { subject, html, text } = confirmationEmail({ verifyUrl, unsubscribeUrl });
+export async function sendConfirmation(
+    to: string,
+    verifyUrl: string,
+    unsubscribeUrl: string,
+    product?: string
+) {
+    const { subject, html, text } = confirmationEmail({ verifyUrl, unsubscribeUrl, product });
     await sendMail({
         from: `1 Martian Way <${FROM_EMAIL}>`,
         to,

@@ -200,7 +200,11 @@ export async function POST(req: Request) {
         email: v.email,
         email_norm: v.norm,
         email_domain: v.domain,
-        product: str("product") ?? "magy",
+        // Defaults to the product that is actually public. It was "magy" until
+        // the 2026-08-26 cutover made /magy a 404 and the apex serve /toowl, so
+        // any signup that omitted the field was being filed under a page nobody
+        // could reach — and mailed that product's copy.
+        product: str("product") ?? "toowl",
         source: str("source") ?? "footer",
         source_path: str("path"),
         referrer: str("referrer"),
@@ -307,7 +311,7 @@ export async function POST(req: Request) {
                 return;
             }
             try {
-                await sendConfirmation(v.email, verifyUrl, unsubUrl);
+                await sendConfirmation(v.email, verifyUrl, unsubUrl, row.product);
                 if (sql) {
                     await sql`UPDATE waitlist_signups SET confirmation_sent_at = now(),
                               confirmation_error = NULL WHERE email_norm = ${v.norm}`;
