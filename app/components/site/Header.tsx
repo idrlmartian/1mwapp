@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { LogoGlyph } from "@/app/components/brand/Logo";
+import { Logo } from "@/app/components/brand/Logo";
 import ThemeSwitch from "@/app/components/ui/ThemeSwitch";
 import { NAV, TOOWL_URL } from "@/app/lib/constants";
 import { navCtaClick } from "@/app/lib/analytics";
@@ -29,13 +29,13 @@ export default function Header() {
     return (
         <header className="border-line bg-canvas/80 sticky top-0 z-60 border-b backdrop-blur-xl">
             <div className="mx-auto flex h-14 max-w-[var(--container-page)] items-center gap-3.5 px-[var(--container-pad)]">
-                <Link
-                    href="/"
-                    className="flex shrink-0 items-center gap-2.5 text-[14.5px] font-extrabold tracking-[-0.015em]"
-                >
-                    <LogoGlyph size={21} radius={64} />
-                    <span className="hidden sm:inline">1 Martian Way</span>
-                </Link>
+                {/*
+                    The lockup, not a glyph plus a hand-set span. Ratios and the
+                    optical baseline lift come from LOCKUP in app/lib/brand.ts —
+                    the previous markup used the wrong face, weight, tracking
+                    and gap, all four set by eye.
+                */}
+                <Logo size={26} radius={8} className="shrink-0" />
 
                 <nav
                     aria-label="Products"

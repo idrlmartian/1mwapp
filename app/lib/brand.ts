@@ -167,17 +167,54 @@ export const markSvg = (fill: string, size?: number) =>
 */
 export const CONTAINMENT = 0.74;
 
+/**
+ * The mark, scaled and centred BY REACH inside the 200-unit view box.
+ *
+ * Everything that draws the mark on a field must go through this. Dropping
+ * `markPaths()` straight into a viewBox of some other size silently anchors it
+ * top-left at the wrong scale, which is exactly what shipped in Logo.tsx.
+ */
+export const containedMark = (fill: string, containment = CONTAINMENT) => {
+    const k = (containment * C) / reachOf();
+    const off = C - C * k;
+    return `<g transform="translate(${off.toFixed(2)} ${off.toFixed(2)}) scale(${k.toFixed(4)})"`
+        + ` fill="${fill}">${markPaths()}</g>`;
+};
+
+/*
+  THE LOCKUP — mark beside wordmark. Three numbers, scaled together.
+
+  `baselineLift` is not a nudge. Zen Kaku Gothic New is a Japanese face: its
+  line box runs 1.448em (ascent 1.160 + descent 0.288) against a cap height of
+  0.700em, so centring the boxes drops the caps ink by (1.448-0.700)/2 =
+  0.086em. Measured 26.5px on a 304px render against 26.1px predicted. Lift the
+  type by that much and the cap-height centre lands on the mark's ink centre.
+
+  Do NOT align to the mark's area centroid instead: it sits 5.3% higher (the
+  strokes are heavy at the top and taper down) and overshoots visibly. The eye
+  reads a mark's extremes, not its mass.
+*/
+export const LOCKUP = {
+    markBox: 78,
+    fontSize: 38,
+    gap: 30,
+    baselineLift: "-0.086em",
+    /** font-size as a fraction of the mark box. */
+    typeRatio: 38 / 78,
+    /** gap as a fraction of the mark box. */
+    gapRatio: 30 / 78,
+    tracking: "0.02em",
+    weight: 700,
+} as const;
+
 /** Mark centred on its field and scaled by reach, so a circle never clips it. */
 export const tileSvg = (
     { fill, ground, radius = 0, containment = CONTAINMENT }:
     { fill: string; ground: string; radius?: number; containment?: number }
 ) => {
-    const k = (containment * C) / reachOf();
-    const off = C - C * k;
     return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${VIEW} ${VIEW}" width="${VIEW}" height="${VIEW}">`
         + `<rect width="${VIEW}" height="${VIEW}"${radius ? ` rx="${radius}"` : ""} fill="${ground}"/>`
-        + `<g transform="translate(${off.toFixed(2)} ${off.toFixed(2)}) scale(${k.toFixed(4)})" fill="${fill}">`
-        + `${markPaths()}</g></svg>`;
+        + `${containedMark(fill, containment)}</svg>`;
 };
 
 // ── palette ─────────────────────────────────────────────────────────────────
