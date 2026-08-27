@@ -17,7 +17,7 @@ import { COMPANY } from "@/app/lib/constants";
 export const metadata: Metadata = {
     title: "About",
     description:
-        "1 Martian Way Industries builds developer tools and agent software. We make toowl, a GPU-accelerated terminal with Claude built in. Founded in Mumbai.",
+        "1 Martian Way Industries builds humanoid robotics, agentic AI and developer tools. We make toowl, a GPU-accelerated terminal with Claude built in. Founded in Mumbai.",
     alternates: { canonical: "https://www.1martianway.com/about" },
 };
 
@@ -49,10 +49,10 @@ const BUILDING = [
 ];
 
 const ERAS = [
-    ["Chess robots", "Robot arms that play a physical board. The first thing we shipped."],
+    ["Chess robots", "A team of autonomous robots playing a full-size board against human opponents. The first thing we shipped."],
     ["Drones", "Autonomous racing, fleet software, and aerial survey work."],
     ["Humanoid robotics", "Prototype platforms, and the operating system to run them."],
-    ["Developer tools", "toowl, and the agent software behind it — where nearly all the work goes today."],
+    ["Developer tools", "toowl, and the agentic AI behind it — where nearly all the work goes today."],
 ];
 
 export default function AboutPage() {
@@ -66,10 +66,11 @@ export default function AboutPage() {
                         We build things that <em className="font-semibold not-italic">do the work</em>.
                     </h1>
                     <p className="text-fg-muted max-w-[64ch] text-[14.5px]">
-                        1 Martian Way Industries is a Mumbai company building developer tools
-                        and agent software. toowl, our GPU-accelerated terminal, is free and
-                        installs with one command. We are small, we ship, and we publish the
-                        numbers behind what we claim.
+                        1 Martian Way Industries is a humanoid robotics and agentic AI
+                        company in Mumbai, incorporated in 2020, building humanoid platforms,
+                        the software that runs them, and the developer tools our own engineers
+                        work in. toowl, our GPU-accelerated terminal, is free and installs with
+                        one command.
                     </p>
                 </Panel>
 

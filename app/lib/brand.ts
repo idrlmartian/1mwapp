@@ -200,6 +200,43 @@ export const markSvg = (fill: string, size?: number) =>
 */
 export const CONTAINMENT = 0.74;
 
+/*
+  THE INK BOX — where the mark's actual ink sits inside the 200-unit view.
+
+  Measured from markPaths(), not estimated: x -3.08..203.08, y 23.21..176.79.
+  Two things fall out of it, and both matter.
+
+  The mark is WIDER THAN ITS VIEW BOX. The strokes end 3.08 units past each
+  edge, so dropping markPaths() into a 200 viewBox clips both tips — a small
+  clip, but of the one feature the character exists to state, which is that the
+  strokes never terminate. FIT below scales that away.
+
+  And the ink is 76.8% of the box TALL against 103.1% WIDE, so the mark is a
+  wide, short shape. Any lockup ratio measured against the box rather than the
+  ink is measuring mostly empty space above and below the strokes.
+*/
+export const INK = { x0: -3.08, x1: 203.08, y0: 23.21, y1: 176.79 } as const;
+
+/**
+ * The mark scaled to FIT its view box on the ink's own bounds, centred on the
+ * ink rather than on the view.
+ *
+ * This is the inline lockup's transform, and `containedMark` is the avatar's.
+ * They are not interchangeable and the difference is 40% of the mark's height:
+ * CONTAINMENT scales by REACH so a circular crop cannot clip the long right
+ * stroke, which necessarily leaves the corners of a square empty. Using it in
+ * a header renders a mark that is correct for a crop that is not happening,
+ * beside type sized for the mark it should have been.
+ */
+export const fittedMark = (fill: string, margin = 0) => {
+    const w = INK.x1 - INK.x0, h = INK.y1 - INK.y0;
+    const k = (VIEW * (1 - margin)) / Math.max(w, h);
+    const dx = (VIEW - w * k) / 2 - INK.x0 * k;
+    const dy = (VIEW - h * k) / 2 - INK.y0 * k;
+    return `<g transform="translate(${dx.toFixed(2)} ${dy.toFixed(2)}) scale(${k.toFixed(4)})"`
+        + ` fill="${fill}">${markPaths()}</g>`;
+};
+
 /**
  * The mark, scaled and centred BY REACH inside the 200-unit view box.
  *
@@ -259,6 +296,18 @@ export const LOCKUP = {
     weight: 600,
     label: "1 Martian Way",
     labelShort: "1MW",
+    /*
+      THE BARE LOCKUP — mark without a tile, which is what the chrome wears.
+
+      Its own ratios, because the tile lockup's cannot be reused: there `size`
+      is the TILE, and the mark inside it is smaller than its field, so
+      typeRatio 38/78 sizes type against a box that is mostly padding. Reusing
+      it here rendered a 10px wordmark beside a 21px mark.
+
+      15/21 and 9/21 are the mockup's nav, measured off it rather than
+      re-derived — .nav .brand is font-size 15px, gap 9px, beside markSVG(21).
+    */
+    bare: { typeRatio: 15 / 21, gapRatio: 9 / 21 },
 } as const;
 
 /** Mark centred on its field and scaled by reach, so a circle never clips it. */

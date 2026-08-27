@@ -118,8 +118,9 @@ export default function Footer() {
                           product is toowl.
                         */}
                         <p className="text-fg-muted mt-3 max-w-[34ch] text-[13px]">
-                            We build developer tools and agent software. toowl, our
-                            GPU-accelerated terminal, is free and installs with one command.
+                            Humanoid robotics, agentic AI and developer tools, from Mumbai
+                            since 2020. toowl, our GPU-accelerated terminal, is free and
+                            installs with one command.
                         </p>
                         <div className="mt-4 flex gap-2">
                             {SOCIALS.map((s) => (

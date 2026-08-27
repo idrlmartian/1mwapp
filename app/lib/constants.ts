@@ -253,7 +253,10 @@ export type HomeProduct = {
     line: string;
     state: string;
     cta: string;
+    /** Token, not a hex — the dot and the link must flip with the theme. */
     accent: string;
+    /** The same accent at a lightness that reads as 13px text. */
+    accentInk: string;
 };
 
 export const HOME_PRODUCTS: readonly HomeProduct[] = [
@@ -263,16 +266,67 @@ export const HOME_PRODUCTS: readonly HomeProduct[] = [
         line: "A GPU-fast desktop terminal and a tmux-style remote client in one binary, with Claude on the Perch.",
         state: "Free \u00b7 shipped",
         cta: "Get toowl",
-        accent: "#B98A3F",
+        accent: "var(--c-acc-toowl)",
+        accentInk: "var(--c-ink-toowl)",
     },
-    // { name: "magy,", href: "/magy", line: "\u2026", state: "Early access", cta: "Get early access", accent: "#D2622A" },
-    // { name: "MOS",   href: "/mos",  line: "\u2026", state: "Private alpha", cta: "Request access", accent: "#5B7A8C" },
+    /*
+      IDRL is here and Magy and MOS are not, and the difference is not
+      readiness — it is the patent hold. IDRL has been live since 2020 on its
+      own domain and under its own name; there is nothing about it to disclose.
+      Listing it is also the honest version of the company: two shipped
+      products reads better than one, and it is the account bridge the plan
+      already builds against.
+    */
+    {
+        name: "IDRL",
+        href: "/idrl",
+        line: "Indian Drone Racing League \u2014 pilots, events, marketplace and payments, running since 2020.",
+        state: "Live",
+        cta: "Visit IDRL",
+        accent: "var(--c-acc-idrl)",
+        accentInk: "var(--c-ink-idrl)",
+    },
+    // { name: "magy,", href: "/magy", line: "\u2026", state: "Early access", cta: "Get early access", accent: "var(--c-acc-magy)", accentInk: "var(--c-ink-magy)" },
+    // { name: "MOS",   href: "/mos",  line: "\u2026", state: "Private alpha", cta: "Request access", accent: "var(--c-acc-mos)",  accentInk: "var(--c-ink-mos)" },
 ];
 
-/** The arc, told straight — kept in step with the same list on /about. */
-export const HOME_ERAS: readonly (readonly [string, string])[] = [
-    ["Chess robots", "Robot arms that play a physical board. The first thing we shipped."],
-    ["Drones", "Autonomous racing, fleet software, and aerial survey work."],
-    ["Humanoid robotics", "Prototype platforms, and the operating system to run them."],
-    ["Developer tools", "toowl, and the agent software behind it \u2014 where nearly all the work goes today."],
+/*
+  THE ARC, AND IT DOES NOT ALL SIT IN THE PAST.
+
+  This list lived under "Where we came from" with humanoid robotics as its
+  third entry, which filed the thing the company is actually building next
+  under history. Each entry now carries WHEN it is, and the ordering is
+  chronological by START — so the list still reads as an arc, but two of its
+  four are open at the far end rather than closed.
+
+  `when` is information, not decoration: it is the only thing separating a
+  line about what we once shipped from a line about what we are shipping now.
+*/
+export type Era = { name: string; when: string; line: string; open: boolean };
+
+export const HOME_ERAS: readonly Era[] = [
+    {
+        name: "Chess robots",
+        when: "First",
+        line: "A team of autonomous robots playing a full-size board against human opponents. The first thing we shipped.",
+        open: false,
+    },
+    {
+        name: "Drones",
+        when: "Since 2020",
+        line: "Autonomous racing, fleet software and aerial survey work \u2014 and IDRL, still running.",
+        open: true,
+    },
+    {
+        name: "Developer tools",
+        when: "Today",
+        line: "toowl, and the agentic AI behind it \u2014 where nearly all the work goes today.",
+        open: true,
+    },
+    {
+        name: "Humanoid robotics",
+        when: "Now, and next",
+        line: "Platforms that walk, and the operating system to run them. This is the work the rest of it was building toward.",
+        open: true,
+    },
 ];

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { IDENTITY, LOCKUP, VIEW, containedMark, SIGNAL_FILL } from "@/app/lib/brand";
+import { IDENTITY, LOCKUP, VIEW, containedMark, fittedMark, SIGNAL_FILL } from "@/app/lib/brand";
 
 /**
  * The 1 Martian Way mark — 八, two unequal strokes that widen as they descend
@@ -39,8 +39,15 @@ type LogoProps = {
      * tapering strokes with nothing behind them read as a stray glyph rather
      * than a logo. The tile gives them a field.
      *
-     * `mark` = strokes alone in currentColor, for a surface that already
-     * supplies its own ground and wants no second one.
+     * `mark` = strokes alone on the page's own ground, for a surface that
+     * supplies one and wants no second.
+     *
+     * The two variants do NOT differ only by a rectangle. `tile` scales the
+     * mark by REACH so a circular avatar crop cannot clip the long right
+     * stroke, which leaves a square's corners empty by design. `mark` has no
+     * crop to survive, so it scales to FIT — 40% more ink at the same `size`,
+     * which is the whole difference between a header lockup that reads and one
+     * that looks like a stray glyph.
      */
     variant?: "tile" | "mark";
     /** Rendered height in px. */
@@ -49,6 +56,8 @@ type LogoProps = {
     radius?: number;
     /** Accessible name. Omit to mark the SVG decorative. */
     title?: string;
+    /** Force a single ink. `mark` defaults to the themed --c-mark. */
+    fill?: string;
     className?: string;
 };
 
@@ -57,6 +66,7 @@ export function LogoGlyph({
     size = 32,
     radius = 0,
     title,
+    fill,
     className,
 }: LogoProps) {
     const labelled = Boolean(title);
@@ -79,11 +89,27 @@ export function LogoGlyph({
                     fill={IDENTITY.ground}
                 />
             )}
+            {/*
+                THE MARK IS GOLD IN BOTH VARIANTS, and `mark` takes it from a
+                token rather than currentColor.
+
+                currentColor was the obvious choice and it is a trap in a
+                lockup: the wordmark beside it inherits colour from the same
+                place, so any wrapper that golds the mark golds the name too —
+                the company's name rendered as a second accent. --c-mark
+                carries Kin's two renderings (#8c6a1f on light, #d9a93c on
+                dark; a gold has no single correct one) and leaves the type to
+                inherit ink from the page.
+
+                `fill` overrides it for the surfaces that genuinely need one
+                colour: embroidery, a stencil, a single-ink OG card.
+            */}
             <g
                 dangerouslySetInnerHTML={{
-                    __html: containedMark(
-                        variant === "tile" ? IDENTITY.mark : "currentColor",
-                    ),
+                    __html:
+                        variant === "tile"
+                            ? containedMark(IDENTITY.mark)
+                            : fittedMark(fill ?? "var(--color-mark)"),
                 }}
             />
         </svg>
@@ -107,9 +133,17 @@ export function Logo({
     radius = 24,
     wordmark = "full",
     href = "/",
+    fill,
     className,
 }: LockupProps) {
     const label = wordmark === "short" ? LOCKUP.labelShort : LOCKUP.label;
+    /*
+      Each variant carries its own ratios. `size` means the TILE in one and the
+      MARK in the other, so a single pair of numbers cannot serve both — see
+      LOCKUP.bare for what reusing them rendered.
+    */
+    const { typeRatio, gapRatio } =
+        variant === "tile" ? LOCKUP : LOCKUP.bare;
 
     const inner = (
         <>
@@ -117,13 +151,14 @@ export function Logo({
                 variant={variant}
                 size={size}
                 radius={radius}
+                fill={fill}
                 title={wordmark === "none" ? "1 Martian Way" : undefined}
             />
             {wordmark !== "none" && (
                 <span
                     className="font-wordmark whitespace-nowrap"
                     style={{
-                        fontSize: size * LOCKUP.typeRatio,
+                        fontSize: size * typeRatio,
                         fontWeight: LOCKUP.weight,
                         letterSpacing: LOCKUP.tracking,
                         lineHeight: 1,
@@ -137,7 +172,7 @@ export function Logo({
     );
 
     const cls = `inline-flex items-center ${className ?? ""}`;
-    const style = { gap: size * LOCKUP.gapRatio };
+    const style = { gap: size * gapRatio };
 
     if (href === null)
         return (

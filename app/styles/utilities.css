@@ -19,16 +19,16 @@
   box-shadow: var(--shadow-deck);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .deck-card {
-    background: var(--color-panel);
-    backdrop-filter: var(--glass);
-  }
-}
-:root[data-theme="dark"] .deck-card {
-  background: var(--color-panel);
-  backdrop-filter: var(--glass);
-}
+/*
+  The dark-theme glass override is gone. It existed because --c-panel was a
+  76%-opaque card that needed a blur to sit over a glowing ground; both the
+  translucency and the glow went with the mockup's flat palette, and a blur
+  over a flat ground costs a compositing layer per card to change nothing.
+
+  --color-solid now resolves to #181b21 on dark, which is ABOVE the #101216
+  page rather than below it — the same relationship white has to paper in
+  light. That, and the hairline, is the whole depth model.
+*/
 
 /* Mono uppercase micro-label. Used for every panel header and eyebrow. */
 @utility deck-label {

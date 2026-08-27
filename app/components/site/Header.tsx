@@ -50,10 +50,21 @@ export default function Header() {
             active ? "text-fg font-medium" : "text-fg-muted hover:text-fg"
         }`;
 
+    /*
+      SOLID PANEL, not glass. The mockup's bar is --panel over --bg: white on
+      paper in light, #181b21 on #101216 in dark — so the bar sits ABOVE the
+      page in both, and the hairline under it is a real edge rather than the
+      point where a blur stops.
+
+      bg-canvas/80 + backdrop-blur was right while the ground carried a
+      gradient light source and panels were translucent. Both went when the
+      grounds went flat, and a blurred bar over a flat ground is just the page
+      colour with extra compositing.
+    */
     return (
-        <header className="border-line bg-canvas/80 sticky top-0 z-60 border-b backdrop-blur-xl">
+        <header className="border-line-hi bg-solid sticky top-0 z-60 border-b">
             <div className="mx-auto flex h-14 max-w-[var(--container-page)] items-center gap-[26px] px-[var(--container-pad)]">
-                <Logo variant="mark" size={21} className="text-mark shrink-0" />
+                <Logo variant="mark" size={21} className="shrink-0" />
 
                 <nav aria-label="Sections" className="hidden items-center gap-[22px] md:flex">
                     {NAV.map((item) =>
