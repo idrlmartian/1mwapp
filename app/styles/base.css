@@ -387,6 +387,25 @@
   }
 
   body {
+    /*
+      NO HORIZONTAL RUBBER-BAND.
+
+      Nothing on this site overflows sideways — measured at 390/768/1280/1920,
+      scrollWidth equals clientWidth on every page — but a trackpad can still
+      drag the document horizontally against nothing, which reads as the page
+      coming loose. toowl.dev does not do this, and this one line is the whole
+      difference between them.
+
+      `overflow-x: hidden`, NOT `overscroll-behavior-x: none`. The second also
+      suppresses the bounce and takes the two-finger back/forward gesture with
+      it — a navigation a lot of people use almost exclusively. This leaves
+      overscroll-behavior alone, so the history swipe keeps working, which is
+      exactly what toowl.dev demonstrates.
+
+      Per spec this makes the other axis compute to `auto`, so body becomes a
+      scroll container. The sticky header is verified against that.
+    */
+    overflow-x: hidden;
     background-color: var(--color-canvas);
     /* A light page needs somewhere for the light to come from. Barely visible,
        but it is the difference between "paper" and "grey fill". */
