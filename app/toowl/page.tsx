@@ -210,21 +210,28 @@ export default async function ToowlPage() {
                         <CopyCommand className="mt-6 max-w-[31rem]" command={`curl -fsSL ${TOOWL_URL}/install.sh | sh`} />
 
                         {/*
-                            AMBER, not the site signal, and dark ink on it.
+                            THE SITE SIGNAL, not toowl's amber.
 
-                            The mockup gives each product one colour and spends
-                            it on the single action you are meant to take, so a
-                            visitor learns "this page is toowl" from the button
-                            as much as the name. The ink is near-black because
-                            white on this amber measures 3.10:1 and fails; the
-                            same near-black measures 5.73:1. --c-on-acc-toowl
-                            is dark in BOTH themes for that reason — see the
-                            note in styles/base.css.
+                            The amber was tried here on the mockup's rule —
+                            each product spends its one colour on the action —
+                            and it is wrong on a real page for two reasons the
+                            mockup could not show. The header carries a filled
+                            signal-orange CTA on every route, so the amber put
+                            two different warm fills on one screen competing to
+                            be the thing you click. And at button size #b98a3f
+                            goes muddy: it reads as a DISABLED control next to
+                            the crisp one above it.
+
+                            The consistent rule is the stronger one anyway —
+                            the signal always means "this is the action", and a
+                            product's colour identifies the product. toowl's
+                            amber keeps the dot on the hub and its accents; it
+                            does not also have to be the button.
                         */}
                         <div className="mt-5 flex flex-wrap gap-2.5">
                             <a
                                 href={TOOWL_URL}
-                                className="bg-acc-toowl text-on-acc-toowl inline-flex items-center gap-2 rounded-[var(--radius-md)] px-5 py-3 text-sm font-semibold transition-opacity hover:opacity-90"
+                                className="bg-red hover:bg-red-hover text-on-red shadow-[var(--shadow-cta)] inline-flex items-center gap-2 rounded-[var(--radius-md)] px-5 py-3 text-sm font-semibold transition-colors"
                             >
                                 Install toowl <span aria-hidden>&rarr;</span>
                             </a>
