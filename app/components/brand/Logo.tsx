@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { IDENTITY, markPaths, cutFor, SIGNAL_FILL } from "@/app/lib/brand";
+import { IDENTITY, markPaths, SIGNAL_FILL } from "@/app/lib/brand";
 
 /**
  * The 1 Martian Way mark — a standing figure: a circle head above two splayed
@@ -76,14 +76,13 @@ export function LogoGlyph({
                 <rect width="512" height="512" rx={radius || undefined} fill={IDENTITY.mark} />
             )}
             {/*
-                Two cuts off one skeleton — swept terminals above 40px, flat
-                below. A tapering stroke loses its tip first, so the display
-                cut dissolves at favicon sizes while the UI cut holds.
-                See app/lib/brand.ts for why the strokes are unequal.
+                One cut at every size. A flat-terminal variant was measured and
+                dropped — it carried no more ink at 12px and blunted the taper
+                that carries the whole idea. See app/lib/brand.ts.
             */}
             <g
                 fill={variant === "tile" ? "#FFFFFF" : "currentColor"}
-                dangerouslySetInnerHTML={{ __html: markPaths(cutFor(size)) }}
+                dangerouslySetInnerHTML={{ __html: markPaths() }}
             />
         </svg>
     );

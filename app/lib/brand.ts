@@ -33,17 +33,25 @@
        It was what put the old mark in the wrong category.
 
   ─────────────────────────────────────────────────────────────────────────
-  TWO CUTS, ONE SKELETON
+  ONE CUT, EVERYWHERE
   ─────────────────────────────────────────────────────────────────────────
-  A stroke that tapers to a point loses that point first: the swept cut starts
-  dissolving below ~22px, while the flat cut holds full mass and survives 12px.
-  So the mark is cut twice off identical geometry —
+  The terminals are swept and tapered, never flat. A blunt cut says stop; a
+  taper says continues, which is the only thing 八百万 is about.
 
-    display  swept terminals   above ~40px   hero, signage, print, film
-    ui       flat terminals    below ~40px   favicon, app icon, avatars, etched
+  There was briefly a second "UI" cut with flat ends, on the belief that a
+  taper dissolves at favicon sizes. Measured, that was false — it was an
+  artefact of tapering too hard. At tip widths 8 and 10 the swept mark carries
+  the SAME ink as a flat one all the way down:
 
-  Same asymmetry, same gap, same widening. Only the ends differ, which is well
-  under the threshold at which anyone perceives two logos.
+      size    swept 8/10      flat
+      32px    192 solid       188
+      20px     68              70
+      16px     43              43
+      12px     22              22
+
+  So there is one mark and it is used at every size, on every surface. Do not
+  reintroduce a flat variant: it blunts the character for no measurable gain,
+  and an icon that differs between the favicon and the signage is two icons.
 */
 
 export const VIEW = 200;
@@ -98,7 +106,7 @@ function uiStrokes(): Pt[][] {
     ];
 }
 
-// ── the display cut: a swept centreline, offset by an easing width ──────────
+// ── the mark: a swept centreline, offset by an easing width ────────────────
 type P = readonly [number, number];
 const bez = (a: P, b: P, c: P, d: P, t: number): Pt => {
     const u = 1 - t;
@@ -127,35 +135,27 @@ function sweepPts(p0: P, c0: P, c1: P, p1: P, w0: number, w1: number, ease = 2.2
     return [...A, ...B.reverse()];
 }
 function displayStrokes(): Pt[][] {
-    // half-widths 12 and 19 — identical to the UI cut, so the two read as one mark
+    // half-widths 12 and 19; tips 8 and 10 — heavy enough to hold at 12px
     return [
-        sweepPts([82.5, 38], [78, 88], [60, 124], [22, 146], 12, 4, 2.2),
-        sweepPts([124.5, 38], [134, 94], [162, 150], [198, 178], 19, 5, 2.2),
+        sweepPts([82.5, 38], [78, 88], [60, 124], [22, 146], 12, 8, 2.2),
+        sweepPts([124.5, 38], [134, 94], [162, 150], [198, 178], 19, 10, 2.2),
     ];
 }
 
-export type Cut = "display" | "ui";
-const BUILT: Record<Cut, { svg: string; reach: number }> = (() => {
-    const mk = (st: Pt[][]) => {
-        const c = centre(st);
-        return { svg: c.strokes.map(poly).join(""), reach: c.reach };
-    };
-    return { display: mk(displayStrokes()), ui: mk(uiStrokes()) };
+const BUILT = (() => {
+    const c = centre(displayStrokes());
+    return { svg: c.strokes.map(poly).join(""), reach: c.reach };
 })();
 
-/** Inner SVG for the mark, centred in a 200x200 viewBox. */
-export const markPaths = (cut: Cut = "display") => BUILT[cut].svg;
+/** Inner SVG for the mark, centred in a 200x200 viewBox. One cut, all sizes. */
+export const markPaths = () => BUILT.svg;
 /** Farthest the mark reaches from the centre, in viewBox units (max 100). */
-export const reachOf = (cut: Cut = "display") => BUILT[cut].reach;
+export const reachOf = () => BUILT.reach;
 
-/** Below this size, use the UI cut. */
-export const CUT_THRESHOLD_PX = 40;
-export const cutFor = (px: number): Cut => (px < CUT_THRESHOLD_PX ? "ui" : "display");
-
-export const markSvg = (fill: string, cut: Cut = "display", size?: number) =>
+export const markSvg = (fill: string, size?: number) =>
     `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${VIEW} ${VIEW}"`
     + (size ? ` width="${size}" height="${size}"` : "")
-    + ` fill="${fill}">${markPaths(cut)}</svg>`;
+    + ` fill="${fill}">${markPaths()}</svg>`;
 
 /*
   How much of the crop radius the mark may occupy.
@@ -169,15 +169,15 @@ export const CONTAINMENT = 0.74;
 
 /** Mark centred on its field and scaled by reach, so a circle never clips it. */
 export const tileSvg = (
-    { fill, ground, cut = "ui", radius = 0, containment = CONTAINMENT }:
-    { fill: string; ground: string; cut?: Cut; radius?: number; containment?: number }
+    { fill, ground, radius = 0, containment = CONTAINMENT }:
+    { fill: string; ground: string; radius?: number; containment?: number }
 ) => {
-    const k = (containment * C) / reachOf(cut);
+    const k = (containment * C) / reachOf();
     const off = C - C * k;
     return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${VIEW} ${VIEW}" width="${VIEW}" height="${VIEW}">`
         + `<rect width="${VIEW}" height="${VIEW}"${radius ? ` rx="${radius}"` : ""} fill="${ground}"/>`
         + `<g transform="translate(${off.toFixed(2)} ${off.toFixed(2)}) scale(${k.toFixed(4)})" fill="${fill}">`
-        + `${markPaths(cut)}</g></svg>`;
+        + `${markPaths()}</g></svg>`;
 };
 
 // ── palette ─────────────────────────────────────────────────────────────────
