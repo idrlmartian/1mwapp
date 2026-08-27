@@ -70,7 +70,7 @@ export default function HomePage() {
                 <p className="text-fg-muted mt-5 max-w-[56ch] text-[17px] leading-[1.62]">
                     1 Martian Way Industries is a humanoid robotics and agentic AI company
                     in Mumbai, incorporated in 2020. We build humanoid platforms and the
-                    operating software that runs them, the developer tools our own engineers
+                    operating system that runs them, the developer tools our own engineers
                     work in, and IDRL &mdash; India&rsquo;s drone racing league, live since the
                     year we started.
                 </p>

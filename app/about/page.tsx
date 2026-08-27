@@ -68,7 +68,7 @@ export default function AboutPage() {
                     <p className="text-fg-muted max-w-[64ch] text-[14.5px]">
                         1 Martian Way Industries is a humanoid robotics and agentic AI
                         company in Mumbai, incorporated in 2020, building humanoid platforms,
-                        the software that runs them, and the developer tools our own engineers
+                        the operating system that runs them, and the developer tools our own engineers
                         work in. toowl, our GPU-accelerated terminal, is free and installs with
                         one command.
                     </p>
