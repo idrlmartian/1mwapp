@@ -1,1 +1,1 @@
-Magy by 1 Martian Way — Infinite agents. Infinite worlds. Any work.
+toowl by 1 Martian Way — Terminal You Will Love. A GPU-fast terminal and a tmux-style remote client in one binary.

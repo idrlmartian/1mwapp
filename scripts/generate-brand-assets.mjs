@@ -189,11 +189,11 @@ const ogSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630"
     <g transform="scale(0.27)"><rect width="512" height="512" rx="32" fill="${BRAND_RED}"/>${markGroup(SCALE.avatar)}</g>
   </g>
   <text x="238" y="176" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="30" font-weight="600" fill="#FFFFFF" letter-spacing="-0.5">1 Martian Way</text>
-  <text x="238" y="212" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="19" font-weight="500" fill="#7C7C88" letter-spacing="2.5">MAGY · EARLY ACCESS</text>
-  <text x="84" y="352" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="70" font-weight="700" fill="#FFFFFF" letter-spacing="-2">Infinite agents.</text>
-  <text x="84" y="428" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="70" font-weight="700" fill="#FFFFFF" letter-spacing="-2">Infinite worlds.</text>
-  <text x="84" y="504" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="70" font-weight="700" fill="${BRAND_RED}" letter-spacing="-2">Any work.</text>
-  <text x="84" y="576" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="26" font-weight="500" fill="#B4B4BD">The world\u2019s first 3D embodied multi-agent platform.</text>
+  <text x="238" y="212" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="19" font-weight="500" fill="#7C7C88" letter-spacing="2.5">TOOWL &#183; FREE &#183; MACOS + LINUX</text>
+  <text x="84" y="352" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="70" font-weight="700" fill="#FFFFFF" letter-spacing="-2">Terminal</text>
+  <text x="84" y="428" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="70" font-weight="700" fill="#FFFFFF" letter-spacing="-2">You Will</text>
+  <text x="84" y="504" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="70" font-weight="700" fill="${BRAND_RED}" letter-spacing="-2">Love.</text>
+  <text x="84" y="576" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="26" font-weight="500" fill="#B4B4BD">A GPU-fast terminal and a tmux-style remote client in one binary.</text>
 </svg>`;
 await sharp(Buffer.from(ogSvg), { density: 200 })
     .resize(1200, 630)
@@ -201,6 +201,6 @@ await sharp(Buffer.from(ogSvg), { density: 200 })
     .toFile(out("app/opengraph-image.png"));
 writeFileSync(
     out("app/opengraph-image.alt.txt"),
-    "Magy by 1 Martian Way — Infinite agents. Infinite worlds. Any work."
+    "toowl by 1 Martian Way — Terminal You Will Love. A GPU-fast terminal and a tmux-style remote client in one binary."
 );
 console.log("  app/opengraph-image.png (1200x630) + .alt.txt");
