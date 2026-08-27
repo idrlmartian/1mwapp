@@ -33,6 +33,12 @@ export const SITE_URL = "https://www.1martianway.com";
 */
 export const HELD_BACK = ["/magy", "/mos"] as const;
 
+/*
+  Whether "/" serves the company hub or redirects to /toowl is HOMEPAGE_IS_HUB,
+  and it lives in next.config.js because that file is its only consumer.
+  It flips in the same change that empties HELD_BACK above.
+*/
+
 export type Route = { path: string; changeFrequency: "daily" | "weekly" | "monthly" | "yearly" };
 
 export const ROUTES: Route[] = [

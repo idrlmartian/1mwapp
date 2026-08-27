@@ -1,37 +1,55 @@
 import type { Metadata, Viewport } from "next";
-import { GeistMono } from "geist/font/mono";
-import { Plus_Jakarta_Sans, Zen_Kaku_Gothic_New } from "next/font/google";
+import { IBM_Plex_Mono, IBM_Plex_Sans, IBM_Plex_Serif } from "next/font/google";
 import MainLayout from "./components/MainLayout";
 import StructuredData from "./components/StructuredData";
 import "./globals.css";
 import Script from "next/script";
 import { Providers } from "./providers";
 
-// Plus Jakarta Sans is the Mission Deck's own face — using it here is what
-// makes the marketing site and the product read as one design rather than two
-// that resemble each other.
-const jakarta = Plus_Jakarta_Sans({
+/*
+  ONE SUPERFAMILY, COMPANY-WIDE.
+
+  The product already ships IBM Plex Sans and IBM Plex Mono — magyverse's
+  globals.css calls them "the binding visual spec". This site ran Plus Jakarta
+  Sans and Geist Mono, so the marketing page and the thing it was selling were
+  two designs that merely resembled each other, and every shared component
+  would have needed two answers to "which face".
+
+  Adopting Plex here is therefore not a restyle, it is a merge: the shared
+  package becomes an EXTRACTION of what the product already has rather than a
+  third system both must migrate onto.
+
+  Serif is the one addition, and it is from the same superfamily on purpose. A
+  marketing page needs a display voice with more presence than a UI sans, and
+  bringing in a foreign face to get it is exactly how a company ends up with
+  four typographic systems again. Plex Serif at 300 gives editorial weight
+  while sharing the metrics, the language coverage and the foundry.
+*/
+const plexSans = IBM_Plex_Sans({
     subsets: ["latin"],
-    variable: "--font-jakarta",
-    weight: ["400", "500", "600", "700", "800"],
+    variable: "--font-plex-sans",
+    weight: ["300", "400", "500", "600", "700"],
     display: "swap",
 });
 
-// Zen Kaku Gothic New carries the WORDMARK and nothing else. It is a Japanese
-// foundry face, which is what earns the connection to the 八 mark without
-// announcing it. Loading only weight 700 keeps this to one small file, and
-// scoping it to the wordmark means the CJK metrics (a 1.448em line box against
-// a 0.700em cap height) never leak into body copy.
-const zenKaku = Zen_Kaku_Gothic_New({
+/** Display only — headlines and pull quotes. Never body copy, never UI. */
+const plexSerif = IBM_Plex_Serif({
     subsets: ["latin"],
-    variable: "--font-wordmark-face",
-    weight: ["700"],
+    variable: "--font-plex-serif",
+    weight: ["300", "400", "600"],
     display: "swap",
 });
 
-// Geist Mono carries every measured number, panel header and status chip. It is
-// already a dependency and served from node_modules, so it costs no extra
-// request — and tabular-nums keeps the metric grid from shifting.
+/** Every measured number, route, label and status chip. */
+const plexMono = IBM_Plex_Mono({
+    subsets: ["latin"],
+    variable: "--font-plex-mono",
+    weight: ["400", "500", "600"],
+    display: "swap",
+});
+
+
+
 
 export const metadata: Metadata = {
     // www is canonical: it is what is indexed today, and changing canonical
@@ -116,7 +134,7 @@ export default function RootLayout({
     return (
         <html
             lang="en"
-            className={`${jakarta.variable} ${zenKaku.variable} ${GeistMono.variable}`}
+            className={`${plexSans.variable} ${plexSerif.variable} ${plexMono.variable}`}
             suppressHydrationWarning
         >
             <body className="bg-canvas text-fg min-h-screen antialiased">

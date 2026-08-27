@@ -1,3 +1,22 @@
+/*
+  Does "/" serve the company hub, or redirect to the one shippable product?
+
+  FALSE today, and that is the right answer while it stands. With Magy and MOS
+  held back for the patent filings there is exactly one product to point at,
+  and a company page listing one product is weaker than that product's own
+  page — the founder's call of 2026-08-26, and the reason "/" 307s to /toowl.
+
+  It becomes TRUE on filing day, in the same change that empties HELD_BACK in
+  app/lib/routes.ts. app/page.tsx already renders whatever HOME_PRODUCTS
+  contains, so it is honest at one product and honest at four; nothing there
+  needs rewriting.
+
+  A flag rather than two commented-out blocks because the two rules it guards
+  sit 130 lines apart in this file, and "delete these two entries" is exactly
+  the instruction that gets half-followed.
+*/
+const HOMEPAGE_IS_HUB = false;
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     // Enable React Compiler (stable in Next.js 16)
@@ -91,7 +110,10 @@ const nextConfig = {
 
     async redirects() {
         return [
-            // "/" -> "/toowl", TEMPORARY (founder's call, 2026-08-26).
+            // "/" -> "/toowl", while HOMEPAGE_IS_HUB is false (founder's call,
+            // 2026-08-26). Both rules are gated by that ONE flag — see
+            // app/lib/routes.ts for when it flips and why it is a flag rather
+            // than two commented-out blocks 130 lines apart.
             //
             // Was "/magy" until 2026-08-26. Magy and MOS are held back from
             // publication until the patent position is settled, so toowl —
@@ -107,12 +129,16 @@ const nextConfig = {
             // more or less forever, so "for now" would become "until every
             // visitor clears their cache". app/page.tsx is left in place and
             // unreachable so reverting is deleting these two entries.
-            {
-                source: "/",
-                has: [{ type: "host", value: "1martianway.com" }],
-                destination: "https://www.1martianway.com/toowl",
-                permanent: false,
-            },
+            ...(HOMEPAGE_IS_HUB
+                ? []
+                : [
+                      {
+                          source: "/",
+                          has: [{ type: "host", value: "1martianway.com" }],
+                          destination: "https://www.1martianway.com/toowl",
+                          permanent: false,
+                      },
+                  ]),
             // /idrl -> droneracingindia.com.
             //
             // Sits ABOVE the apex->www rule and carries NO host condition on
@@ -237,7 +263,9 @@ const nextConfig = {
                 permanent: true,
             },
             // The www (and any other host) case of the "/" -> "/toowl" rule above.
-            { source: "/", destination: "/toowl", permanent: false },
+            ...(HOMEPAGE_IS_HUB
+                ? []
+                : [{ source: "/", destination: "/toowl", permanent: false }]),
             /*
               /geospatial has no rule and should not get one. It used to
               redirect to /martianos, which now redirects itself, and pointing

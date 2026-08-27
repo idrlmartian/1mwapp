@@ -135,10 +135,43 @@ function sweepPts(p0: P, c0: P, c1: P, p1: P, w0: number, w1: number, ease = 2.2
     return [...A, ...B.reverse()];
 }
 function displayStrokes(): Pt[][] {
-    // half-widths 12 and 19; tips 8 and 10 — heavy enough to hold at 12px
+    /*
+      FLOW — chosen 2026-08-27, after eight directions were drawn and compared
+      at every size down to twelve pixels.
+
+      The previous drawing kept these same two strokes nearly parallel-sided —
+      12 down to 8, and 19 down to 10 — so each one read as a folded strip
+      rather than a gesture. A strip has two edges of equal weight and no
+      direction, and the eye resolved the pair as a ribbon looped at the top.
+      That is what made the mark read as a badge rather than a mark, and it was
+      a geometry problem, not a colour problem.
+
+      Three changes, and every one of the four locked decisions above survives
+      them — it still never closes, still widens ninefold, the halves are still
+      unequal, and there is still no head:
+
+        1. CURVATURE INCREASES TOWARD THE TIP instead of running out straight,
+           so the eye reads a path rather than an edge.
+        2. THE TAPER EASES AT 2.6, not 2.2 — the mass stays in the body and all
+           the thinning happens in the last quarter. That is what reads as
+           continuing rather than stopping.
+        3. THE RIGHT STROKE OVERSHOOTS the frame before `centre()` pulls it
+           back, which is what makes the pair feel like it carries on past the
+           crop.
+
+      THE TIP FLOOR IS MEASURED, NOT TASTE. Tips stop at 5.5 and 6.5 units.
+      Below roughly 4.2 a tip falls under one device pixel at 12px and the
+      stroke visibly shortens — so the mark would change length with size,
+      which breaks "one cut, everywhere" in the least obvious way possible.
+      Do not thin these further to make the flow more dramatic.
+
+      Gate and Ascend remain live alternates (see the mark competition); Ascend
+      in particular merges this with the threshold direction. Swapping is this
+      function and nothing else — every consumer goes through `containedMark`.
+    */
     return [
-        sweepPts([82.5, 38], [78, 88], [60, 124], [22, 146], 12, 8, 2.2),
-        sweepPts([124.5, 38], [134, 94], [162, 150], [198, 178], 19, 10, 2.2),
+        sweepPts([84, 28], [68, 86], [46, 130], [10, 152], 14, 5.5, 2.6),
+        sweepPts([122, 28], [146, 94], [176, 150], [210, 170], 17.5, 6.5, 2.6),
     ];
 }
 
@@ -198,7 +231,7 @@ export const LOCKUP = {
     markBox: 78,
     fontSize: 38,
     gap: 30,
-    baselineLift: "-0.086em",
+    baselineLift: "0em",
     /** font-size as a fraction of the mark box. */
     typeRatio: 38 / 78,
     /** gap as a fraction of the mark box. */
@@ -240,9 +273,21 @@ export const IDENTITY = {
     /** For the mark on a light ground. */
     markOnLight: "#8C6A1F",
     lightGround: "#F5F2EA",
-    /** Wordmark: Zen Kaku Gothic New 700, Japanese foundry, geometric and calm. */
-    typeface: `"Zen Kaku Gothic New", -apple-system, "Segoe UI", sans-serif`,
-    typeWeight: 700,
+    /*
+      Wordmark: IBM Plex Sans 600.
+
+      It was Zen Kaku Gothic New 700 — a Japanese foundry face chosen to echo
+      the 八 mark without announcing it. That reasoning went with the mark. The
+      company now runs one superfamily end to end (see layout.tsx), and holding
+      an extra family for a single lockup is not a cost a wordmark earns.
+
+      NOTE the baseline lift below is no longer needed for the same reason it
+      existed: Plex Sans has Latin metrics, not a 1.448em CJK line box. It is
+      kept at 0 rather than deleted so the lockup's three numbers stay one
+      shape and a future face can set it again.
+    */
+    typeface: `var(--font-plex-sans), -apple-system, "Segoe UI", sans-serif`,
+    typeWeight: 600,
     typeTracking: "0.02em",
 } as const;
 

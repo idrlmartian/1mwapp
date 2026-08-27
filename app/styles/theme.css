@@ -26,11 +26,16 @@
 
 @theme {
   /* ── TYPE ──────────────────────────────────────────────────────────────── */
-  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, -apple-system, sans-serif;
-  --font-display: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
-  /* The wordmark only. Never body copy — see layout.tsx for why. */
-  --font-wordmark: var(--font-wordmark-face), var(--font-jakarta), sans-serif;
+  --font-sans: var(--font-plex-sans), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  /* Display voice. Editorial weight from the SAME superfamily, so adopting it
+     costs no extra foundry and no metric mismatch — see layout.tsx. */
+  --font-display: var(--font-plex-serif), Georgia, "Times New Roman", serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  /* The wordmark rides the sans at 600; there is no separate wordmark face any
+     more. Zen Kaku Gothic New was chosen to echo a 八 mark the site no longer
+     draws, and keeping a whole extra family for one lockup could not be
+     justified once the mark became Flow. */
+  --font-wordmark: var(--font-plex-sans), ui-sans-serif, system-ui, sans-serif;
 
   --text-hero: clamp(1.4375rem, 2.7vw, 2rem);
   --text-hero--line-height: 1.06;
