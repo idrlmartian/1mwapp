@@ -390,3 +390,19 @@
   border-color: rgb(255 255 255 / 0.17);
 }
 .world .world-meta { color: #8b93a7; }
+
+
+/*
+  SIGNED-OUT vs SIGNED-IN CHROME.
+
+  Both are rendered; CSS picks. The attribute is stamped before paint by the
+  probe in layout.tsx, so there is no flicker and no page is forced out of
+  static generation to do it.
+
+  Defaults to the signed-OUT state when the attribute is absent, which is the
+  right way round: a visitor with no account sees the correct thing, and the
+  worst case for a signed-in visitor whose cookie was cleared is being offered
+  a door they are already through.
+*/
+[data-account="1"] .when-signed-out { display: none !important; }
+:root:not([data-account="1"]) .when-signed-in { display: none !important; }

@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { Logo } from "@/app/components/brand/Logo";
 import ThemeSwitch from "@/app/components/ui/ThemeSwitch";
-import { NAV, ACCOUNT_HREF } from "@/app/lib/constants";
+import { NAV, ACCOUNT_HREF, ACCOUNT_ORIGIN } from "@/app/lib/constants";
 import { navCtaClick } from "@/app/lib/analytics";
 
 /*
@@ -102,18 +102,44 @@ export default function Header() {
                         origins, and the prefetch would fire a pointless
                         cross-origin request on hover for every visitor.
                     */}
+                    {/*
+                        BOTH STATES ARE RENDERED; CSS PICKS ONE.
+
+                        This site cannot see the session — id.1martianway.com is
+                        a different origin — so a pre-paint probe in layout.tsx
+                        stamps data-account from a credential-free hint cookie
+                        and utilities.css hides the wrong half. That keeps every
+                        page statically generated and shows no flicker, neither
+                        of which an effect-based swap manages.
+                    */}
                     <a
                         href={ACCOUNT_HREF}
-                        className="text-fg-muted hover:text-fg hidden text-[13.5px] transition-colors sm:block"
+                        className="when-signed-out text-fg-muted hover:text-fg hidden text-[13.5px] transition-colors sm:block"
                     >
                         Sign in
                     </a>
                     <a
                         href={ACCOUNT_HREF}
                         onClick={() => navCtaClick(pathname)}
-                        className="bg-red hover:bg-red-hover text-on-red shadow-[var(--shadow-cta)] inline-flex items-center rounded-[7px] px-3.5 py-2 text-[13px] font-medium transition-colors"
+                        className="when-signed-out bg-red hover:bg-red-hover text-on-red shadow-[var(--shadow-cta)] inline-flex items-center rounded-[7px] px-3.5 py-2 text-[13px] font-medium transition-colors"
                     >
                         Create account
+                    </a>
+                    {/*
+                        Signed in: ONE control, and quiet. Someone with an
+                        account does not need to be sold a door they are already
+                        through — the loud filled button here would be a second
+                        thing competing with whatever the page is actually for.
+                    */}
+                    <a
+                        href={ACCOUNT_ORIGIN}
+                        className="when-signed-in border-line hover:bg-sunk inline-flex items-center gap-2 rounded-[7px] border px-3.5 py-2 text-[13px] font-medium transition-colors"
+                    >
+                        <svg viewBox="0 0 24 24" className="size-3.5" fill="none" stroke="currentColor" strokeWidth={1.8} aria-hidden>
+                            <circle cx="12" cy="8" r="3.5" />
+                            <path d="M4.5 20a7.5 7.5 0 0 1 15 0" />
+                        </svg>
+                        Account
                     </a>
                     <button
                         type="button"
@@ -150,9 +176,16 @@ export default function Header() {
                         <a
                             href={ACCOUNT_HREF}
                             onClick={() => setOpen(false)}
-                            className="text-fg-muted rounded-[var(--radius-md)] px-3 py-2.5 text-sm"
+                            className="when-signed-out text-fg-muted rounded-[var(--radius-md)] px-3 py-2.5 text-sm"
                         >
                             Sign in
+                        </a>
+                        <a
+                            href={ACCOUNT_ORIGIN}
+                            onClick={() => setOpen(false)}
+                            className="when-signed-in text-fg rounded-[var(--radius-md)] px-3 py-2.5 text-sm font-semibold"
+                        >
+                            Your account
                         </a>
                     </nav>
                     <div className="mt-3 sm:hidden">

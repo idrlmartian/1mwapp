@@ -172,6 +172,9 @@ export const ID_ORIGIN = process.env.ID_ORIGIN ?? "https://id.1martianway.com";
 */
 export const ACCOUNT_HREF = `${ID_ORIGIN}/signin`;
 
+/** Where an existing account goes. The dashboard, not the door. */
+export const ACCOUNT_ORIGIN = `${ID_ORIGIN}/account`;
+
 export const COMPANY = {
     legal: "1 Martian Way Industries Pvt. Ltd.",
     email: "sales@1martianway.com",
