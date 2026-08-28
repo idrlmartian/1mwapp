@@ -137,6 +137,38 @@ export default function RootLayout({
             className={`${plexSans.variable} ${plexSerif.variable} ${plexMono.variable}`}
             suppressHydrationWarning
         >
+            <head>
+                {/*
+                    KNOW WHETHER THIS BROWSER HAS AN ACCOUNT, BEFORE FIRST PAINT.
+
+                    id.1martianway.com is a different origin, so this site cannot
+                    see the session — which is why it kept offering "Sign in /
+                    Create account" to people already signed in. id's middleware
+                    mirrors a single credential-free byte onto the parent domain
+                    (`1mw_account=1`); it authenticates nothing and grants
+                    nothing, and is not HttpOnly precisely so this can read it.
+
+                    IT MUST NOT BE READ SERVER-SIDE. Touching cookies() in the
+                    layout opts every page out of static generation — the whole
+                    site becomes dynamic to personalise one button, and these
+                    pages are prerendered today (x-nextjs-prerender: 1).
+
+                    And it must not be read in an effect either: that renders
+                    "Sign in", hydrates, then swaps — a visible flicker on every
+                    page load for exactly the people who are already customers.
+
+                    So it runs here, before paint, and only stamps an attribute.
+                    CSS decides what shows. Same pattern as a theme script, and
+                    for the same reason.
+                */}
+                <script
+                    dangerouslySetInnerHTML={{
+                        __html:
+                            "try{if(document.cookie.indexOf('1mw_account=1')>-1)" +
+                            "document.documentElement.setAttribute('data-account','1')}catch(e){}",
+                    }}
+                />
+            </head>
             <body className="bg-canvas text-fg min-h-screen antialiased">
                 <StructuredData type="Organization" />
                 {/* @radix-ui/themes removed: it wrapped the whole app purely to
