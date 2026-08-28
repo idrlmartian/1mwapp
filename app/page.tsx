@@ -30,7 +30,7 @@ import { COMPANY, HOME_PRODUCTS, HOME_ERAS } from "@/app/lib/constants";
 export const metadata: Metadata = {
     title: "1 Martian Way — we build machines that do the work",
     description:
-        "1 Martian Way Industries builds developer tools and agent software in Mumbai. We make toowl, a GPU-accelerated terminal with Claude built in.",
+        "1 Martian Way Industries builds humanoid robotics, agentic AI and developer tools in Mumbai. We make toowl, a GPU-accelerated terminal with Claude built in.",
     alternates: { canonical: "https://www.1martianway.com/" },
 };
 
@@ -44,21 +44,40 @@ export default function HomePage() {
                 company does, and nothing about how anything decides — the
                 five-family rule binds this page the same as the film.
             */}
-            <section className="pt-14 pb-10 sm:pt-20 sm:pb-14">
-                <p className="deck-label mb-5">Developer tools · agent software · robotics</p>
-                <h1 className="font-display max-w-[15ch] text-[clamp(2.1rem,6vw,3.75rem)] leading-[1.04] font-light tracking-[-0.028em] text-balance">
+            <section className="pt-10 pb-10 sm:pt-14 sm:pb-14">
+                {/*
+                    Humanoid robotics leads, matching the mockup's eyebrow and
+                    the correction that made it: it is the present and the
+                    direction, not the middle of a history list.
+                */}
+                <p className="deck-label mb-5">Humanoid Robotics &middot; Agentic AI &middot; Developer Tools</p>
+                <h1 className="font-display max-w-[15ch] text-[clamp(1.9rem,4.4vw,3.1rem)] leading-[1.04] font-light tracking-[-0.028em] text-balance">
                     We build machines that{" "}
                     <em className="font-semibold not-italic">do the work</em>.
                 </h1>
-                <p className="text-fg-muted mt-5 max-w-[52ch] text-[17px] leading-[1.62]">
-                    {COMPANY.legal} is a Mumbai company. We are small, we ship, and we publish
-                    the numbers behind what we claim — which is why the ones on this site are
-                    measured rather than rounded up.
+                {/*
+                    The company, stated the way a company states itself.
+
+                    What stood here — "We are small, we ship, and we publish the
+                    numbers behind what we claim" — was a note about our working
+                    habits standing in for a description of the business. It
+                    told a reader nothing about what we make or how long we have
+                    been making it, which is the first thing anyone landing here
+                    needs. Every claim below is checkable: the incorporation
+                    year is embedded in the CIN in the footer, and IDRL and the
+                    press coverage are both public.
+                */}
+                <p className="text-fg-muted mt-5 max-w-[56ch] text-[17px] leading-[1.62]">
+                    1 Martian Way Industries is a humanoid robotics and agentic AI company
+                    in Mumbai, incorporated in 2020. We build humanoid platforms and the
+                    operating system that runs them, the developer tools our own engineers
+                    work in, and IDRL &mdash; India&rsquo;s drone racing league, live since the
+                    year we started.
                 </p>
                 <div className="mt-7 flex flex-wrap gap-2.5">
                     <Link
                         href="/toowl"
-                        className="bg-red hover:bg-red-hover shadow-[var(--shadow-cta)] inline-flex items-center gap-2 rounded-[var(--radius-md)] px-5 py-3 text-sm font-bold text-white transition-colors"
+                        className="bg-red hover:bg-red-hover shadow-[var(--shadow-cta)] inline-flex items-center gap-2 rounded-[var(--radius-md)] px-5 py-3 text-sm font-bold text-on-red transition-colors"
                     >
                         Get toowl &mdash; free
                     </Link>
@@ -77,7 +96,7 @@ export default function HomePage() {
                 colour, and it appears twice: the identifying dot, and that
                 product's own link. Nothing else on the row is coloured.
             */}
-            <section aria-labelledby="products-h" className="mb-12">
+            <section id="products" aria-labelledby="products-h" className="mb-12 scroll-mt-20">
                 <h2 id="products-h" className="sr-only">
                     What we make
                 </h2>
@@ -109,7 +128,7 @@ export default function HomePage() {
                             <Link
                                 href={p.href}
                                 className="mt-3.5 inline-block text-[13px] font-medium"
-                                style={{ color: p.accent }}
+                                style={{ color: p.accentInk }}
                             >
                                 {p.cta} &rarr;
                             </Link>
@@ -123,13 +142,27 @@ export default function HomePage() {
                 carries: a company that shipped in four domains over a decade is
                 more investable than one claiming a straight line.
             */}
-            <Panel label="Where we came from" className="mb-12">
+            <Panel label="The arc" className="mb-12">
                 <ul className="grid gap-x-8 gap-y-4 sm:grid-cols-2">
-                    {HOME_ERAS.map(([era, line]) => (
-                        <li key={era}>
-                            <b className="block text-[14px] font-semibold">{era}</b>
+                    {HOME_ERAS.map((e) => (
+                        <li key={e.name}>
+                            <div className="flex items-baseline gap-2.5">
+                                <b className="text-[14px] font-semibold">{e.name}</b>
+                                {/*
+                                    The marker is the whole point of the row —
+                                    without it "Humanoid robotics" reads as
+                                    something we used to do. Open eras get the
+                                    signal; closed ones stay quiet, so the eye
+                                    lands on what is live.
+                                */}
+                                <span
+                                    className={`deck-label ${e.open ? "text-red" : "text-fg-dim"}`}
+                                >
+                                    {e.when}
+                                </span>
+                            </div>
                             <span className="text-fg-muted text-[13.5px] leading-[1.55]">
-                                {line}
+                                {e.line}
                             </span>
                         </li>
                     ))}

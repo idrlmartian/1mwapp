@@ -22,18 +22,18 @@ export default function NotFound() {
             <p className="mt-6">
                 <a
                     href={TOOWL_URL}
-                    className="bg-red hover:bg-red-hover shadow-[var(--shadow-cta)] inline-flex items-center rounded-[9px] px-4 py-2.5 text-[13px] font-bold text-white transition-colors"
+                    className="bg-red hover:bg-red-hover shadow-[var(--shadow-cta)] inline-flex items-center rounded-[9px] px-4 py-2.5 text-[13px] font-bold text-on-red transition-colors"
                 >
                     Get toowl
                 </a>
             </p>
             <p className="text-fg-dim mt-6 text-[13px]">
-                <Link href="/" className="text-blue hover:underline">Home</Link>
+                <Link href="/" className="text-red hover:underline">Home</Link>
                 {" · "}
                 {/* Magy: unpublished until the patents are settled (2026-08-26). */}
-                <Link href="/toowl" className="text-blue hover:underline">toowl</Link>
+                <Link href="/toowl" className="text-red hover:underline">toowl</Link>
                 {" · "}
-                <Link href="/contact" className="text-blue hover:underline">Contact</Link>
+                <Link href="/contact" className="text-red hover:underline">Contact</Link>
             </p>
         </div>
     );

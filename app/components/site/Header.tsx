@@ -5,56 +5,84 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { Logo } from "@/app/components/brand/Logo";
 import ThemeSwitch from "@/app/components/ui/ThemeSwitch";
-import { NAV, TOOWL_URL } from "@/app/lib/constants";
+import { NAV, ACCOUNT_HREF } from "@/app/lib/constants";
 import { navCtaClick } from "@/app/lib/analytics";
 
 /*
-  The deck's chrome bar. 56px, sticky, glass.
+  The company bar, ported from the site mockup.
 
-  The "Get Early Access" button is the only red thing up here, and it is present
-  on every route — whatever a visitor is reading, the ask is one click away.
+  WHAT CHANGED, and why each was a mockup decision rather than a preference:
 
-  The bar itself stays full-bleed so its rule and glass span the viewport; the
-  ROW inside it is constrained to --container-page, the same token the page
-  content and the footer use. Without that inner wrapper the header had no
-  max-width at all, so on a 1920px display the logo sat 14px from the window
-  edge while the panels below it started at 194px and the footer at 344px —
-  three different left edges stacked down one page.
+  · The nav links were a bordered capsule of pills with a blue active state.
+    That treatment belongs to a segmented CONTROL — something you switch
+    between — and site sections are not that. They are plain text now, with
+    weight and ink carrying the current page, which is what the mockup draws
+    and what every site whose nav is not a widget does.
+
+  · The mark lost its tile. A sumi square is right on a dark ground or an app
+    icon, where the mark needs a field of its own; in a light header the tile
+    reads as a second logo sitting behind the first. Bare Kin strokes at 21px
+    is the mockup's lockup, and it is why LOCKUP moved to title case.
+
+  · The right-hand pair is the account, not a product. "Get toowl" pointed at
+    another site from the company's own chrome — the one action available on
+    every page led OFF it. The mockup's pair is Sign in / Create account,
+    because the account is the thing that spans every product.
+
+  The bar stays full-bleed so its rule spans the viewport; the ROW inside is
+  constrained to --container-page, the same token the page content and the
+  footer use, so the logo, the panels and the footer share one left edge.
 */
 export default function Header() {
     const pathname = usePathname();
     const [open, setOpen] = useState(false);
-    const isActive = (href: string) => pathname === href || pathname.startsWith(href + "/");
+    const isActive = (href: string) =>
+        href.startsWith("/") && (pathname === href || pathname.startsWith(href + "/"));
 
+    /*
+      Mockup: 14px, ink-2, and the current page in full ink at 500. No pill, no
+      border, no background — the only difference between states is weight and
+      colour, which is enough at this size and stops the bar from looking like
+      a toolbar.
+    */
+    const link = (active: boolean) =>
+        `text-[14px] transition-colors ${
+            active ? "text-fg font-medium" : "text-fg-muted hover:text-fg"
+        }`;
+
+    /*
+      SOLID PANEL, not glass. The mockup's bar is --panel over --bg: white on
+      paper in light, #181b21 on #101216 in dark — so the bar sits ABOVE the
+      page in both, and the hairline under it is a real edge rather than the
+      point where a blur stops.
+
+      bg-canvas/80 + backdrop-blur was right while the ground carried a
+      gradient light source and panels were translucent. Both went when the
+      grounds went flat, and a blurred bar over a flat ground is just the page
+      colour with extra compositing.
+    */
     return (
-        <header className="border-line bg-canvas/80 sticky top-0 z-60 border-b backdrop-blur-xl">
-            <div className="mx-auto flex h-14 max-w-[var(--container-page)] items-center gap-3.5 px-[var(--container-pad)]">
-                {/*
-                    The lockup, not a glyph plus a hand-set span. Ratios and the
-                    optical baseline lift come from LOCKUP in app/lib/brand.ts —
-                    the previous markup used the wrong face, weight, tracking
-                    and gap, all four set by eye.
-                */}
-                <Logo size={26} radius={8} className="shrink-0" />
+        <header className="border-line-hi bg-solid sticky top-0 z-60 border-b">
+            <div className="mx-auto flex h-14 max-w-[var(--container-page)] items-center gap-[26px] px-[var(--container-pad)]">
+                <Logo variant="mark" size={21} className="shrink-0" />
 
-                <nav
-                    aria-label="Products"
-                    className="border-line bg-sunk ml-1 hidden rounded-[var(--radius-capsule)] border p-0.5 md:flex"
-                >
-                    {NAV.map((item) => (
-                        <Link
-                            key={item.href}
-                            href={item.href}
-                            aria-current={isActive(item.href) ? "page" : undefined}
-                            className={`rounded-[var(--radius-capsule)] px-3.5 py-1.5 text-[12.5px] transition-colors ${
-                                isActive(item.href)
-                                    ? "bg-blue-soft text-blue font-bold shadow-[inset_0_0_0_1px_color-mix(in_oklab,var(--color-blue)_38%,transparent)]"
-                                    : "text-fg-muted hover:text-fg font-medium"
-                            }`}
-                        >
-                            {item.label}
-                        </Link>
-                    ))}
+                <nav aria-label="Sections" className="hidden items-center gap-[22px] md:flex">
+                    {NAV.map((item) =>
+                        item.href.startsWith("/") ? (
+                            <Link
+                                key={item.href}
+                                href={item.href}
+                                aria-current={isActive(item.href) ? "page" : undefined}
+                                className={link(isActive(item.href))}
+                            >
+                                {item.label}
+                            </Link>
+                        ) : (
+                            <a key={item.href} href={item.href} className={link(false)}>
+                                {item.label}
+                            </a>
+                        ),
+                    )}
                 </nav>
 
                 <div className="ml-auto flex items-center gap-3">
@@ -62,24 +90,37 @@ export default function Header() {
                         <ThemeSwitch />
                     </div>
                     {/*
-                      Goes to toowl.dev, not to this site's /toowl page. That
-                      page is a summary; the product site is where the install
-                      command, the docs and the releases actually are. A plain
-                      <a>, since next/link is for internal routes.
+                        Quiet, because it is the returning user's door and they
+                        already know where it is. The new visitor's door is the
+                        filled one beside it — the only signal-coloured thing in
+                        the bar, on every route.
+                    */}
+                    {/*
+                        Plain anchors, not next/link. These cross to another
+                        origin (id.1martianway.com), and next/link prefetches
+                        and client-routes — neither of which works across
+                        origins, and the prefetch would fire a pointless
+                        cross-origin request on hover for every visitor.
                     */}
                     <a
-                        href={TOOWL_URL}
-                        onClick={() => navCtaClick(pathname)}
-                        className="bg-red hover:bg-red-hover shadow-[var(--shadow-cta)] inline-flex items-center rounded-[9px] px-3.5 py-2.5 text-[12.5px] font-bold text-white transition-colors"
+                        href={ACCOUNT_HREF}
+                        className="text-fg-muted hover:text-fg hidden text-[13.5px] transition-colors sm:block"
                     >
-                        Get toowl
+                        Sign in
+                    </a>
+                    <a
+                        href={ACCOUNT_HREF}
+                        onClick={() => navCtaClick(pathname)}
+                        className="bg-red hover:bg-red-hover text-on-red shadow-[var(--shadow-cta)] inline-flex items-center rounded-[7px] px-3.5 py-2 text-[13px] font-medium transition-colors"
+                    >
+                        Create account
                     </a>
                     <button
                         type="button"
                         onClick={() => setOpen((v) => !v)}
                         aria-expanded={open}
                         aria-label="Menu"
-                        className="border-line text-fg-muted grid size-9 place-items-center rounded-[9px] border md:hidden"
+                        className="border-line text-fg-muted grid size-9 place-items-center rounded-[7px] border md:hidden"
                     >
                         <svg viewBox="0 0 24 24" className="size-4" fill="none" stroke="currentColor" strokeWidth={2}>
                             {open ? <path d="M6 6l12 12M18 6L6 18" /> : <path d="M3 6h18M3 12h18M3 18h18" />}
@@ -100,12 +141,19 @@ export default function Header() {
                                 href={item.href}
                                 onClick={() => setOpen(false)}
                                 className={`rounded-[var(--radius-md)] px-3 py-2.5 text-sm ${
-                                    isActive(item.href) ? "bg-blue-soft text-blue font-bold" : "text-fg-muted"
+                                    isActive(item.href) ? "text-fg bg-sunk font-semibold" : "text-fg-muted"
                                 }`}
                             >
                                 {item.label}
                             </Link>
                         ))}
+                        <a
+                            href={ACCOUNT_HREF}
+                            onClick={() => setOpen(false)}
+                            className="text-fg-muted rounded-[var(--radius-md)] px-3 py-2.5 text-sm"
+                        >
+                            Sign in
+                        </a>
                     </nav>
                     <div className="mt-3 sm:hidden">
                         <ThemeSwitch />

@@ -111,21 +111,6 @@ export const STATUS = [
     },
 ];
 
-export const NAV = [
-    /*
-      Magy and MOS are commented out, not deleted (2026-08-26): both stay
-      unpublished until the patent filings are settled, and the pages
-      themselves keep rendering so the products' own separate deployments
-      are untouched. Restoring them is uncommenting
-      these two lines — and the matching blocks in routes.ts, Footer.tsx,
-      about/page.tsx, and the noindex in each page's own metadata.
-    */
-    // { href: "/magy", label: "Magy" },
-    // { href: "/mos", label: "MOS" },
-    { href: "/toowl", label: "toowl" },
-    { href: "/about", label: "Company" },
-] as const;
-
 /*
   Where "Get toowl" goes. toowl.dev is the product's own site and the only
   place the install command, the docs and the releases actually live; this
@@ -133,6 +118,59 @@ export const NAV = [
   app/toowl/page.tsx until the header and the 404 needed it too.
 */
 export const TOOWL_URL = "https://toowl.dev";
+
+export const NAV = [
+    /*
+      The mockup's bar reads Products · Company · Docs · Pricing. Three of the
+      four are here; the fourth is commented rather than pointed somewhere
+      plausible, which is the same convention Magy and MOS are held under
+      below — a nav entry is a promise that a page exists.
+
+      Magy and MOS are commented out, not deleted (2026-08-26): both stay
+      unpublished until the patent filings are settled, and the pages
+      themselves keep rendering so the products' own separate deployments
+      are untouched. Restoring them is uncommenting these two lines — and the
+      matching blocks in routes.ts, Footer.tsx, about/page.tsx, and the
+      noindex in each page's own metadata.
+    */
+    /*
+      The hub's product list, not /products — that path has 307'd to /about
+      since before the hub existed, so a nav entry pointing at it would put
+      "Products" and "Company" on the same page. The family lives at "/" now.
+    */
+    { href: "/#products", label: "Products" },
+    { href: "/about", label: "Company" },
+    /*
+      Docs is the one external entry. toowl.dev/docs is the only documentation
+      that exists today, and it is real — better a link that leaves the site
+      than a heading over an empty page. It becomes /docs when the shared docs
+      surface lands (plan Phase 1).
+    */
+    { href: `${TOOWL_URL}/docs`, label: "Docs" },
+    // { href: "/pricing", label: "Pricing" },  // no page yet — plan Phase 1
+    // { href: "/magy", label: "Magy" },
+    // { href: "/mos", label: "MOS" },
+] as const;
+
+/*
+  1MW ID — the account every product signs into. Live since 2026-08-28.
+
+  An env var rather than a literal, because the origin differs by environment
+  and because a hardcoded host is what makes a future move a code change. It is
+  NOT NEXT_PUBLIC_: these are server-rendered links and a server-side proxy
+  target, so nothing needs it in the browser bundle.
+*/
+export const ID_ORIGIN = process.env.ID_ORIGIN ?? "https://id.1martianway.com";
+
+/*
+  Where "Sign in" and "Create account" go.
+
+  Both land on the same screen, and that is the design rather than laziness: it
+  offers Google and a sign-in link, and neither cares whether you have been
+  there before. Asking someone to know which of the two they are is a question
+  the software can answer for itself.
+*/
+export const ACCOUNT_HREF = `${ID_ORIGIN}/signin`;
 
 export const COMPANY = {
     legal: "1 Martian Way Industries Pvt. Ltd.",
@@ -223,7 +261,10 @@ export type HomeProduct = {
     line: string;
     state: string;
     cta: string;
+    /** Token, not a hex — the dot and the link must flip with the theme. */
     accent: string;
+    /** The same accent at a lightness that reads as 13px text. */
+    accentInk: string;
 };
 
 export const HOME_PRODUCTS: readonly HomeProduct[] = [
@@ -233,16 +274,67 @@ export const HOME_PRODUCTS: readonly HomeProduct[] = [
         line: "A GPU-fast desktop terminal and a tmux-style remote client in one binary, with Claude on the Perch.",
         state: "Free \u00b7 shipped",
         cta: "Get toowl",
-        accent: "#B98A3F",
+        accent: "var(--c-acc-toowl)",
+        accentInk: "var(--c-ink-toowl)",
     },
-    // { name: "magy,", href: "/magy", line: "\u2026", state: "Early access", cta: "Get early access", accent: "#D2622A" },
-    // { name: "MOS",   href: "/mos",  line: "\u2026", state: "Private alpha", cta: "Request access", accent: "#5B7A8C" },
+    /*
+      IDRL is here and Magy and MOS are not, and the difference is not
+      readiness — it is the patent hold. IDRL has been live since 2020 on its
+      own domain and under its own name; there is nothing about it to disclose.
+      Listing it is also the honest version of the company: two shipped
+      products reads better than one, and it is the account bridge the plan
+      already builds against.
+    */
+    {
+        name: "IDRL",
+        href: "/idrl",
+        line: "Indian Drone Racing League \u2014 pilots, events, marketplace and payments, running since 2020.",
+        state: "Live",
+        cta: "Visit IDRL",
+        accent: "var(--c-acc-idrl)",
+        accentInk: "var(--c-ink-idrl)",
+    },
+    // { name: "magy,", href: "/magy", line: "\u2026", state: "Early access", cta: "Get early access", accent: "var(--c-acc-magy)", accentInk: "var(--c-ink-magy)" },
+    // { name: "MOS",   href: "/mos",  line: "\u2026", state: "Private alpha", cta: "Request access", accent: "var(--c-acc-mos)",  accentInk: "var(--c-ink-mos)" },
 ];
 
-/** The arc, told straight — kept in step with the same list on /about. */
-export const HOME_ERAS: readonly (readonly [string, string])[] = [
-    ["Chess robots", "Robot arms that play a physical board. The first thing we shipped."],
-    ["Drones", "Autonomous racing, fleet software, and aerial survey work."],
-    ["Humanoid robotics", "Prototype platforms, and the operating system to run them."],
-    ["Developer tools", "toowl, and the agent software behind it \u2014 where nearly all the work goes today."],
+/*
+  THE ARC, AND IT DOES NOT ALL SIT IN THE PAST.
+
+  This list lived under "Where we came from" with humanoid robotics as its
+  third entry, which filed the thing the company is actually building next
+  under history. Each entry now carries WHEN it is, and the ordering is
+  chronological by START — so the list still reads as an arc, but two of its
+  four are open at the far end rather than closed.
+
+  `when` is information, not decoration: it is the only thing separating a
+  line about what we once shipped from a line about what we are shipping now.
+*/
+export type Era = { name: string; when: string; line: string; open: boolean };
+
+export const HOME_ERAS: readonly Era[] = [
+    {
+        name: "Chess robots",
+        when: "First",
+        line: "A team of autonomous robots playing a full-size board against human opponents. The first thing we shipped.",
+        open: false,
+    },
+    {
+        name: "Drones",
+        when: "Since 2020",
+        line: "Autonomous racing, fleet software and aerial survey work \u2014 and IDRL, still running.",
+        open: true,
+    },
+    {
+        name: "Developer tools",
+        when: "Today",
+        line: "toowl, and the agentic AI behind it \u2014 where nearly all the work goes today.",
+        open: true,
+    },
+    {
+        name: "Humanoid robotics",
+        when: "Now, and next",
+        line: "Platforms that walk, and the operating system to run them. This is the work the rest of it was building toward.",
+        open: true,
+    },
 ];

@@ -121,7 +121,16 @@ export default async function ToowlPage() {
     const version = await shippedVersion();
     return (
         <ComingSoon>
-            <Panel>
+            {/*
+                THE HERO IS FLUSH — no card, no border, no radius.
+
+                Everything below it stays in panels, and that contrast is the
+                point rather than an inconsistency: the mockup's voice is
+                "hairline rules instead of cards with shadows", and a hero that
+                sits in the same box as the sections under it reads as the
+                first of a list of equals. Off the card, it is the page.
+            */}
+            <section className="pt-10 pb-4">
                 {/*
                     The GROUP is centred; the text inside it is not.
 
@@ -156,49 +165,85 @@ export default async function ToowlPage() {
                             Status chip is green, not red — v1 has shipped,
                             where Magy is still early access.
                         */}
-                        <h1 className="mb-3">
-                            <span className="flex items-center gap-3">
-                                <span className="-mr-[0.16em] text-[clamp(1.55rem,3vw,2rem)] font-extrabold uppercase leading-none tracking-[0.16em]">
-                                    toowl
-                                </span>
-                                <span className="bg-line h-px flex-1" />
-                                <span className="text-good inline-flex shrink-0 items-center gap-1.5 rounded-[var(--radius-capsule)] bg-[color-mix(in_srgb,var(--color-good)_14%,transparent)] px-2.5 py-1 font-mono text-[10.5px] font-bold uppercase tracking-[0.14em]">
-                                    <i className="bg-good size-1.5 rounded-full" />
-                                    {version ? `v${version} shipped` : "shipped"}
-                                </span>
+                        {/*
+                            The mockup's hero, and every difference from what
+                            stood here is one of its rules:
+
+                            · The headline is the SENTENCE, in the serif
+                              display face. It was "Terminal You Will Love"
+                              with "You Will Love" in blue — a tagline in a
+                              second colour, saying nothing a reader could
+                              check. Emphasis is weight here, never hue.
+
+                            · The name moved into the eyebrow. A caps wordmark
+                              at 2rem competed with the headline under it for
+                              the same job; at 10px tracked out it labels the
+                              page and gets out of the way.
+
+                            · The version chip stays. It is the one thing on
+                              this page fetched from the product's own release
+                              rather than typed, and green is semantic — it
+                              says "shipped", it is not an accent.
+                        */}
+                        <p className="deck-label mb-4 flex items-center gap-3">
+                            Free on macOS, Linux and Windows
+                            <span className="text-good inline-flex shrink-0 items-center gap-1.5 rounded-[var(--radius-capsule)] bg-[color-mix(in_srgb,var(--color-good)_14%,transparent)] px-2.5 py-1 font-mono text-[10px] font-bold tracking-[0.14em]">
+                                <i className="bg-good size-1.5 rounded-full" />
+                                {version ? `V${version} SHIPPED` : "SHIPPED"}
                             </span>
-                            <span className="text-hero mt-4 block">
-                                Terminal <em className="text-blue not-italic">You Will Love.</em>
-                            </span>
-                        </h1>
-                        <p className="text-fg-dim mb-3 font-mono text-[12.5px]">
-                            <b className="text-fg">toowl</b> · pronounced /tuːl/ — like &ldquo;tool&rdquo;.
-                            The owl is just here for moral support.
                         </p>
-                        <p className="text-fg-muted max-w-[58ch] text-[14px]">
-                            A GPU-fast desktop terminal and a tmux-style remote client in one binary
-                            — with daemon-backed workspaces and Claude on the Perch.
+                        <h1 className="font-display max-w-[15ch] text-[clamp(2rem,5vw,3.5rem)] leading-[1.04] font-light tracking-[-0.028em] text-balance">
+                            A terminal you&rsquo;ll actually{" "}
+                            <em className="font-semibold not-italic">keep</em>.
+                        </h1>
+                        <p className="text-fg-muted mt-5 max-w-[56ch] text-[17px] leading-[1.62]">
+                            GPU-fast and idle-quiet. A desktop app and a tmux-style remote client
+                            in one binary, with your Claude sessions on the Perch &mdash;
+                            resumable, crash-recoverable, no browser.
+                        </p>
+                        <p className="text-fg-dim mt-3 font-mono text-[12.5px]">
+                            <b className="text-fg">toowl</b> &middot; pronounced /tuːl/ &mdash; like
+                            &ldquo;tool&rdquo;. The owl is just here for moral support.
                         </p>
 
                         {/* The `$` is rendered but NOT copied — see CopyCommand. */}
-                        <CopyCommand className="mt-5" command={`curl -fsSL ${TOOWL_URL}/install.sh | sh`} />
+                        <CopyCommand className="mt-6 max-w-[31rem]" command={`curl -fsSL ${TOOWL_URL}/install.sh | sh`} />
 
-                        <div className="mt-4 flex flex-wrap gap-2.5">
+                        {/*
+                            THE SITE SIGNAL, not toowl's amber.
+
+                            The amber was tried here on the mockup's rule —
+                            each product spends its one colour on the action —
+                            and it is wrong on a real page for two reasons the
+                            mockup could not show. The header carries a filled
+                            signal-orange CTA on every route, so the amber put
+                            two different warm fills on one screen competing to
+                            be the thing you click. And at button size #b98a3f
+                            goes muddy: it reads as a DISABLED control next to
+                            the crisp one above it.
+
+                            The consistent rule is the stronger one anyway —
+                            the signal always means "this is the action", and a
+                            product's colour identifies the product. toowl's
+                            amber keeps the dot on the hub and its accents; it
+                            does not also have to be the button.
+                        */}
+                        <div className="mt-5 flex flex-wrap gap-2.5">
                             <a
                                 href={TOOWL_URL}
-                                className="bg-red hover:bg-red-hover shadow-[var(--shadow-cta)] inline-flex items-center gap-2 rounded-[var(--radius-md)] px-5 py-3 text-sm font-bold text-white transition-colors"
+                                className="bg-red hover:bg-red-hover text-on-red shadow-[var(--shadow-cta)] inline-flex items-center gap-2 rounded-[var(--radius-md)] px-5 py-3 text-sm font-semibold transition-colors"
                             >
-                                Get toowl <span aria-hidden>→</span>
+                                Install toowl <span aria-hidden>&rarr;</span>
                             </a>
                             <a
                                 href={`${TOOWL_URL}/docs`}
-                                className="border-line-hi text-fg hover:bg-sunk inline-flex items-center rounded-[var(--radius-md)] border px-5 py-3 text-sm font-bold transition-colors"
+                                className="border-line-hi text-fg hover:bg-sunk inline-flex items-center rounded-[var(--radius-md)] border px-5 py-3 text-sm font-semibold transition-colors"
                             >
                                 Read the docs
                             </a>
                         </div>
                         <p className="text-fg-dim mt-3 text-[12.5px]">
-                            Free to use. macOS · Linux · Windows.
+                            Free to use. No account needed.
                         </p>
                     </div>
 
@@ -222,7 +267,7 @@ export default async function ToowlPage() {
                         <ToowlOwl size={232} />
                     </div>
                 </div>
-            </Panel>
+            </section>
 
             <Panel label="By the numbers">
                 <Metrics items={STATS} />
@@ -369,7 +414,7 @@ export default async function ToowlPage() {
               now closes on the install, which is the action we actually want.
             */}
             <p className="text-fg-dim mt-2 text-center text-[12.5px]">
-                <Link href="/about" className="text-blue hover:underline">
+                <Link href="/about" className="text-red hover:underline">
                     More from 1 Martian Way
                 </Link>
             </p>

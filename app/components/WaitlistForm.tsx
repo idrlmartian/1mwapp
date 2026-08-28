@@ -423,7 +423,7 @@ export default function WaitlistForm({
                         disabled={status === "sending" || !tokenReady}
                         aria-label={cta}
                         title={cta}
-                        className={`bg-red hover:bg-red-hover shadow-[var(--shadow-cta)] shrink-0 rounded-[var(--radius-md)] font-bold text-white transition-colors disabled:opacity-60 max-[430px]:w-full ${
+                        className={`bg-red hover:bg-red-hover shadow-[var(--shadow-cta)] shrink-0 rounded-[var(--radius-md)] font-bold text-on-red transition-colors disabled:opacity-60 max-[430px]:w-full ${
                             hero ? "py-3.5 text-[15px]" : "py-3 text-sm"
                         } ${fit === "stacked" ? "w-full " : ""}${
                             fit === "compact" ? "px-4 max-[430px]:px-6" : hero ? "px-6" : "px-5"

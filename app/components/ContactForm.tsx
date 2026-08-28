@@ -236,7 +236,7 @@ export default function ContactForm() {
                     // Also gated on the form token: without it the POST is
                     // answered with a fake success and the message is lost.
                     disabled={status === "sending" || !tokenReady}
-                    className="bg-red hover:bg-red-hover shadow-[var(--shadow-cta)] rounded-[var(--radius-md)] px-6 py-3 text-sm font-bold text-white transition-colors disabled:opacity-60"
+                    className="bg-red hover:bg-red-hover shadow-[var(--shadow-cta)] rounded-[var(--radius-md)] px-6 py-3 text-sm font-bold text-on-red transition-colors disabled:opacity-60"
                 >
                     {status === "sending" ? "Sending…" : "Send message"}
                 </button>

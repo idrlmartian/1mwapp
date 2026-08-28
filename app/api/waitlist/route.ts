@@ -1,6 +1,7 @@
 import { appendFile, mkdir } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
+import { ID_ORIGIN } from "@/app/lib/constants";
 import { NextResponse } from "next/server";
 import { hasDb, sql } from "@/app/lib/db";
 import { sendConfirmation, sendSignupFallback } from "@/app/lib/email";
@@ -327,6 +328,44 @@ export async function POST(req: Request) {
                 await logEvent("email_failed", v.norm, { error: msg });
             }
         })();
+    }
+
+    /*
+      MIRROR THE ADDRESS INTO 1MW ID, which owns the early-access queue.
+
+      This table is the marketing site's own record and stays exactly as it is.
+      The QUEUE — the rank someone keeps, and what a cohort release reads — is
+      in onemw_id, and an address that only landed here would be invisible to
+      it: the person signs in later and goes to the back of a queue they had
+      already joined, with nothing to adopt.
+
+      PLACED AFTER EVERY STORAGE PATH, not after the database one. It was
+      originally above the fallbacks and gated on the same `stored` flag, which
+      looked right and was not: `stored` is still false there whenever the
+      database write failed, and only becomes true further down when the NDJSON
+      fallback or the mail fallback catches the signup. So the mirror fired
+      only on the happy path and silently skipped exactly the signups most at
+      risk of being lost. Caught because a local run with no database reached
+      the fallback and the queue row never appeared.
+
+      Server-side, so the visitor's browser never talks to the identity host and
+      CORS never enters into it.
+
+      Fire-and-forget: the mirror must NEVER fail a signup that has already been
+      stored. A queue row can be rebuilt from this table later; a lost signup
+      cannot. Every failure is a warning.
+    */
+    if (stored) {
+        void fetch(`${ID_ORIGIN}/api/interest`, {
+            method: "POST",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify({ email: v.norm, product: row.product ?? "magy", source: row.source }),
+            signal: AbortSignal.timeout(4000),
+        })
+            .then(async (r) => {
+                if (!r.ok) console.warn(`[waitlist] queue mirror refused: ${r.status}`);
+            })
+            .catch((err) => console.warn("[waitlist] queue mirror unreachable", err?.message ?? err));
     }
 
     return ok({ status: inserted ? "subscribed" : "already_subscribed" });

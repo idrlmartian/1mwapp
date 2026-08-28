@@ -73,6 +73,19 @@
   --color-red: var(--c-red);
   --color-red-hover: var(--c-red-hover);
   --color-red-soft: var(--c-red-soft);
+  /* The ink that goes ON a signal fill. Flips with the theme — white in
+     light, near-black in dark — so no component has to know which it is in. */
+  --color-on-red: var(--c-on-red);
+  --color-mark: var(--c-mark);
+  --color-acc-toowl: var(--c-acc-toowl);
+  --color-on-acc-toowl: var(--c-on-acc-toowl);
+  --color-acc-magy: var(--c-acc-magy);
+  --color-acc-mos: var(--c-acc-mos);
+  --color-acc-idrl: var(--c-acc-idrl);
+  --color-ink-toowl: var(--c-ink-toowl);
+  --color-ink-magy: var(--c-ink-magy);
+  --color-ink-mos: var(--c-ink-mos);
+  --color-ink-idrl: var(--c-ink-idrl);
   /* Red as TEXT. Fills keep --color-red; see the note in base.css. */
   --color-red-ink: var(--c-red-ink);
   --color-good: var(--c-good);
@@ -99,6 +112,8 @@
   --radius-capsule: 999px;
 
   --shadow-deck: var(--c-shadow);
+  /* The CTA glow follows the signal token, so it re-tints with the theme
+     rather than staying red under an orange button. */
   --shadow-cta: 0 1px 0 rgb(255 255 255 / 0.14) inset, 0 6px 18px -8px var(--c-red);
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);

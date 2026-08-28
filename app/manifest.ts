@@ -19,8 +19,14 @@ export default function manifest(): MetadataRoute.Manifest {
             { src: "/icons/icon-192.png", sizes: "192x192", type: "image/png", purpose: "any" },
             { src: "/icons/icon-512.png", sizes: "512x512", type: "image/png", purpose: "any" },
             {
-                // Separate file: Android crops ~10% per edge to fit its mask, which
-                // would clip the legs off the as-drawn mark.
+                /*
+                  Same image as icon-512 — verified byte-identical, and that is
+                  correct rather than an oversight. The claim that used to sit
+                  here, that Android's ~10%-per-edge crop would clip the mark's
+                  legs, does not survive measurement: the mark reaches 74% of
+                  half-width against an 80%-diameter safe circle. The entry
+                  earns its place by declaring the purpose, not by differing.
+                */
                 src: "/icons/icon-512-maskable.png",
                 sizes: "512x512",
                 type: "image/png",

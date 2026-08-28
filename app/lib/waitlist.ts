@@ -24,7 +24,8 @@ export type SignupSource =
     | "idrl"
     | "about"
     | "footer"
-    | "404";
+    | "404"
+    | "early-access";
 
 /** A small, deliberately incomplete list of throwaway domains. */
 const DISPOSABLE = new Set([

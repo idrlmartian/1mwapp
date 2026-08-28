@@ -28,11 +28,11 @@ export default function Brands() {
                             Racing Technology
                         </span>
                         <span className="flex items-center gap-2">
-                            <span className="w-2 h-2 bg-blue-soft rounded-full"></span>
+                            <span className="w-2 h-2 bg-red-soft rounded-full"></span>
                             AI Research
                         </span>
                         <span className="flex items-center gap-2">
-                            <span className="w-2 h-2 bg-blue-soft rounded-full"></span>
+                            <span className="w-2 h-2 bg-red-soft rounded-full"></span>
                             Human-Robot Integration
                         </span>
                     </div>
@@ -309,12 +309,12 @@ export default function Brands() {
                                     <p className="text-sm text-white/80 mb-4">{innovation.description}</p>
                                     <div className="flex flex-wrap gap-2 justify-center mb-4">
                                         {innovation.brands.map((brand, i) => (
-                                            <span key={i} className="glass rounded-full px-3 py-1 text-xs text-blue font-medium">
+                                            <span key={i} className="glass rounded-full px-3 py-1 text-xs text-red font-medium">
                                                 {brand}
                                             </span>
                                         ))}
                                     </div>
-                                    <div className="text-xs text-blue font-medium">{innovation.status}</div>
+                                    <div className="text-xs text-red font-medium">{innovation.status}</div>
                                 </div>
                             ))}
                         </div>

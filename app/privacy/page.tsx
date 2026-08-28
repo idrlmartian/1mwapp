@@ -47,7 +47,7 @@ export default function PrivacyPage() {
                     When you join a waitlist we record the exact wording you agreed to, alongside the
                     time you agreed to it. Today that wording is:
                 </p>
-                <blockquote className="border-blue text-fg border-l-2 pl-4 text-[13.5px]">{CONSENT_TEXT}</blockquote>
+                <blockquote className="border-red text-fg border-l-2 pl-4 text-[13.5px]">{CONSENT_TEXT}</blockquote>
 
                 <h2>What we do with it</h2>
                 <p>
@@ -74,7 +74,7 @@ export default function PrivacyPage() {
                 <p>
                     You can ask us what we hold about you, ask us to correct it, or ask us to delete
                     it — write to{" "}
-                    <a href={`mailto:${COMPANY.email}`} className="text-blue hover:underline">{COMPANY.email}</a>{" "}
+                    <a href={`mailto:${COMPANY.email}`} className="text-red hover:underline">{COMPANY.email}</a>{" "}
                     and we will action it.
                 </p>
 
@@ -90,7 +90,7 @@ export default function PrivacyPage() {
                     <span className="block">{COMPANY.grievanceOfficer.title}, {COMPANY.legal}</span>
                     <a
                         href={`mailto:${COMPANY.grievanceOfficer.email}`}
-                        className="text-blue mt-1 inline-block hover:underline"
+                        className="text-red mt-1 inline-block hover:underline"
                     >
                         {COMPANY.grievanceOfficer.email}
                     </a>
@@ -102,7 +102,7 @@ export default function PrivacyPage() {
                 <h2>Contact</h2>
                 <address className="not-italic">
                     {COMPANY.address.map((l) => (<span key={l} className="block">{l}</span>))}
-                    <a href={`mailto:${COMPANY.email}`} className="text-blue mt-2 inline-block hover:underline">{COMPANY.email}</a>
+                    <a href={`mailto:${COMPANY.email}`} className="text-red mt-2 inline-block hover:underline">{COMPANY.email}</a>
                 </address>
             </div>
         </article>

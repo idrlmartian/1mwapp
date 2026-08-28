@@ -17,7 +17,7 @@ import { COMPANY } from "@/app/lib/constants";
 export const metadata: Metadata = {
     title: "About",
     description:
-        "1 Martian Way Industries builds developer tools and agent software. We make toowl, a GPU-accelerated terminal with Claude built in. Founded in Mumbai.",
+        "1 Martian Way Industries builds humanoid robotics, agentic AI and developer tools. We make toowl, a GPU-accelerated terminal with Claude built in. Founded in Mumbai.",
     alternates: { canonical: "https://www.1martianway.com/about" },
 };
 
@@ -49,10 +49,10 @@ const BUILDING = [
 ];
 
 const ERAS = [
-    ["Chess robots", "Robot arms that play a physical board. The first thing we shipped."],
+    ["Chess robots", "A team of autonomous robots playing a full-size board against human opponents. The first thing we shipped."],
     ["Drones", "Autonomous racing, fleet software, and aerial survey work."],
     ["Humanoid robotics", "Prototype platforms, and the operating system to run them."],
-    ["Developer tools", "toowl, and the agent software behind it — where nearly all the work goes today."],
+    ["Developer tools", "toowl, and the agentic AI behind it — where nearly all the work goes today."],
 ];
 
 export default function AboutPage() {
@@ -63,13 +63,14 @@ export default function AboutPage() {
                 <Panel>
                     <p className="deck-label mb-3">About</p>
                     <h1 className="text-hero mb-4 max-w-[20ch]">
-                        We build things that <em className="text-blue not-italic">do the work</em>.
+                        We build things that <em className="font-semibold not-italic">do the work</em>.
                     </h1>
                     <p className="text-fg-muted max-w-[64ch] text-[14.5px]">
-                        1 Martian Way Industries is a Mumbai company building developer tools
-                        and agent software. toowl, our GPU-accelerated terminal, is free and
-                        installs with one command. We are small, we ship, and we publish the
-                        numbers behind what we claim.
+                        1 Martian Way Industries is a humanoid robotics and agentic AI
+                        company in Mumbai, incorporated in 2020, building humanoid platforms,
+                        the operating system that runs them, and the developer tools our own engineers
+                        work in. toowl, our GPU-accelerated terminal, is free and installs with
+                        one command.
                     </p>
                 </Panel>
 
@@ -108,7 +109,7 @@ export default function AboutPage() {
                         <ol className="grid gap-2.5">
                             {ERAS.map(([era, what], i) => (
                                 <li key={era} className="border-line flex gap-3.5 border-t pt-2.5">
-                                    <span className="text-blue mt-0.5 shrink-0 font-mono text-[11px] font-bold">
+                                    <span className="text-red mt-0.5 shrink-0 font-mono text-[11px] font-bold">
                                         0{i + 1}
                                     </span>
                                     <span>
@@ -119,7 +120,7 @@ export default function AboutPage() {
                             ))}
                         </ol>
                         <p className="text-fg-dim mt-4 text-[13px]">
-                            The <Link href="/press" className="text-blue hover:underline">press page</Link>{" "}
+                            The <Link href="/press" className="text-red hover:underline">press page</Link>{" "}
                             covers most of it — CBS News, India Today, DD Sports and others.
                         </p>
                     </Panel>
@@ -135,7 +136,7 @@ export default function AboutPage() {
                                 href="https://droneracingindia.com"
                                 target="_blank"
                                 rel="noopener"
-                                className="text-blue mt-3 inline-block text-[13.5px] font-semibold hover:underline"
+                                className="text-red mt-3 inline-block text-[13.5px] font-semibold hover:underline"
                             >
                                 droneracingindia.com ↗
                             </a>
@@ -149,7 +150,7 @@ export default function AboutPage() {
                             </address>
                             <a
                                 href={`mailto:${COMPANY.email}`}
-                                className="text-blue mt-3 inline-block text-[13.5px] hover:underline"
+                                className="text-red mt-3 inline-block text-[13.5px] hover:underline"
                             >
                                 {COMPANY.email}
                             </a>

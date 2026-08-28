@@ -43,7 +43,7 @@ export default function ContactPage() {
                             <h2 className="deck-label mb-3">Direct</h2>
                             <a
                                 href={`mailto:${COMPANY.email}`}
-                                className="text-blue text-[14px] font-semibold hover:underline"
+                                className="text-red text-[14px] font-semibold hover:underline"
                             >
                                 {COMPANY.email}
                             </a>

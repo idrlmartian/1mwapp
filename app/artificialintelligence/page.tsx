@@ -232,7 +232,7 @@ export default function ArtificialIntelligence() {
                         
                         <Link
                             href="/contact"
-                            className="inline-flex items-center text-sm font-semibold gradient-text-cyan hover:text-blue transition-colors group"
+                            className="inline-flex items-center text-sm font-semibold gradient-text-cyan hover:text-red transition-colors group"
                         >
                             Learn More <span className="ml-1 transition-transform group-hover:translate-x-1">→</span>
                         </Link>
@@ -273,7 +273,7 @@ export default function ArtificialIntelligence() {
                         
                         <Link
                             href="/contact"
-                            className="inline-flex items-center text-sm font-semibold gradient-text-cyan hover:text-blue transition-colors group"
+                            className="inline-flex items-center text-sm font-semibold gradient-text-cyan hover:text-red transition-colors group"
                         >
                             Request Demo <span className="ml-1 transition-transform group-hover:translate-x-1">→</span>
                         </Link>

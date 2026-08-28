@@ -25,27 +25,77 @@
       warmer ground gives it somewhere to sit.
 */
 :root {
-  --c-bg: #f2f3f7;
-  --c-bg-2: #eaecf2;
-  --c-panel: rgb(255 255 255 / 0.86);
+  /*
+    THE GROUND IS WARM NEUTRAL, not blue-grey — the mockup's --bg/--panel.
+
+    #f2f3f7 was a cool grey with a blue cast, chosen when the accent was a cold
+    red and the panels were glass. Both are gone: the signal is a warm bronze
+    now and the mark is gold, and a warm accent over a cool ground is the
+    cheapest way to make a page look assembled from two kits. #f7f6f3 is paper.
+
+    Panels are SOLID white, not 86% white over a blur. Translucency was doing
+    real work when the ground carried a gradient light source; against a flat
+    ground it only makes every card a slightly different colour depending on
+    what it happens to sit over.
+  */
+  --c-bg: #f7f6f3;
+  --c-bg-2: #f1efea;
+  --c-panel: #ffffff;
   --c-panel-solid: #ffffff;
-  --c-sunk: rgb(17 24 39 / 0.035);
-  --c-border: rgb(17 24 39 / 0.07);
-  --c-border-hi: rgb(17 24 39 / 0.14);
-  --c-text: #111827;
-  --c-muted: #4b5563;
-  /* AA at 4.5:1 on BOTH the card and the page ground — was #8a94a6, which
-     measured 3.06 and 2.76. This is the colour of every deck-label, caption and
-     metric label on the site, all of it 10-11px, where contrast matters MOST.
-     Kept 1.41 away from --c-muted so it still reads as a quieter tier. */
+  --c-sunk: #f1efea;
+  --c-border: rgb(22 24 29 / 0.07);
+  --c-border-hi: rgb(22 24 29 / 0.12);
+  --c-text: #16181d;
+  --c-muted: #585c64;
+  /*
+    THE ONE TOKEN NOT TAKEN FROM THE MOCKUP, deliberately.
+
+    Its --ink-3 is #8b8f98, which measures 3.00:1 on the mockup's own ground.
+    That is fine for the mockup, where ink-3 labels sit at 10px inside a static
+    picture nobody has to read for information; it is not fine here, where it
+    is the colour of every deck-label, caption and metric label on the site —
+    all of it 10-11px, which is exactly where contrast matters most.
+
+    #636b7a measures 4.96 on the page and 5.36 on a panel, and stays 1.41 away
+    from --c-muted so it still reads as the quieter tier. Matching the mockup
+    here would have meant shipping a known AA failure to look identical to a
+    render. */
   --c-dim: #636b7a;
   --c-blue: #2563eb;
   --c-blue-soft: rgb(37 99 235 / 0.10);
-  /* Signal (348deg) at the lightness where white text on it still clears AA:
-     5.39 vs the 5.41 it replaces. See SIGNAL_FILL in app/lib/brand.ts. */
-  --c-red: #d6002b;
-  --c-red-hover: #b80025;
-  --c-red-soft: rgb(255 0 51 / 0.075);
+  /*
+    THE SIGNAL — the one colour that means "this is the action".
+
+    It was #d6002b, a true red. The identity manual's own note explains why
+    that could not survive: the mark is Kin gold, gold cannot carry white text
+    (2.17:1), and so red was kept for fills purely because the two never met on
+    a page. They meet now — the mark sits in the header above every CTA — and a
+    gold mark over a red button reads as two brands sharing a page.
+
+    #ae5123 is the product's own --live, already shipping in magyverse's
+    globals.css. Adopting it here means the site and the app signal with one
+    colour rather than two, and it is the same reasoning as the typeface: take
+    what the product already has instead of inventing a third answer.
+
+    Measured, not assumed — white on this is 5.25:1 and on the hover 6.77:1,
+    both clear of the 4.5 floor. The DARK block cannot use white at all; see
+    the note there.
+  */
+  /*
+    THE MARK, as ink rather than as a tile.
+
+    Two values, because Kin is a gold and gold has no single correct rendering
+    across grounds. #8C6A1F is IDENTITY.markOnLight — the same gold pushed down
+    in lightness until its strokes hold at 21px on white; the manual's own
+    #D9A93C is drawn for Sumi and goes to haze on a light page. Neither is a
+    tint of the other and neither is optional: the mark is the one thing on the
+    site that must look identical to itself in both themes.
+  */
+  --c-mark: #8c6a1f;
+  --c-on-red: #ffffff;
+  --c-red: #ae5123;
+  --c-red-hover: #94441d;
+  --c-red-soft: rgb(174 81 35 / 0.09);
   /*
     Red used as TEXT, separate from red used as a FILL.
 
@@ -59,6 +109,36 @@
   --c-red-ink: #d6002b;
   /* Darkened from #0f9d58 (3.51 on white) to clear AA as TEXT — it labels the
      "Shipping" state and the toowl "v1.0 shipped" chip, both of which are read. */
+
+  /*
+    PER-PRODUCT ACCENTS. One colour each, and on a product page it is the only
+    colour on the screen — the identifying dot and that product's own action.
+
+    toowl's amber is a MARK colour, not a white-text fill: white on it is
+    3.10:1 and fails, near-black is 5.73:1. Its --on- token is dark in BOTH
+    themes for that reason, which is the same rule the Kin mark already lives
+    under.
+  */
+  --c-acc-toowl: #b98a3f;
+  --c-on-acc-toowl: #16181d;
+  --c-acc-magy: #d2622a;
+  --c-acc-mos: #5b7a8c;
+  --c-acc-idrl: #c1362b;
+  /*
+    …AND THE SAME ACCENT AS TEXT, which is not the same colour.
+
+    A hue that reads as a 10px dot does not necessarily read as a 13px link:
+    toowl's #b98a3f measures 3.10:1 on white and fails. These are each accent
+    walked down in lightness — hue and saturation held — until it clears 4.5
+    on BOTH the page and a panel. Same hue, legible weight.
+
+    Two of the four move and two do not, which is the point: this is measured
+    per colour rather than a blanket darkening that would flatten the family.
+  */
+  --c-ink-toowl: #8f6b31;
+  --c-ink-magy: #b65524;
+  --c-ink-mos: #577586;
+  --c-ink-idrl: #c1362b;
   --c-good: #0a7d46;
   /* 4.20 → 4.83. Marks pending capture slots, which is a caption you read. */
   --c-warn: #a56200;
@@ -114,11 +194,11 @@
     Light keeps its white lift on top, which is what stops the tints reading as
     grime on a near-white ground.
   */
-  --body-glow:
-    radial-gradient(120% 70% at 50% -10%, rgb(255 255 255 / 0.9), transparent 60%),
-    radial-gradient(1100px 600px at 50% -6%, rgb(37 99 235 / 0.05), transparent 62%),
-    radial-gradient(820px 520px at 92% 28%, rgb(184 84 28 / 0.04), transparent 62%),
-    radial-gradient(900px 600px at 6% 84%, rgb(37 99 235 / 0.03), transparent 62%);
+  /* FLAT. The mockup has no light source and does not need one: its depth
+     comes from panels sitting above the ground and from hairline rules, not
+     from a wash. Kept as a token rather than deleted so body's rule is
+     unchanged and a future ground can reintroduce one in one place. */
+  --body-glow: none;
 
   /*
     Check badge, light: soft tint. A filled warm chip on a near-white ground is
@@ -169,30 +249,52 @@
 /* ── DARK ──────────────────────────────────────────────────────────────── */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    /* No white lift on dark — here the washes ARE the light source. They also
-       carry roughly twice the opacity of light, because a tint has far less to
-       fight on near-black, and flat #0b0d12 is what made this feel inert. */
-    --body-glow:
-      radial-gradient(1200px 620px at 50% -8%, rgb(110 168 255 / 0.10), transparent 62%),
-      radial-gradient(880px 560px at 92% 26%, rgb(250 179 135 / 0.06), transparent 62%),
-      radial-gradient(960px 640px at 6% 82%, rgb(110 168 255 / 0.05), transparent 62%);
-    --c-bg: #0b0d12;
-    --c-bg-2: #080a0e;
-    --c-panel: rgb(22 26 36 / 0.76);
-    --c-panel-solid: #141822;
-    --c-sunk: rgb(0 0 0 / 0.26);
-    --c-border: rgb(255 255 255 / 0.09);
-    --c-border-hi: rgb(255 255 255 / 0.17);
-    --c-text: #e8ecf4;
-    --c-muted: #8b93a7;
-    /* AA on card and page; was #616a7d at 3.27 / 3.58. */
+    /* The washes are gone from both themes now — see --body-glow in :root. */
+    /* FLAT. The mockup has no light source and does not need one: its depth
+     comes from panels sitting above the ground and from hairline rules, not
+     from a wash. Kept as a token rather than deleted so body's rule is
+     unchanged and a future ground can reintroduce one in one place. */
+  --body-glow: none;
+    /* The mockup's dark ground. Panels sit ABOVE the page here, not below it —
+       #181b21 on #101216 — which is what replaces the glass. */
+    --c-bg: #101216;
+    --c-bg-2: #0b0d10;
+    --c-panel: #181b21;
+    --c-panel-solid: #181b21;
+    --c-sunk: #1f232a;
+    --c-border: rgb(232 234 237 / 0.07);
+    --c-border-hi: rgb(232 234 237 / 0.14);
+    --c-text: #e8eaed;
+    --c-muted: #9aa0aa;
+    /* Same reasoning as light — the mockup's dark --ink-3 (#6a7079) measures
+       3.30 on its panel. 4.59 here. */
     --c-dim: #7b8496;
     --c-blue: #6ea8ff;
     --c-blue-soft: rgb(110 168 255 / 0.16);
-    --c-red: #d6002b;
-    --c-red-hover: #eb002f;
-    --c-red-soft: rgb(255 0 51 / 0.18);
-    --c-red-ink: #ff335c;
+    /*
+      On a dark ground the signal lightens to #ff8a3d — magyverse's dark --live.
+
+      THE INK ON IT FLIPS, and that is load-bearing rather than a nicety: white
+      on #ff8a3d is 2.35:1 and fails outright, while near-black is 7.57:1. Any
+      control filled with this token must set a dark foreground. --c-on-red
+      below exists so no component has to remember which polarity it is in.
+    */
+    --c-mark: #d9a93c;
+    --c-on-red: #16181d;
+    --c-red: #ff8a3d;
+    --c-red-hover: #ffa163;
+    --c-red-soft: rgb(255 138 61 / 0.16);
+    --c-red-ink: #ff8a3d;
+    --c-acc-toowl: #e0b667;
+    --c-on-acc-toowl: #16181d;
+    --c-acc-magy: #ff8a3d;
+    --c-acc-mos: #8fb0c4;
+    --c-acc-idrl: #e85b4c;
+    /* All four already clear 4.5 on the dark grounds — nothing to walk. */
+    --c-ink-toowl: #e0b667;
+    --c-ink-magy: #ff8a3d;
+    --c-ink-mos: #8fb0c4;
+    --c-ink-idrl: #e85b4c;
     --c-good: #3dd68c;
     --c-warn: #f5a524;
     --c-warm: #fab387;
@@ -219,28 +321,42 @@
 }
 
 :root[data-theme="dark"] {
-  --body-glow:
-    radial-gradient(1200px 620px at 50% -8%, rgb(110 168 255 / 0.10), transparent 62%),
-    radial-gradient(880px 560px at 92% 26%, rgb(250 179 135 / 0.06), transparent 62%),
-    radial-gradient(960px 640px at 6% 82%, rgb(110 168 255 / 0.05), transparent 62%);
-  --c-bg: #0b0d12;
-  --c-bg-2: #080a0e;
-  --c-panel: rgb(22 26 36 / 0.76);
-  --c-panel-solid: #141822;
-  --c-sunk: rgb(0 0 0 / 0.26);
-  --c-border: rgb(255 255 255 / 0.09);
-  --c-border-hi: rgb(255 255 255 / 0.17);
-  --c-text: #e8ecf4;
-  --c-muted: #8b93a7;
+  /* FLAT. The mockup has no light source and does not need one: its depth
+     comes from panels sitting above the ground and from hairline rules, not
+     from a wash. Kept as a token rather than deleted so body's rule is
+     unchanged and a future ground can reintroduce one in one place. */
+  --body-glow: none;
+  /* The mockup's dark ground. Panels sit ABOVE the page here, not below it —
+     #181b21 on #101216 — which is what replaces the glass. */
+  --c-bg: #101216;
+  --c-bg-2: #0b0d10;
+  --c-panel: #181b21;
+  --c-panel-solid: #181b21;
+  --c-sunk: #1f232a;
+  --c-border: rgb(232 234 237 / 0.07);
+  --c-border-hi: rgb(232 234 237 / 0.14);
+  --c-text: #e8eaed;
+  --c-muted: #9aa0aa;
   /* AA on card and page; was #616a7d at 3.27 / 3.58. */
   --c-dim: #7b8496;
   --c-blue: #6ea8ff;
   --c-blue-soft: rgb(110 168 255 / 0.16);
-  --c-red: #d6002b;
-  --c-red-hover: #eb002f;
-  --c-red-soft: rgb(255 0 51 / 0.18);
-  --c-red-ink: #ff335c;
+  --c-mark: #d9a93c;
+  --c-on-red: #16181d;
+  --c-red: #ff8a3d;
+  --c-red-hover: #ffa163;
+  --c-red-soft: rgb(255 138 61 / 0.16);
+  --c-red-ink: #ff8a3d;
   --c-good: #3dd68c;
+  --c-acc-toowl: #e0b667;
+  --c-on-acc-toowl: #16181d;
+  --c-acc-magy: #ff8a3d;
+  --c-acc-mos: #8fb0c4;
+  --c-acc-idrl: #e85b4c;
+  --c-ink-toowl: #e0b667;
+  --c-ink-magy: #ff8a3d;
+  --c-ink-mos: #8fb0c4;
+  --c-ink-idrl: #e85b4c;
   --c-warn: #f5a524;
   --c-warm: #fab387;
   --c-warm-soft: rgb(250 179 135 / 0.16);
@@ -271,6 +387,25 @@
   }
 
   body {
+    /*
+      NO HORIZONTAL RUBBER-BAND.
+
+      Nothing on this site overflows sideways — measured at 390/768/1280/1920,
+      scrollWidth equals clientWidth on every page — but a trackpad can still
+      drag the document horizontally against nothing, which reads as the page
+      coming loose. toowl.dev does not do this, and this one line is the whole
+      difference between them.
+
+      `overflow-x: hidden`, NOT `overscroll-behavior-x: none`. The second also
+      suppresses the bounce and takes the two-finger back/forward gesture with
+      it — a navigation a lot of people use almost exclusively. This leaves
+      overscroll-behavior alone, so the history swipe keeps working, which is
+      exactly what toowl.dev demonstrates.
+
+      Per spec this makes the other axis compute to `auto`, so body becomes a
+      scroll container. The sticky header is verified against that.
+    */
+    overflow-x: hidden;
     background-color: var(--color-canvas);
     /* A light page needs somewhere for the light to come from. Barely visible,
        but it is the difference between "paper" and "grey fill". */

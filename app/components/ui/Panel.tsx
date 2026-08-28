@@ -46,7 +46,7 @@ export function Metrics({ items }: { items: readonly { value: string; label: str
 /** A quiet pull-quote with the product accent down its left edge. */
 export function Quote({ children, className = "" }: { children: ReactNode; className?: string }) {
     return (
-        <blockquote className={`border-blue border-l-2 pl-4 ${className}`}>{children}</blockquote>
+        <blockquote className={`border-red border-l-2 pl-4 ${className}`}>{children}</blockquote>
     );
 }
 

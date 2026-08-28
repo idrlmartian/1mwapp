@@ -87,7 +87,14 @@ writeFileSync(out("public/assets/img/1mw-logo.svg"), tile(0));
   White-inside-red, not the mark alone. That was tried and reverted — at 16px
   the bare figure is three thin strokes with no field to hold them together.
 */
-const FAVICON_RADIUS = 96; // 18.75% of 512 — ~3px at 16px, visible but not a pill
+/*
+  38 of 200 = 19%, which is ~3px at 16px — visible as a curve, not a pill.
+
+  A FAVICON_RADIUS = 96 constant sat here for a while, described as "18.75% of
+  512", and nothing read it: the call below has always passed 38 directly. A
+  named constant that does not feed the call it names is worse than the
+  literal, because it is the number a reader will trust when they change it.
+*/
 writeFileSync(out("app/icon.svg"), tile(38));
 
 // ── rasters ─────────────────────────────────────────────────────────────────
@@ -104,6 +111,20 @@ await Promise.all([
     png(tile(0), 180, "app/apple-icon.png", BRAND_RED),
     png(tile(0), 192, "public/icons/icon-192.png", BRAND_RED),
     png(tile(0), 512, "public/icons/icon-512.png", BRAND_RED),
+    /*
+      IDENTICAL to icon-512 by design, and worth stating because it looks like
+      a bug: the two files are byte-for-byte the same.
+
+      manifest.ts used to say the maskable was separate because "Android crops
+      ~10% per edge, which would clip the legs off the as-drawn mark". Measured,
+      it does not: CONTAINMENT puts the mark's reach at 74% of half-width and
+      Android's safe zone is a circle of 80% diameter, so the as-drawn mark is
+      already inside it with room. The tile is also full-bleed with no
+      transparent corners, which is the other thing purpose:"maskable" needs.
+
+      The file stays because the manifest references it by name and a maskable
+      entry is worth having; what changed is that its reason is now true.
+    */
     png(tile(0), 512, "public/icons/icon-512-maskable.png", BRAND_RED),
     // Email CID logo: 240px source displayed at 120px for retina.
     png(tile(0), 240, "public/assets/img/1mw-mark-240.png", BRAND_RED),
