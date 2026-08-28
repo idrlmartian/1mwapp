@@ -38,14 +38,32 @@ const FROM_EMAIL =
     process.env.MAIL_FROM_EMAIL ?? process.env.SMTP_FROM_EMAIL ?? SALES_EMAIL;
 
 /*
-  Local dev must not be able to mail real signups. Credentials now come from the
-  ambient AWS chain rather than explicit SMTP_* env, so the old "no env, no
-  send" safety disappeared — an `aws sso login` session on a laptop would
-  otherwise send for real. Staging and prod both run NODE_ENV=production, so
-  they still send; set MAIL_ALLOW_DEV_SEND=1 to send from a dev server.
+  A LAPTOP MUST NOT BE ABLE TO MAIL A REAL PERSON.
+
+  Credentials come from the ambient AWS chain rather than explicit SMTP_* env,
+  so the old "no env var, no send" safety does not exist — an `aws sso login`
+  session on a laptop is enough to send for real.
+
+  THIS USED TO KEY ON NODE_ENV AND FAILED OPEN. `next start` sets
+  NODE_ENV=production for ANY production build, including one running on a dev
+  machine, so "production means it is the server" is false exactly where it
+  matters. Running the built app locally to check the signup flow would mail
+  whatever address was typed, to a real inbox, from the real domain — the
+  waitlist confirmation, complete with verify and unsubscribe links.
+
+  Found the same defect in 1mw-id's copy of this file, where it actually fired:
+  testing the sign-in flow on a laptop attempted a live send and only failed
+  because that machine had no SES credentials loaded.
+
+  MAIL_ENABLED is set by the deployment and by nothing else, so it fails CLOSED:
+  a new environment that forgets it prints instead of sending, which is the
+  failure everyone notices immediately and nobody has to apologise for.
+
+  MAIL_ALLOW_DEV_SEND is kept as an alias so an existing env file that sets it
+  keeps working rather than silently going quiet on the next deploy.
 */
 const CAN_SEND =
-    process.env.NODE_ENV === "production" || process.env.MAIL_ALLOW_DEV_SEND === "1";
+    process.env.MAIL_ENABLED === "1" || process.env.MAIL_ALLOW_DEV_SEND === "1";
 
 let client: SESv2Client | undefined;
 function getClient() {

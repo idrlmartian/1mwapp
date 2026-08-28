@@ -108,7 +108,12 @@ fi
 #
 # Checked before the old container is stopped, so a miss is a refused deploy
 # rather than an outage.
-for required in IP_HASH_PEPPER FORM_HMAC_SECRET; do
+# MAIL_ENABLED joined this list when the guard in app/lib/email.ts stopped
+# keying on NODE_ENV. That change makes mail fail CLOSED, which is correct and
+# also means a deploy to an environment without it goes quietly mute: signups
+# still store, confirmations simply never arrive, and nothing looks broken.
+# A refused deploy is the only version of that anyone notices.
+for required in IP_HASH_PEPPER FORM_HMAC_SECRET MAIL_ENABLED; do
   if ! grep -qE "^${required}=.+" "$ENV_FILE"; then
     echo "!! $required missing from $ENV_FILE — refusing to deploy." >&2
     echo "   Generate one with: openssl rand -hex 32" >&2
