@@ -74,28 +74,21 @@ writeFileSync(out("public/assets/img/1mw-mark-red.svg"), markOnly(KIN));
 // animation loops and two Gaussian blur filters that ran forever on every page.
 writeFileSync(out("public/assets/img/1mw-logo.svg"), tile(0));
 /*
-  THE FAVICON IS THE ONE ROUNDED SURFACE.
+  FULL-BLEED, OPAQUE, SQUARE — same as every other icon now.
 
-  Everything else keeps square corners. The favicon gets FAVICON_RADIUS because
-  a tab strip and a bookmark bar are full of rounded chips, and a hard 90°
-  square reads as a screenshot dropped into the chrome rather than an app icon.
+  A rounded favicon with transparent corners (tried, reverted 2026-09-01) reads
+  fine in an isolated browser tab, but Google Search applies its OWN circular
+  crop to favicons, and a source image that already has transparent rounded
+  corners defeats it: Google can't tell where the "content" ends, so it pads
+  the icon inside a light circular disc, producing a small square floating in
+  a visibly larger circle. Letting each consumer (Chrome's tab chip, Google's
+  search badge, Android's launcher) apply its own rounding is what every other
+  icon here already does — the favicon was the one holdout.
 
-  Corners outside the rounding are transparent, which is the whole reason to
-  round it: the browser's own tab colour shows through in both themes instead of
-  four red pixels poking out of the curve.
-
-  White-inside-red, not the mark alone. That was tried and reverted — at 16px
+  White-inside-dark, not the mark alone. That was tried and reverted — at 16px
   the bare figure is three thin strokes with no field to hold them together.
 */
-/*
-  38 of 200 = 19%, which is ~3px at 16px — visible as a curve, not a pill.
-
-  A FAVICON_RADIUS = 96 constant sat here for a while, described as "18.75% of
-  512", and nothing read it: the call below has always passed 38 directly. A
-  named constant that does not feed the call it names is worse than the
-  literal, because it is the number a reader will trust when they change it.
-*/
-writeFileSync(out("app/icon.svg"), tile(38));
+writeFileSync(out("app/icon.svg"), tile(0));
 
 // ── rasters ─────────────────────────────────────────────────────────────────
 const png = (svg, size, path, bg) => {
@@ -135,14 +128,13 @@ await Promise.all([
 // sharp cannot write ICO, but the container format is trivial: a 6-byte header,
 // one 16-byte directory entry per image, then the PNG payloads concatenated.
 // (PNG-in-ICO is valid and universally supported since Vista.)
-// Same rounded tile as app/icon.svg, and deliberately NOT flattened: ICO
-// carries alpha through its PNG payload, so the corners outside the rounding
-// stay transparent. Flattening would fill them with red and undo the rounding
-// entirely — the curve would still be drawn, with red behind it.
+// Same full-bleed opaque tile as app/icon.svg (see the comment above it for
+// why this is no longer rounded) — radius 0 means the ground rect already
+// covers the whole canvas, so no flatten() is needed to kill transparency.
 const icoSizes = [16, 32, 48];
 const icoPngs = await Promise.all(
     icoSizes.map((s) =>
-        sharp(Buffer.from(tile(38)), { density: 400 })
+        sharp(Buffer.from(tile(0)), { density: 400 })
             .resize(s, s)
             .png({ compressionLevel: 9 })
             .toBuffer()
